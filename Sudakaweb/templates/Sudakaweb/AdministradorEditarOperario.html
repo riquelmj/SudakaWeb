@@ -1,0 +1,33 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+  <div class="row" align="center">
+    <a href="{% url 'vista_administrador_ver_operarios' %}" class="btn btn-primary" role="button">Ver Operarios</a>
+    <a href="#.html" class="btn btn-primary" role="button">Editar Operario</a>
+    <a href="{% url 'vista_administrador_nuevo_operario' %}" class="btn btn-primary" role="button">Nuevo Operario</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" >
+    <h2 align="center">Editar Operario</h2>
+    <div style="margin:10px">
+      <select class="form-control">
+        <option>Operario1</option>
+        <option>Operario2</option>
+        <option>Operario3</option>
+      </select>
+    </div>
+    <div class="row" align="center">
+      <a href="#.html" class="btn btn-primary" role="button">Buscar</a>
+    </div>
+  </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

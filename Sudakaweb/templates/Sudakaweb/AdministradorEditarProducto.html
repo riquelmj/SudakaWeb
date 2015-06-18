@@ -1,0 +1,35 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+  <div class="row" align="center">
+    <a href="{% url 'vista_administrador_ver_productos' %}" class="btn btn-primary" role="button">Ver Stock</a>
+    <a href="#.html" class="btn btn-primary" role="button">Editar Producto</a>
+    <a href="{% url 'vista_administrador_nuevo_producto' %}" class="btn btn-primary" role="button">Nuevo Producto</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+    <h2>Editar Producto</h2>
+    <div style="margin:10px">
+      <select class="form-control">
+        <option>Material1</option>
+        <option>Material2</option>
+        <option>Material3</option>
+        <option>Material4</option>
+        <option>Material5</option>
+      </select>
+    </div>
+    <div class="row" align="center">
+      <a href="#.html" class="btn btn-primary" role="button">Buscar</a>
+    </div>
+  </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

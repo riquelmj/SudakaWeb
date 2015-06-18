@@ -1,0 +1,60 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+    <a href="#.html" class="btn btn-primary" role="button">Ver Órdenes de Compra</a>
+    <a href="{% url 'vista_administrador_editar_oc' %}" class="btn btn-primary" role="button">Editar Orden de Compra</a>
+    <a href="{% url 'vista_administrador_nueva_oc' %}" class="btn btn-primary" role="button">Nueva Orden de Compra</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+    <div style="height:100%;overflow-y: scroll;">
+      <h2>Ver Órdenes de Compra</h2>
+      <table class="table table-hover table-bordered " style="width:100%;" >           
+        <thead>
+          <tr>
+            <th>N° OC</th>
+            <th>Materiales</th>
+            <th>Proveedor</th>
+            <th>Fecha emisión</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01</td>
+            <td>Material1</td>
+            <td>Proveedor1</td>
+            <td>11/11/1111</td>
+            <td>Recibido</td>
+          </tr>
+          <tr>
+            <td>02</td>
+            <td>Material2</td>
+            <td>Proveedor2</td>
+            <td>11/11/1111</td>
+            <td>En espera</td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td>Material2</td>
+            <td>Proveedor4</td>
+            <td>11/11/1111</td>
+            <td>En espera</td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>
+  </div>
+
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

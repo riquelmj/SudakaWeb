@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta charset="utf-8">
+	<title>Cerveza Sudaka</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"/>
+</head>
+<body>
+<div class="container-fluid">
+
+	<div class="row" style="background:rgba(255, 255, 255, 0.8); padding:5px; border-radius: 0 0 7px 7px; margin-top:-8px">
+		<div class="col-md-1"> <!-- Barra de navegación -->
+			<img src="imagenes/logo.png" class="img-responsive">
+		</div>
+		<div class="col-md-8"> <!-- Barra de navegación -->
+			<ul class="nav nav-pills">
+			  <li><a href="#">Inicio</a></li>
+			  <li><a href="NosotrosCliente.html">Nosotros</a></li>
+			  <li><a href="CatalogoCliente.html">Catálogo</a></li>
+			  <li><a href="ContactoCliente.html">Contacto</a></li>
+			</ul>
+		</div>
+
+		<div class="col-md-3"> <!-- Barra de navegación -->
+			<p class="navbar-text pull-right">
+			  Bienvenido <a href="AdministradorMenuInterno.html" class="navbar-link">Nombre Apellido</a> /<a href="index.html" class="navbar-link">Cerrar Sesión</a>
+			</p>
+		</div>
+
+	</div>
+
+
+
+	<div class="row" style="margin:20px">
+		<div class="col-md-12">
+			<div class="row" style="background:rgba(255, 255, 255, 0.8); padding:10px; border-radius: 7px; margin:20px">
+				<div class="col-md-3">
+					<ul class="nav  nav-pills nav-stacked">
+					  <li class="active"><a href="#.html">Materiales</a></li>
+					  <li><a href="AdministradorMenuProductos.html">Productos</a></li>
+					  <li><a href="AdministradorMenuClientes.html">Clientes</a></li>
+					  <li><a href="AdministradorMenuOperarios.html">Operarios</a></li>
+					  <li><a href="AdministradorMenuPT.html">Puestos de Trabajo</a></li>
+					  <li><a href="AdministradorMenuMaquinarias.html">Maquinarias</a></li>
+					  <li><a href="AdiministradorMenuSC.html">Solicitudes de Compra</a></li>
+					  <li><a href="AdministradorMenuOF.html">Órdenes de Fabricación</a></li>
+					  <li><a href="AdministradorMenuOT.html">Órdenes de Trabajo</a></li>
+					  <li><a href="AdmminsitradorMenuOD.html">Órdenes de Despacho</a></li>
+					  <li><a href="AdministradorMenuProveedores.html">Proveedores</a></li>
+					</ul>
+				</div>
+
+				<div class="col-md-9">
+					<div class="row" align="center">
+						<a href="AdminsitradorMenuMateriales.html" class="btn btn-primary" role="button">Ver Stock</a>
+						<a href="AdministradorMenuIngresoMaterial.html" class="btn btn-primary" role="button">Ingreso Material</a>
+						<a href="#.html" class="btn btn-primary" role="button">Editar Material</a>
+						<a href="AdministradorMenuNuevoMaterial.html" class="btn btn-primary" role="button">Nuevo Material</a>
+					</div>
+
+					<div class="thumbnail"  style="height:430px; margin:10px" align="center">
+						<h2>Editar Material</h2>
+						<div style="margin:10px">
+							<select class="form-control">
+								<option>Material1</option>
+								<option>Material2</option>
+								<option>Material3</option>
+								<option>Material4</option>
+								<option>Material5</option>
+							</select>
+						</div>
+						<div class="row" align="center">
+							<a href="#.html" class="btn btn-primary" role="button">Buscar</a>
+						</div>
+							
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	
+	</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script>
+	$('.dropdown-toggle').dropdown();
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+    <a href="#.html" class="btn btn-primary" role="button">Ver Proveedores</a>
+    <a href="{% url 'vista_administrador_editar_proveedor' %}" class="btn btn-primary" role="button">Editar Proveedor</a>
+    <a href="{% url 'vista_administrador_nuevo_proveedor' %}" class="btn btn-primary" role="button">Nuevo Proveedor</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+    <div style="height:100%;overflow-y: scroll;">
+      <h2>Ver Proveedores</h2>
+      <table class="table table-hover table-bordered " style="width:100%;" >           
+        <thead>
+          <tr>
+            <th>Rut</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Comuna</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2333-4</td>
+            <td>Proveedor1</td>
+            <td>Av. algo wrrw</td>
+            <td>Comuna1</td>
+            <td>skfkw@mail.com</td>
+            <td>222222</td>
+          </tr><tr>
+            <td>2365-7</td>
+            <td>Proveedor2</td>
+            <td>Av. algo wrrw 23</td>
+            <td>Comuna1</td>
+            <td>zzzz@mail.com</td>
+            <td>223322</td>
+          </tr><tr>
+            <td>1111-4</td>
+            <td>Proveedor3</td>
+            <td>Av. algo w232</td>
+            <td>Comuna3</td>
+            <td>mail@mail.com</td>
+            <td>224488</td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>
+  </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

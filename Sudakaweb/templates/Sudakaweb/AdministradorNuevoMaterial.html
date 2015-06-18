@@ -1,0 +1,59 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	  <div class="row" align="center">
+            <a href="{% url 'vista_administrador_ver_materiales' %}" class="btn btn-primary" role="button">Ver Stock</a>
+            <a href="{% url 'vista_administrador_ingresar_material' %}" class="btn btn-primary" role="button">Ingresar Material</a>
+            <a href="{% url 'vista_administrador_editar_material' %}" class="btn btn-primary" role="button">Editar Material</a>
+            <a href="#.html" class="btn btn-primary" role="button">Nuevo Material</a>
+          </div>
+
+          <div class="thumbnail"  style="height:430px; margin:10px" >
+            <h2 align="center">Nuevo Material</h2>
+
+            <form role="form" style="margin:20px;">
+                <div class="form-group">
+                  <label for="ejemplo_tipo_material">Tipo de Material</label>
+                <select class="form-control">
+                  <option>TipoMaterial1</option>
+                  <option>TipoMaterial2</option>
+                  <option>TipoMaterial3</option>
+                  <option>TipoMaterial4</option>
+                  <option>TipoMaterial5</option>
+                </select>
+                </div>
+                <div class="form-group">
+                  <label for="ejemplo_nombre_material">Nombre Material</label>
+                  <input type="text" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Intorduce el nombre del material">
+                </div>
+                <div class="form-group">
+                  <label for="ejemplo_cantidad_material">Cantidad</label>
+                  <input class="form-control" id="cantidad" type="number" min="0" required="required" value="Cantidad de Material" placeholder="Cantidad de Material">
+                </div>
+                <div class="form-group">
+                  <label for="ejemplo_unidad-medida_material">Unidad de Medida</label>
+                  <select class="form-control">
+                  <option>Unidad1</option>
+                  <option>Unidad2</option>
+                  <option>Unidad3</option>
+                  <option>Unidad4</option>
+                  <option>Unidad5</option>
+                </select>
+                </div>
+              <p class="text-center">
+                <button type="submit" class="btn btn-default">Guardar</button>
+              </p>
+            </form>
+
+          </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

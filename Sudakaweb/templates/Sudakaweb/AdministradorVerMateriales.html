@@ -1,0 +1,77 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+
+    <a href="#.html" class="btn btn-primary" role="button">Ver Stock</a>
+    <a href="{% url 'vista_administrador_ingresar_material' %}" class="btn btn-primary" role="button">Ingresar Material</a>
+    <a href="{% url 'vista_administrador_editar_material' %}" class="btn btn-primary" role="button">Editar Material</a>
+    <a href="{% url 'vista_administrador_nuevo_material' %}" class="btn btn-primary" role="button">Nuevo Material</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+    <div style="height:100%;overflow-y: scroll;">
+    <h2>Ver Stock</h2>
+     <table class="table table-hover table-bordered " style="width:100%;" >           
+        <thead>
+          <tr>
+            <th>Tipo de Material</th>
+            <th>Nombre</th>
+            <th>Stock</th>
+            <th>Unidad de Medida</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Insumo</td>
+            <td>Botella</td>
+            <td>305</td>
+            <td>unidades</td>
+          </tr>
+          <tr>
+            <td>Materia Prima</td>
+            <td>Cebada</td>
+            <td>2</td>
+            <td>Sacos</td>
+          </tr>
+          <tr>
+            <td>Materia Prima</td>
+            <td>Lupus</td>
+            <td>4</td>
+            <td>Kilos</td>
+          </tr>
+          <tr>
+            <td>Insumo</td>
+            <td>Botella</td>
+            <td>305</td>
+            <td>unidades</td>
+          </tr>
+          <tr>
+            <td>Materia Prima</td>
+            <td>Cebada</td>
+            <td>2</td>
+            <td>Sacos</td>
+          </tr>
+          <tr>
+            <td>Materia Prima</td>
+            <td>Lupus</td>
+            <td>4</td>
+            <td>Kilos</td>
+          </tr>               
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

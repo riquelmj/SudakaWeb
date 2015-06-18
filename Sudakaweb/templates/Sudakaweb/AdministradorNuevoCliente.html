@@ -1,0 +1,71 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+    <a href="{% url 'vista_administrador_ver_clientes' %}" class="btn btn-primary" role="button">Ver Clientes</a>
+    <a href="{% url 'vista_administrador_editar_cliente' %}" class="btn btn-primary" role="button">Editar Cliente</a>
+    <a href="#.html" class="btn btn-primary" role="button">Nuevo Cliente</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" >
+    <div style="height:100%;overflow-y: scroll;">
+      <h2 align="center">Nuevo Cliente</h2>
+
+        <form role="form" style="margin:20px;">
+          <div class="form-group">
+            <label for="ejemplo_nombre_1">Nombre</label>
+            <input type="text" class="form-control" id="ejemplo_nombre_1" placeholder="Intorduce tu nombre">
+          </div>
+
+          <div class="form-group">
+            <label for="ejemplo_apellido_1">Apellido Paterno</label>
+            <input type="text" class="form-control" id="ejemplo_apellido_1" placeholder="Intorduce tu apellido paterno">
+          </div>
+
+          <div class="form-group">
+            <label for="ejemplo_apellido_2">Apellido Materno</label>
+            <input type="text" class="form-control" id="ejemplo_apellido_2" placeholder="Intorduce tu apellido materno">
+          </div>
+
+          <div class="form-group">
+            <label for="ejemplo_fecha_nacimiento_1">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="fecha_nacimiento_1" placeholder="Intorduce tu fecha de nacimiento">
+          </div>
+
+        <div class="form-group">
+          <label for="ejemplo_email_1">Email</label>
+          <input type="email" class="form-control" id="ejemplo_email_1" placeholder="Introduce tu email">
+        </div>
+
+        <div class="form-group">
+          <label for="ejemplo_telefono_1">Teléfono</label>
+          <input type="tel" class="form-control" id="ejemplo_telefono_1" placeholder="Introduce tu número de teléfono">
+        </div>
+
+        <div class="form-group">
+          <label for="ejemplo_password_1">Contraseña</label>
+          <input type="password" class="form-control" id="ejemplo_password_1" placeholder="Introduce una contraseña">
+        </div>
+
+        <div class="form-group">
+          <label for="ejemplo_password_1">Repite tu contraseña</label>
+          <input type="password" class="form-control" id="ejemplo_password_1" placeholder="Repite tu contraseña">
+        </div>
+
+        <p class="text-center">
+          <button type="submit" class="btn btn-default">Guardar</button>
+        </p>
+      </form>
+    </div> 
+  </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

@@ -1,0 +1,23 @@
+<!-- Vista que lista todas las ordenes de compra -->
+
+{%extends "Sudakaweb/base.html"%}
+{%block importar%}
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css">
+{%endblock%}
+{%block titulo%}
+	Sudakaweb - OC
+{%endblock%}
+{%block head%}
+	<img src="/static/img/logoempresa.png" class="logoempresa" alt=" " style="width:150px;height:150px; margin-left:15px">
+	<h1><b>SOCIEDAD EN GESTIÓN COMERCIAL LIMITADA</b></h1>
+	
+{%endblock%}
+
+{%block contenido%}
+	{% for orden in oc %}
+		{{orden}}
+		{% endfor %}
+{%endblock%}
+{%block JS%}
+	
+{%endblock%}

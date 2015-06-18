@@ -1,0 +1,64 @@
+{%extends "Sudakaweb/base.html"%}
+{%block importar%}
+  <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+{%endblock%}
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+{%block head%}
+  <div class="row">
+    <div id"logoempresa" class="col-xs-1">
+      <img src="/static/img/logoempresa.png" class="logoempresa" alt=" " style="width:150px;height:150px; margin-left:15px">
+    </div>
+    <div class="col-xs-11">
+     <h1><b>SOCIEDAD EN GESTIÓN COMERCIAL LIMITADA</b></h1>
+    </div>
+  </div>
+{%endblock%}
+
+{%block contenido%}
+  <h2 class="mih2">Generar Orden de Trabajo</h2>
+  
+    <form class="form-horizontal" role="form" method="POST">
+  {% csrf_token %}
+
+
+ <div class="form-group">
+      <label for="nombre" class="col-sm-4 control-label">Orden de Compra</label>
+      <div class="col-sm-8">
+        <select class="form-control" name='generar' id="select-oc" onchange="buscar_orden()" style="width:50%">
+          {% for orden in ordenes %}
+          {% if not orden.ordentrabajo_set.all|first %}
+          <option name='id' value="{{orden.id}}">{{orden.numeroOC}}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+</div>
+
+<div id="llenar-form"></div>
+ 
+<div class="col-sm-offset-3 col-sm-9">
+    <button class="btn btn-primary btn-lg" style="margin-bottom:40px;margin-left:260px;" type='submit'>Generar OT</button>
+</div>
+  
+</form>
+  
+{%endblock%}
+{%block JS%}
+  <script type="text/javascript">
+    $(document).ready(function(){
+      buscar_orden();
+    });
+    function buscar_orden(){
+    $.ajax({
+        data:  {"id":    $("#select-oc").val(), "generaOT":1},
+        url:   "{% url 'vista_get_datos_OC' %}",
+        type:  'post',
+        success:  function (response) {
+            $("#llenar-form").html(response);
+        }
+    });
+  }
+  </script>
+{%endblock%}

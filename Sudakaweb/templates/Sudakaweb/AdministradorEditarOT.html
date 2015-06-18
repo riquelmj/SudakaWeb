@@ -1,0 +1,32 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+    <a href="{% url 'vista_administrador_ver_ot' %}" class="btn btn-primary" role="button">Ver Órdenes de Trabajo</a>
+    <a href="#.html" class="btn btn-primary" role="button">Editar Orden de Trabajo</a>
+    <a href="{% url 'vista_administrador_nueva_ot' %}" class="btn btn-primary" role="button">Nueva Orden de Trabajo</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" >
+    <h2 align="center">Editar Orden de Trabajo</h2>
+    <div style="margin:10px">
+      <select class="form-control">
+        <option>OT1</option>
+        <option>OT2</option>
+      </select>
+    </div>
+    <div class="row" align="center">
+      <a href="#.html" class="btn btn-primary" role="button">Buscar</a>
+    </div>
+  </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

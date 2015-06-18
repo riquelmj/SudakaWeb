@@ -1,0 +1,60 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+    <a href="#.html" class="btn btn-primary" role="button">Ver Solicitudes de Compra</a>
+    <a href="{% url 'vista_administrador_editar_sc' %}" class="btn btn-primary" role="button">Editar Solicitud de Compra</a>
+    <a href="{% url 'vista_administrador_nueva_sc' %}" class="btn btn-primary" role="button">Nueva Solicitud de Compra</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+    <div style="height:100%;overflow-y: scroll;">
+      <h2>Ver Solicitudes de Compra</h2>
+      <table class="table table-hover table-bordered " style="width:100%;" >           
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Productos</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01</td>
+            <td>Nombre1</td>
+            <td>Apellido1</td>
+            <td>Producto3</td>
+            <td>Despachada</td>
+          </tr>
+          <tr>
+            <td>02</td>
+            <td>Nombre2</td>
+            <td>Apellido2</td>
+            <td>Producto1</td>
+            <td>Entregada</td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td>Nombre3</td>
+            <td>Apellido3</td>
+            <td>Producto1</td>
+            <td>En espera</td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>
+  </div>
+
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

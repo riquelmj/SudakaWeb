@@ -1,0 +1,55 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+    <a href="#.html" class="btn btn-primary" role="button">Ver Puestos de Trabajo</a>
+    <a href="{% url 'vista_administrador_editar_pt' %}" class="btn btn-primary" role="button">Editar Puesto de Trabajo</a>
+    <a href="{% url 'vista_administrador_nuevo_pt' %}" class="btn btn-primary" role="button">Nuevo Puesto de Trabajo</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+  <div style="height:100%;overflow-y: scroll;">
+    <h2>Ver Puestos de Trabajo</h2>
+    <table class="table table-hover table-bordered " style="width:100%;" >           
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Nombre</th>
+          <th>Maquinas</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td>Puesto 1</td>
+          <td>Maquina3</td>
+          <td WIDTH="30%"><button class="btn btn-default" type="submit">Editar</button><button class="btn btn-default" type="submit">Ver Maquinarias</button></td>
+        </tr>
+        <tr>
+          <td>02</td>
+          <td>Puesto2</td>
+          <td>Maquina2</td>
+          <td><button class="btn btn-default" type="submit">Editar</button><button class="btn btn-default" type="submit">Ver Maquinarias</button></td>
+        </tr>
+        <tr>
+          <td>03</td>
+          <td>Puesto3</td>
+          <td>Maquina1</td>
+          <td><button class="btn btn-default" type="submit">Editar</button><button class="btn btn-default" type="submit">Ver Maquinarias</button></td>
+        </tr>
+      </tbody>
+    </table>      
+  </div>
+</div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

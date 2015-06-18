@@ -1,0 +1,55 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+    <a href="#.html" class="btn btn-primary" role="button">Ver Maquinarias</a>
+    <a href="{% url 'vista_administrador_editar_maquinaria' %}" class="btn btn-primary" role="button">Editar Maquinaria</a>
+    <a href="{% url 'vista_administrador_nueva_maquinaria' %}" class="btn btn-primary" role="button">Nueva Maquinaria</a>
+  </div>
+
+  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+    <div style="height:100%;overflow-y: scroll;">
+      <h2>Ver Maquinaria</h2>
+      <table class="table table-hover table-bordered " style="width:100%;" >           
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Nombre</th>
+            <th>Ubicación</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01</td>
+            <td>Maquinaria1</td>
+            <td>Puesto1</td>
+            <td>Activa</td>
+          </tr>
+          <tr>
+            <td>02</td>
+            <td>MAquinaria2</td>
+            <td>Bodega</td>
+            <td>Inactiva</td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td>Maquinaria3</td>
+            <td>Puesto2</td>
+            <td>En mantención</td>
+          </tr>
+        </tbody>
+      </table>      
+    </div>
+  </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

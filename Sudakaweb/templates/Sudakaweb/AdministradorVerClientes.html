@@ -1,0 +1,60 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+      <a href="#.html" class="btn btn-primary" role="button">Ver Clientes</a>
+      <a href="{% url 'vista_administrador_editar_cliente' %}" class="btn btn-primary" role="button">Editar Cliente</a>
+      <a href="{% url 'vista_administrador_nuevo_cliente' %}" class="btn btn-primary" role="button">Nuevo Cliente</a>
+    </div>
+
+    <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+      <div style="height:100%;overflow-y: scroll;">
+        <h2>Ver Clientes</h2>
+        <table class="table table-hover table-bordered " style="width:100%;" >           
+          <thead>
+            <tr>
+              <th>Rut</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Teléfono</th>
+              <th>Correo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>11-4</td>
+              <td>Nombre1</td>
+              <td>Apellido1</td>
+              <td>11111</td>
+              <td>kdmfkd@mail.com</td>
+            </tr>
+            <tr>
+              <td>333-3</td>
+              <td>Nombre2</td>
+              <td>Apellido2</td>
+              <td>11111</td>
+              <td>kdmfkd@mail.com</td>
+            </tr>
+            <tr>
+              <td>322-5</td>
+              <td>Nombre3</td>
+              <td>Apellido3</td>
+              <td>11111</td>
+              <td>kdmfkd@mail.com</td>
+            </tr>
+          </tbody>
+        </table>      
+      </div>
+    </div>
+
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

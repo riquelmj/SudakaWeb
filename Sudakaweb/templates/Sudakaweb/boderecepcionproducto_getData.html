@@ -1,0 +1,159 @@
+<div class="tabla1" style="margin-top:50px;">  
+  <h4>Descripción de Orden de {% if not verBoton %}Compra{% else %}Trabajo{% endif %}</h4>
+  <table class="table" style="width:70%;">
+    <tr>
+      <th>Numero de orden</th>
+      <td>{{oc.numeroOC}}</td>
+    </tr>
+    <tr>
+      <th>Nombre Empresa Cliente</th>
+      <td>{{oc.nombreEmpresa}}</td>
+    </tr>
+    <tr>
+      <th>Rut Empresa Cliente</th>
+      <td>{{oc.rutEmpresa}}</td>
+    </tr>
+    <tr>
+      <th>Vendedor</th>
+      <td>{{oc.usuario}}</td>
+    </tr>
+    <tr>
+      <th>Fecha Ingreso</th>
+      <td>{{oc.fechaIngreso}}</td>
+    </tr>
+    <tr>
+      <th>Fecha Entrega</th>
+      <td>{{oc.fechaEntrega}}</td>
+    </tr>
+    <tr>
+        {% if not verBoton %}
+        <th>Estado</th>
+        <td>{{oc.estado}}</td>
+        {% endif %}
+    </tr>
+  </table>
+  <table class="table table-bordered table-hover" style="width:110%">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Producto</th>
+        <th>Especificaciones</th>
+        <th>Terminación</th>
+        <th>Cantidad Total</th>
+        {% if not generaOT %}
+        {% if not verBoton %}
+        <th>Cantidad Fabricada</th>
+        {% endif %}
+        <th>Cantidad Recepcionada</th>
+        {% if verBoton %}
+        <th>Recepcionar  (<a style="font-size:11px;" onclick="todos()">Todos</a> / <a style="font-size:11px;" onclick="ninguno()">Ninguno</a>)</th>
+        {% endif %}
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for prod in productos %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{prod.producto.tipoProducto.nombreTP}}</td>
+        <td>{{prod.producto.descripcion}}</td>
+        <td>{{prod.terminacion.nombreTerminacion}}</td>
+        <td>{{prod.producto.cantidad}}</td>
+        {% if not generaOT %}
+        {% if not verBoton %}
+        <td>{{prod.producto.cantidadProducida}}/{{prod.producto.cantidad}}</td>
+        {% endif %}
+        <td>{{prod.producto.cantidadRecepcionada}}/{{prod.producto.cantidad}}</td>
+        {% if verBoton %}
+        <td style="text-align:center">
+          {% if not prod.producto.cantidadRecepcionada = prod.producto.cantidad %}
+            <input type="checkbox" name="ide-{{prod.id}}" class="tod-ning" value="{{prod.id}}">
+          {% endif %}
+        </td>
+        {% endif %}
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if verBoton %}
+<div class="col-sm-offset-5 col-s_m-4">
+    <label style="float:left;margin-left:30px;">Cantidad recibida</label>
+    <input type="number" name="cantidad-nueva" value="0" min="0" id="cantidad-nueva" style="float:left;width:70px; margin-left:20px;" class="form-control">
+    <button style="float:left;margin-left:10px;margin-bottom:40px;" type="submit" onclick="recepcionar()" class="btn btn-danger">Recepcionar</button>
+</div>
+<br><br>
+<div class="">
+  <button style="margin-left:-120px;margin-bottom:40px;" {% if not despachar %}disabled{% endif %} class="btn btn-danger btn-lg" onclick="despachar()">Despachar</button> <!--Debería permitirlo solo si todos los productos de la OC están recepcionados-->
+</div>
+{% endif %}
+
+
+<script type="text/javascript">
+  function despachar(){
+    event.preventDefault();
+    $.ajax({
+        data:  {"id":$("#select-oc").val()},
+        url:   "{% url 'vista_despachar' %}",
+        type:  'post',
+        success:  function (response) {
+            location.href = "/boderecepcionproducto";
+        }
+    });
+  }
+  function recepcionar(){
+    event.preventDefault();
+    data = {"cantidad-nueva":$("#cantidad-nueva").val()};
+    $("input[type=checkbox]:checked").each(function(){
+      data[$(this).attr("name")]= $(this).val();
+    });
+    $.ajax({
+        data: data ,
+        url:   "{% url 'vista_actualizar_recibido' %}",
+        type:  'post',
+        success:  function (response) {
+          if(response == "0"){
+            $.ambiance({message: "Seleccione los productos que desea modificar.", 
+                        title:"Aviso",
+                        type: "warning",
+                        timeout:6,
+                        width:400,
+                    });
+          }
+          if(response == "1"){
+            $.ambiance({message: "Se han modificado correctamente.", 
+                        title:"Informacion",
+                        type: "success",
+                        timeout:6,
+                        width:400,
+                    });
+            buscar_orden();
+          }
+          if(response == "2"){
+            $.ambiance({message: "La cantidad que se ingresó exede lo solicitado para uno o mas productos.", 
+                        title:"Informacion",
+                        type: "info",
+                        timeout:6,
+                        width:400,
+                    });
+            buscar_orden();
+          }
+            
+        }
+    });
+  }
+  function todos(){
+    $(".tod-ning").prop("checked", "checked");
+  }
+  function ninguno(){
+    $(".tod-ning").prop("checked", "");
+  }
+  $("#cantidad-nueva").keyup(function(){
+    $(this).val(parseInt($(this).val()));
+    if($(this).val()=="" || $(this).val()<0 ){
+      $(this).val(0);
+    }    
+  });
+</script>
