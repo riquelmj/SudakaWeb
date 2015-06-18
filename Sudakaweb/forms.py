@@ -12,6 +12,16 @@ EstadoMaquinaria=(
 	)
 
 
+class MaterialForm(forms.ModelForm):
+	class Meta:
+		model= Material #Tabla a referenciar
+		fields= ['materialNombre','materialStock','materialStockMinimo','materialUnidadMedida','materialTipo','materialSubTipo','prodTermPrecio'] #atributos a ingresar
+		widgets={
+				'materialNombre': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Rut','style':'width:50%'}),
+				'materialStock': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Nombre','style':'width:50%'}),
+				'materialStockMinimo': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Apellido','style':'width:50%'}),
+			}
+'''
 ####Ingresar Usuario
 class UsuarioForm(forms.ModelForm):
 	class Meta:
@@ -23,17 +33,6 @@ class UsuarioForm(forms.ModelForm):
 				'nombreUsuario': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Nombre','style':'width:50%'}),
 				'apellidoUsuario': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Apellido','style':'width:50%'}),
 			}
-
-class MaterialForm(forms.ModelForm):
-	class Meta:
-		model= Material #Tabla a referenciar
-		fields= ['materialNombre','materialStock','materialStockMinimo','materialUnidadMedida','materialTipo','materialSubTipo','prodTermPrecio'] #atributos a ingresar
-		widgets={
-				'rutUsuario': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Rut','style':'width:50%'}),
-				'nombreUsuario': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Nombre','style':'width:50%'}),
-				'apellidoUsuario': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Apellido','style':'width:50%'}),
-			}
-'''
 class RolForm(forms.ModelForm):
 	class Meta:
 		model= Rol #Tabla a referenciar
