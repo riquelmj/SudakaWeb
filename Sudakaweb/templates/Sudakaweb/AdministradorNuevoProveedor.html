@@ -5,50 +5,59 @@
 {%endblock%}
 
 {%block contenido%}
-	  <div class="row" align="center">
-            <a href="{% url 'vista_administrador_ver_proveedores' %}" class="btn btn-primary" role="button">Ver Proveedores</a>
-            <a href="{% url 'vista_administrador_editar_proveedor' %}" class="btn btn-primary" role="button">Editar Proveedor</a>
-            <a href="#.html" class="btn btn-primary" role="button">Nuevo Proveedor</a>
-          </div>
+	<div class="row" align="center">
+    <a href="{% url 'vista_administrador_ver_proveedores' %}" class="btn btn-primary" role="button">Ver Proveedores</a>
+    
+    <a href="#.html" class="btn btn-primary" role="button">Nuevo Proveedor</a>
+  </div>
 
-          <div class="thumbnail"  style="height:430px; margin:10px" >
-            <h2 align="center">Nuevo Proveedor</h2>
+  <div class="thumbnail"  style="height:544px; margin:10px" >
+    <h2 align="center">Nuevo Proveedor</h2>
 
-            <form role="form" style="margin:20px;">
-                <div class="form-group">
-                  <label for="ejemplo_tipo_material">Tipo de Material</label>
-                <select class="form-control">
-                  <option>TipoMaterial1</option>
-                  <option>TipoMaterial2</option>
-                  <option>TipoMaterial3</option>
-                  <option>TipoMaterial4</option>
-                  <option>TipoMaterial5</option>
-                </select>
-                </div>
-                <div class="form-group">
-                  <label for="ejemplo_nombre_material">Nombre Material</label>
-                  <input type="text" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Intorduce el nombre del material">
-                </div>
-                <div class="form-group">
-                  <label for="ejemplo_cantidad_material">Cantidad</label>
-                  <input class="form-control" id="cantidad" type="number" min="0" required="required" value="Cantidad de Material" placeholder="Cantidad de Material">
-                </div>
-                <div class="form-group">
-                  <label for="ejemplo_unidad-medida_material">Unidad de Medida</label>
-                  <select class="form-control">
-                  <option>Unidad1</option>
-                  <option>Unidad2</option>
-                  <option>Unidad3</option>
-                  <option>Unidad4</option>
-                  <option>Unidad5</option>
-                </select>
-                </div>
-              <p class="text-center">
-                <button type="submit" class="btn btn-default">Guardar</button>
-              </p>
-            </form>
+    <!--<button id="btn2" onclick="fn1('btn2');">boton2</button>-->
+    <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_nuevo_proveedor' %}">
+    {% csrf_token %}
 
-          </div>
+      <div class="form-group">
+        <label for="nombre" class="col-sm-4 control-label">Rut Proveedor</label>    
+        <div class="col-sm-8">
+          {{ProveedorForm.proveedorRut}}      
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="nombre" class="col-sm-4 control-label">Nombre Proovedor</label>
+        <div class="col-sm-8">
+          {{ProveedorForm.proveedorNombre}}      
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="nombre" class="col-sm-4 control-label">Direccion Proveedor</label>
+        <div class="col-sm-8">
+          {{ProveedorForm.proveedorDireccion}}      
+        </div>
+      </div>  
+
+      <div class="form-group">
+        <label for="nombre" class="col-sm-4 control-label" id="UnidadMedida">Teléfono Proveedor</label>
+        <div class="col-sm-8">
+          {{ProveedorForm.proveedorTelefono}}
+        </div> 
+      </div>
+
+      <div class="form-group">
+        <label for="nombre" class="col-sm-4 control-label" id="TipoMaterial">Correo Proveedor</label>
+        <div class="col-sm-8">
+          {{ProveedorForm.proveedorCorreo}}
+        </div> 
+      </div>
+        
+      <div class="col-sm-offset-3 col-sm-9">
+        <button id="btn4" class="btn btn-default" type='submit'>Ingresar</button>
+      </div>
+  </form>
+  </div>
 
 {%endblock%}
 

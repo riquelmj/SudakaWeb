@@ -91,7 +91,7 @@ urlpatterns = [
 	url(r'^AdministradorInicio$',administradorInicio("a").mostrarAdministradorInicio, name="vista_administrador_inicio"),
 	url(r'^AdministradorVerMateriales$',administradorVerMateriales("a").mostrarAdministradorMateriales, name="vista_administrador_ver_materiales"),
 	url(r'^AdministradorIngresarMaterial$',administradorIngresarMaterial("a").ingresarAdministradorMaterial, name="vista_administrador_ingresar_material"),
-	url(r'^AdministradorEditarMaterial$',administradorEditarMaterial("a").editarAdministradorMaterial, name="vista_administrador_editar_material"),
+	url(r'^AdministradorEditarMaterial/(?P<id>([0-9]{0,50}))/$',administradorEditarMaterial("a").editarAdministradorMaterial, name="vista_administrador_editar_material"),
 	url(r'^AdministradorNuevoMaterial$',administradorNuevoMaterial("a").nuevoAdministradorMaterial, name="vista_administrador_nuevo_material"),
 	url(r'^AdministradorVerProductos$',administradorVerProductos("a").mostrarAdministradorProductos, name="vista_administrador_ver_productos"),
 	url(r'^AdministradorEditarProducto$',administradorEditarProducto("a").editarAdministradorProducto, name="vista_administrador_editar_producto"),
@@ -106,7 +106,7 @@ urlpatterns = [
 	url(r'^AdministradorEditarPT$',administradorEditarPT("a").editarAdministradorPT, name="vista_administrador_editar_pt"),
 	url(r'^AdministradorNuevoPT$',administradorNuevoPT("a").nuevoAdministradorPT, name="vista_administrador_nuevo_pt"),
 	url(r'^AdministradorVerMaquinarias$',administradorVerMaquinarias("a").mostrarAdministradorMaquinarias, name="vista_administrador_ver_maquinarias"),
-	url(r'^AdministradorEditarMaquinaria$',administradorEditarMaquinaria("a").editarAdministradorMaquinaria, name="vista_administrador_editar_maquinaria"),
+	url(r'^AdministradorEditarMaquinaria/(?P<id>([0-9]{0,50}))/$',administradorEditarMaquinaria("a").editarAdministradorMaquinaria, name="vista_administrador_editar_maquinaria"),
 	url(r'^AdministradorNuevaMaquinaria$',administradorNuevaMaquinaria("a").nuevaAdministradorMaquinaria, name="vista_administrador_nueva_maquinaria"),
 	url(r'^AdministradorVerSC$',administradorVerSC("a").mostrarAdministradorSC, name="vista_administrador_ver_sc"),
 	url(r'^AdministradorEditarSC$',administradorEditarSC("a").editarAdministradorSC, name="vista_administrador_editar_sc"),
@@ -123,12 +123,21 @@ urlpatterns = [
 	url(r'^AdministradorEditarOC$',administradorEditarOC("a").editarAdministradorOC, name="vista_administrador_editar_oc"),
 	url(r'^AdministradorNuevaOC$',administradorNuevaOC("a").nuevaAdministradorOC, name="vista_administrador_nueva_oc"),
 	url(r'^AdministradorVerProveedores$',administradorVerProveedores("a").mostrarAdministradorProveedores, name="vista_administrador_ver_proveedores"),
-	url(r'^AdministradorEditarProveedor$',administradorEditarProveedor("a").editarAdministradorProveedor, name="vista_administrador_editar_proveedor"),
+	url(r'^AdministradorEditarProveedor/(?P<id>([0-9]{0,50}))/$',administradorEditarProveedor("a").editarAdministradorProveedor, name="vista_administrador_editar_proveedor"),
 	url(r'^AdministradorNuevoProveedor$',administradorNuevoProveedor("a").nuevoAdministradorProveedor, name="vista_administrador_nuevo_proveedor"),
 
 	#Vistas Operario
+	#url(r'^OperarioVerMateriales$',operarioVerMateriales("a").mostrarOperarioMateriales, name="vista_operario_ver_materiales"),
+	#url(r'^OperarioIngresarMaterial$',operarioIngresarMaterial("a").ingresarOperarioMaterial, name="vista_operario_ingresar_material"),
+	#url(r'^OperarioVerPT$',operarioVerPT("a").mostrarOperarioPT, name="vista_operario_ver_pt"),
+	#url(r'^OperarioVerMaquinarias$',operarioVerMaquinarias("a").mostrarOperarioMaquinarias, name="vista_operario_ver_maquinarias"),
+	#url(r'^OperarioVerOT$',operarioVerOT("a").mostrarOperarioOT, name="vista_operario_ver_ot"),
+	#url(r'^OperarioEditarOT$',operarioEditarOT("a").editarOperarioOT, name="vista_operario_editar_ot"),
+	#url(r'^OperarioEditarProveedor/(?P<id>([0-9]{0,50}))/$',operarioEditarProveedor("a").editarOperarioProveedor, name="vista_operario_editar_proveedor"),
+	#url(r'^OperarioNuevoProveedor$',operarioNuevoProveedor("a").nuevoOperarioProveedor, name="vista_operario_nuevo_proveedor"),
 
 	#Vistas Cliente
+	#url(r'^ClienteVerSC$',clienteVerSC("a").mostrarClienteSC, name="vista_cliente_ver_sc"),
 	
 
 ]

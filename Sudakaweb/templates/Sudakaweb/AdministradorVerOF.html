@@ -11,49 +11,35 @@
     <a href="{% url 'vista_administrador_nueva_of' %}" class="btn btn-primary" role="button">Nueva Orden de Fabricación</a>
   </div>
 
-  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+  <div class="thumbnail"  style="height:544px; margin:10px" align="center">
     <div style="height:100%;overflow-y: scroll;">
       <h2>Ver Órdenes de Fabricación</h2>
       <table class="table table-hover table-bordered " style="width:100%;" >           
         <thead>
           <tr>
             <th>N° OF</th>
-            <th>Producto</th>
             <th>Cantidad<br>(botellas)</th>
+            <th>Material</th>
             <th>Fecha emisión</th>
             <th>Fecha inicio</th>
             <th>Fecha término</th>
-            <th>Estado</th>
+            <th>usuario</th>
+            <th>Estado OF</th>
           </tr>
         </thead>
         <tbody>
+          {% for of in ofs %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>01</td>
-            <td>Producto3</td>
-            <td>120</td>
-            <td>11/11/1111</td>
-            <td>11/11/1111</td>
-            <td>11/11/1111</td>
-            <td>Procesada</td>
+            <td>{{of.ofCant}}</td>
+            <td>{{of.material}}</td>            
+            <td>{{of.ofFechaIngreso}}</td>
+            <td>{{of.ofFechaInicio}}</td>
+            <td>{{of.ofFechaTermino}}</td>
+            <td>{{of.usuario}}</td>
+            <td>{{of.estadoOF}}</td>
+            <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_oc' %}">Editar</a></td>
           </tr>
-          <tr>
-            <td>02</td>
-            <td>Producto2</td>
-            <td>200</td>
-            <td>11/11/1111</td>
-            <td>11/11/1111</td>
-            <td>11/11/1111</td>            
-            <td>En Proceso</td>
-          </tr>
-          <tr>
-            <td>03</td>
-            <td>Producto2</td>
-            <td>120</td>
-            <td>11/11/1111</td>
-            <td>11/11/1111</td>
-            <td>11/11/1111</td>            
-            <td>Por procesar</td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>      
     </div>

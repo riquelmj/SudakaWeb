@@ -5,43 +5,35 @@
 {%endblock%}
 
 {%block contenido%}
-	  <div class="row" align="center">
-            <a href="{% url 'vista_administrador_ver_maquinarias' %}" class="btn btn-primary" role="button">Ver Maquinarias</a>
-            <a href="{% url 'vista_administrador_editar_maquinaria' %}" class="btn btn-primary" role="button">Editar Maquinaria</a>
-            <a href="#.html" class="btn btn-primary" role="button">Nueva Maquinaria</a>
-          </div>
+	<div class="row" align="center">
+    <a href="{% url 'vista_administrador_ver_maquinarias' %}" class="btn btn-primary" role="button">Ver Maquinarias</a>
+    
+    <a href="#.html" class="btn btn-primary" role="button">Nueva Maquinaria</a>
+  </div>
 
-          <div class="thumbnail"  style="height:430px; margin:10px" >
-            <h2 align="center">Nueva Maquinaria</h2>
+  <div class="thumbnail"  style="height:544px; margin:10px" >
+    <h2 align="center">Nueva Maquinaria</h2>
 
-            <form role="form" style="margin:20px;">
-                <div class="form-group">
-                  <label for="ejemplo_nombre_material">Nombre Maquinaria</label>
-                  <input type="text" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Intorduce el nombre de la maquinaria">
-                </div>
-                <div class="form-group">
-                  <label for="ejemplo_tipo_material">Ubicación</label>
-                <select class="form-control">
-                  <option>Puesto1</option>
-                  <option>Puesto2</option>
-                  <option>Puesto3</option>
-                  <option>Puesto4</option>
-                </select>
-                </div>
-                <div class="form-group">
-                  <label for="ejemplo_unidad-medida_material">Estado</label>
-                  <select class="form-control">
-                  <option>Activa</option>
-                  <option>Inactiva</option>
-                  <option>En mantención</option>
-                </select>
-                </div>
-              <p class="text-center">
-                <button type="submit" class="btn btn-default">Guardar</button>
-              </p>
-            </form>
+    <form role="form" style="margin:20px;" method="POST" action="{% url 'vista_administrador_nueva_maquinaria' %}">
+    {% csrf_token %}
+        <div class="form-group">
+          <label for="ejemplo_nombre_material">Nombre Maquinaria</label>
+          {{MaquinariaForm.maqNombre}}
+        </div>
+        <div class="form-group">
+          <label for="ejemplo_tipo_material">Ubicación</label>
+          {{MaquinariaForm.pt}}
+        </div>
+        <div class="form-group">
+          <label for="ejemplo_unidad-medida_material">Estado</label>
+          {{MaquinariaForm.maqEstado}}
+        </div>
+      <p class="text-center">
+        <button type="submit" class="btn btn-default">Guardar</button>
+      </p>
+    </form>
 
-          </div>
+  </div>
 
 {%endblock%}
 

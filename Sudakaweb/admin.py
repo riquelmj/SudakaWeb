@@ -2,9 +2,9 @@ from django.contrib import admin
 from models import *
 
 admin.site.register(Usuario)
-admin.site.register(Estado)
+admin.site.register(EstadoSolicitud)
 admin.site.register(Region)
-admin.site.register(Ciudad)
+admin.site.register(Provincia)
 admin.site.register(Comuna)
 admin.site.register(SolicitudDeCompra)
 admin.site.register(PuestoDeTrabajo)
@@ -23,3 +23,4 @@ admin.site.register(Maquinaria)
 admin.site.register(Notificacion)
 admin.site.register(Consumo)
 admin.site.register(Auditoria)
+admin.site.register(Despacho)

@@ -5,30 +5,67 @@
 {%endblock%}
 
 {%block contenido%}
-	  <div class="row" align="center">
-            <a href="{% url 'vista_administrador_ver_materiales' %}" class="btn btn-primary" role="button">Ver Stock</a>
-            <a href="{% url 'vista_administrador_ingresar_material' %}" class="btn btn-primary" role="button">Ingresar Material</a>
-            <a href="#.html" class="btn btn-primary" role="button">Editar Material</a>
-            <a href="{% url 'vista_administrador_nuevo_material' %}" class="btn btn-primary" role="button">Nuevo Material</a>
-          </div>
+	<div class="row" align="center">
+    <a href="{% url 'vista_administrador_ver_materiales' %}" class="btn btn-primary" role="button">Ver Stock</a>
+    <a href="{% url 'vista_administrador_ingresar_material' %}" class="btn btn-primary" role="button">Ingresar Material</a>
+    
+    <a href="{% url 'vista_administrador_nuevo_material' %}" class="btn btn-primary" role="button">Nuevo Material</a>
+  </div>
 
-          <div class="thumbnail"  style="height:430px; margin:10px" align="center">
-            <h2>Editar Material</h2>
-            <div style="margin:10px">
-              <select class="form-control">
-                <option>Material1</option>
-                <option>Material2</option>
-                <option>Material3</option>
-                <option>Material4</option>
-                <option>Material5</option>
-              </select>
+  <div class="thumbnail"  style="height:544px; margin:10px" align="center">
+    <h2>Editar Material</h2>
+    <div style="margin:10px">
+    <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_editar_material' id %}">
+        {% csrf_token %}
+
+          <div class="form-group">
+            <label for="nombre" class="col-sm-4 control-label">Nombre Material</label>    
+            <div class="col-sm-8">
+              {{MaterialForm.materialNombre}}      
             </div>
-            <div class="row" align="center">
-              <a href="#.html" class="btn btn-primary" role="button">Buscar</a>
-            </div>
-              
           </div>
-    </div>
+          <div class="form-group">
+            <label for="nombre" class="col-sm-4 control-label">Stock</label>
+            <div class="col-sm-8">
+              {{MaterialForm.materialStock}}      
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nombre" class="col-sm-4 control-label">Stock Minimo</label>
+            <div class="col-sm-8">
+              {{MaterialForm.materialStockMinimo}}      
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nombre" class="col-sm-4 control-label" id="UnidadMedida">Unidad de Medida</label>
+            <div class="col-sm-8">
+              {{MaterialForm.materialUnidadMedida}}
+            </div> 
+          </div>
+          <div class="form-group">
+            <label for="nombre" class="col-sm-4 control-label" id="TipoMaterial">Tipo de Material</label>
+            <div class="col-sm-8">
+              {{MaterialForm.materialTipo}}
+            </div> 
+          </div>
+          <div class="form-group">
+            <label for="nombre" class="col-sm-4 control-label">Subtipo de Material</label>    
+            <div class="col-sm-8">
+              {{MaterialForm.materialSubTipo}}      
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nombre" class="col-sm-4 control-label">Precio Material</label>    
+            <div class="col-sm-8">
+              {{MaterialForm.prodTermPrecio}}      
+            </div>
+          </div>        
+          <div class="col-sm-offset-3 col-sm-9">
+            <button id="btn4" class="btn btn-default" type='submit'>Guardar</button>
+          </div>
+        </form>
+    </div>    
+  </div>
 {%endblock%}
 
 

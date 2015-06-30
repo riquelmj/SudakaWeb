@@ -1,14 +1,120 @@
 # coding=utf-8
 
-
 from django.db import models
 from django.contrib.auth.models import User
 
-USUARIO=(
+Rol=(
 		('Administrador','Administrador'),
 		('Cliente','Cliente'),
 		('Operario','Operario'),
 		)
+
+TipoMaterial=(
+	('Basico','Basico'),
+	('Elaborado','Elaborado'),
+	)
+
+SubTipoMaterial=(
+	('Insumo','Insumo'),
+	('Materia Prima','Materia Prima'),
+	)
+
+EstadoSolicitud=(
+	('Pendiente','Pendiente'),
+	('Aceptada','Aceptada'),
+	('Rechazada','Rechazada'),
+	('Cancelada','Cancelada'),
+	)
+
+EstadoMaquinaria=(
+	('Activa','Activa'),
+	('En Reparacion','En Reparacion'),
+	('En Mantencion','En Mantencion'),
+	('Desactivada','Desactivada'),
+	)
+
+Region=(
+	('Metropolitana','Metropolitana'),
+	)
+
+Provincia=(
+	('Chacabuco','Chacabuco'),
+	('Cordillera','Cordillera'),
+	('Maipo','Maipo'),
+	('Talagante','Talagante'),
+	('Melipilla','Melipilla'),
+	('Santiago','Santiago'),
+	)
+
+Comuna=(
+	('Colina','Colina'),
+	('Lampa','Lampa'),
+	('Tiltil','Tiltil'),
+	('Pirque','Pirque'),
+	('Puente Alto','Puente Alto'),
+	('San José de Maipo','San José de Maipo'),
+	('Buin','Buin'),
+	('Calera de Tango','Calera de Tango'),
+	('Paine','Paine'),
+	('San Bernardo','San Bernardo'),
+	('Alhué','Alhué'),
+	('Curacaví','Curacaví'),
+	('María Pinto','María Pinto'),
+	('Melipilla','Melipilla'),
+	('San Pedro','San Pedro'),
+	('Cerrillos','Cerrillos'),
+	('Cerro Navia','Cerro Navia'),
+	('Conchalí','Conchalí'),
+	('El Bosque','El Bosque'),
+	('Estación Central','Estación Central'),
+	('Huechuraba','Huechuraba'),
+	('Independencia','Independencia'),
+	('La Cisterna','La Cisterna'),
+	('La Granja','La Granja'),
+	('La Florida','La Florida'),
+	('La Pintana','La Pintana'),
+	('La Reina','La Reina'),
+	('Las Condes','Las Condes'),
+	('Lo Barnechea','Lo Barnechea'),
+	('Lo Espejo','Lo Espejo'),
+	('Lo Prado','Lo Prado'),
+	('Macul','Macul'),
+	('Maipú','Maipú'),
+	('Ñuñoa','Ñuñoa'),
+	('Pedro Aguirre Cerda','Pedro Aguirre Cerda'),
+	('Peñalolén','Peñalolén'),
+	('Providencia','Providencia'),
+	('Pudahuel','Pudahuel'),
+	('Quilicura','Quilicura'),
+	('Quinta Normal','Quinta Normal'),
+	('Recoleta','Recoleta'),
+	('Renca','Renca'),
+	('San Miguel','San Miguel'),
+	('San Joaquín','San Joaquín'),
+	('San Ramón','San Ramón'),
+	('Santiago','Santiago'),
+	('Vitacura','Vitacura'),
+	('El Monte','El Monte'),
+	('Isla de Maipo','Isla de Maipo'),
+	('Padre Hurtado','Padre Hurtado'),
+	('Peñaflor','Peñaflor'),
+	('Talagante','Talagante'),
+	)
+
+UnidadDeMedida=(
+	('kilogramos','kilogramos'),
+	('gramos','gramos'),
+	('litros','litros'),
+	('mililitros','mililitros'),
+	('centimetros cubicos','centimetros cubicos'),
+	('barriles','barriles'),
+	('galones','galones'),
+	('botellas','botellas'),
+	('sacos','sacos'),
+	('cajas','cajas'),
+	('unidades','unidades'),
+	)
+
 
 MATERIAL=(
 		 ('agua','agua'),
@@ -32,21 +138,6 @@ MATERIAL=(
 		 ('cerveza ale','cerveza ale'),
 		 ('cerveza negra','cerveza negra'),
 		 )
-
-MAQUINARIA=(
-		   ('maquina1','maquina1'),
-		   ('maquina2','maquina2'),
-		   ('maquina3','maquina3'),
-		   ('maquina4','maquina4'),
-		   ('maquina5','maquina5'),
-		   ('maquina6','maquina6'),
-		   )
-
-ESTADO=(
-	   ('aceptado','aceptado'),
-	   ('rechazado','rechazado'),
-	   ('pendiente','pendiente'),
-	   )
 
 PUESTO_DE_TRABAJO=(
 				  ('Coccion','Obtención de mosto'),
@@ -79,7 +170,7 @@ class Usuario(models.Model):
 	usuarioCorreo=models.EmailField('Correo electronico del usuario')
 	usuarioClave=models.CharField('Clave de ingreso del usuario',max_length=50,null=False,blank=False)
 	usuarioHabilitador=models.NullBooleanField('Habilitador del usuario')
-	usuarioRol=models.CharField('Rol del usuario',max_length=50,null=False,blank=False)
+	usuarioRol=models.CharField('Rol del usuario',max_length=50,null=False,blank=False, choices=Rol)
 
 		#llave foranea Relación uno a unocon la tabla usuario del sistema
 	user = models.OneToOneField(User)
@@ -88,10 +179,10 @@ class Usuario(models.Model):
 		return u'%s%s%s'% (self.usuarioNombre,self.usuarioApellido,self.usuarioRol)
 
 
-## ENTIDAD ESTADO
-class Estado(models.Model):
+## ENTIDAD ESTADO SOLICITUD DE COMPRA
+class EstadoSolicitud(models.Model):
 	id=models.AutoField('id',primary_key=True)
-	estadoNombre=models.CharField('Nombre del estado',max_length=50,null=False,blank=False)
+	estadoNombre=models.CharField('Nombre del estado de la solicitud de compra',max_length=50,null=False,blank=False, choices=EstadoSolicitud)
 
 	def __unicode__(self):
 		return u'%s'%(self.estadoNombre)
@@ -100,31 +191,31 @@ class Estado(models.Model):
 ## ENTIDAD REGIÓN
 class Region(models.Model):
 	id= models.AutoField('id',primary_key=True)
-	regionNombre=models.CharField('Nombre de la region',max_length=50,null=False,blank=False)
+	regionNombre=models.CharField('Nombre de la region',max_length=50,null=False,blank=False, choices=Region)
 
 	def __unicode__(self):
 		return u'%s'%(self.regionNombre)
 
 
-## ENTIDAD CIUDAD
-class Ciudad(models.Model):
+## ENTIDAD PROVINCIA
+class Provincia(models.Model):
 	id= models.AutoField('id',primary_key=True)
-	ciudadNombre=models.CharField('Nombre de ciudad',max_length=50,null=False,blank=False)
+	provinciaNombre=models.CharField('Nombre de provincia',max_length=50,null=False,blank=False, choices=Provincia)
 
 	# llave foranea
 	region=models.ForeignKey(Region,verbose_name="Region")
 
 	def __unicode__(self):
-		return u'%s'%(self.ciudadNombre)
+		return u'%s'%(self.provinciaNombre)
 
 
 ## ENTIDAD COMUNA
 class Comuna(models.Model):
 	id= models.AutoField('id',primary_key=True)
-	comunaNombre=models.CharField('Nombre de la comuna',max_length=50,null=False,blank=False)
+	comunaNombre=models.CharField('Nombre de la comuna',max_length=50,null=False,blank=False, choices=Comuna)
 
 	# llave foranea
-	ciudad=models.ForeignKey(Ciudad,verbose_name="Ciudad")
+	provincia=models.ForeignKey(Provincia,verbose_name="Provincia")
 
 	def __unicode__(self):
 		return u'%s'%(self.comunaNombre)
@@ -138,7 +229,7 @@ class SolicitudDeCompra(models.Model):
 
 	#llave foraneas
 	usuario=models.ForeignKey(Usuario,verbose_name="Usuario")
-	estado=models.ForeignKey(Estado,verbose_name="Estado")
+	estadoSolicitud=models.ForeignKey(EstadoSolicitud,verbose_name="Estado Solicitud")
 
 	def __unicode__(self):
 		return u'%s%s'%(self.solicitudFecha,self.usuario)
@@ -158,6 +249,23 @@ class Despacho(models.Model):
 		return u'%s%s%s'%(self.despachoDireccion,self.despachoFecha,self.solicitud)
 
 
+## ENTIDAD MATERIAL
+class Material(models.Model):
+	id=models.AutoField('id',primary_key=True)
+	materialNombre=models.CharField('Nombre del material',max_length=50,null=False,blank=False)
+	materialStock=models.IntegerField('Stock del material',null=False,blank=False)
+	materialStockMinimo=models.IntegerField('Stock minimo de los materiales',null=False,blank=False)
+	materialUnidadMedida=models.CharField('Unidades de medidas de los materiales',max_length=50,null=False,blank=False, choices=UnidadDeMedida)
+	materialTipo=models.CharField('Tipo de Material(Basico o Compuesto)',max_length=50,null=False,blank=False, choices=TipoMaterial)
+	materialSubTipo=models.CharField('Sub tipo de Material Compuesto (SemiElaborado o Producto Terminado)',max_length=50,null=False,blank=False, choices=SubTipoMaterial)
+	prodTermPrecio=models.IntegerField('Precio del producto terminado',null=False,blank=False)
+
+	# llave foranea
+	#pt=models.ForeignKey(PuestoDeTrabajo,verbose_name="Puesto de Trabajo")
+
+	def __unicode__(self):
+		return u'%s%s'%(self.materialNombre,self.materialStock)
+
 
 ## ENTIDAD PUESTO DE TRABAJO
 class PuestoDeTrabajo(models.Model):
@@ -166,26 +274,10 @@ class PuestoDeTrabajo(models.Model):
 
 	# llave foranea	
 	usuario=models.ForeignKey(Usuario,verbose_name="Usuario")
+	materiales = models.ManyToManyField(Material)
 
 	def __unicode__(self):
 		return u'%s%s'%(self.ptNombre,self.usuario)
-
-## ENTIDAD MATERIAL
-class Material(models.Model):
-	id=models.AutoField('id',primary_key=True)
-	materialNombre=models.CharField('Nombre del material',max_length=50,null=False,blank=False)
-	materialStock=models.IntegerField('Stock del material',null=False,blank=False)
-	materialStockMinimo=models.IntegerField('Stock minimo de los materiales',null=False,blank=False)
-	materialUnidadMedida=models.CharField('Unidades de medidas de los materiales',max_length=50,null=False,blank=False)
-	materialTipo=models.CharField('Tipo de Material(Basico o Compuesto)',max_length=50,null=False,blank=False)
-	materialSubTipo=models.CharField('Sub tipo de Material Compuesto (SemiElaborado o Producto Terminado)',max_length=50,null=False,blank=False)
-	prodTermPrecio=models.IntegerField('Precio del producto terminado',null=False,blank=False)
-
-	# llave foranea
-	pt=models.ForeignKey(PuestoDeTrabajo,verbose_name="Puesto de Trabajo")
-
-	def __unicode__(self):
-		return u'%s%s'%(self.Material_Nombre,self.Material_Stock)
 
 
 ## ENTIDAD DETALLE SOLICITUD DE COMPRA
@@ -230,16 +322,16 @@ class Lote(models.Model):
 
 
 ## ENTIDAD PROVEEDOR
-class  Proveedor(models.Model):
+class Proveedor(models.Model):
 	id=models.AutoField('id',primary_key=True)
-	proveedorRut=models.IntegerField('Rut del proveedor',max_length=20,null=False,blank=False)
+	proveedorRut=models.CharField('Rut del proveedor',max_length=20,null=False,blank=False)
 	proveedorNombre=models.CharField('Nombre del proveedor',max_length=50,null=False,blank=False)
 	proveedorDireccion=models.CharField('Dirección del proveedor',max_length=50,null=False,blank=False)
 	proveedorTelefono=models.IntegerField('Telefono del proveedor',null=False,blank=False)
 	proveedorCorreo=models.EmailField('Correo electronico del proveedor')
 
 	def __unicode__(self):
-		return u'%s%s' %(self.proveedorNombre,self.proveedorCorreo)
+		return u'%s' %(self.proveedorNombre)
 
 
 ## ENTIDAD ORDEN DE COMPRA
@@ -279,9 +371,10 @@ class EstadoOF(models.Model):
 class OrdenDeFabricacion(models.Model):
 	id=models.AutoField('id',primary_key=True)
 	ofCant=models.IntegerField('Cantidad de a Fabricar en la orden de fabricación',null=False,blank=False)
+	ofFechaIngreso=models.DateField('Fecha de ingreso de la orden de fabricación')
 	ofFechaInicio=models.DateField('Fecha de inicio de la orden de fabricación')	
 	ofFechaTermino=models.DateField('Fecha de termino de la orden de fabricación')
-	ofFechaIngreso=models.DateField('Fecha de ingreso de la orden de fabricación')
+
 
 	#llaves foraneas	
 	material=models.ForeignKey(Material,verbose_name="Material")
@@ -306,7 +399,7 @@ class Etapa(models.Model):
 	#pt2=models.ForeignKey(PuestoDeTrabajo,verbose_name="PT2")
 
 	def __unicode__(self):
-		return u'%s%s%s'%(self.etapaNombre,self.pt1,self.pt2)
+		return u'%s %s'%(self.etapaNombre,self.pt1)
 
 
 ## ENTIDAD ORDEN DE TRABAJO
@@ -329,7 +422,7 @@ class OrdenDeTrabajo(models.Model):
 class Maquinaria(models.Model):
 	id=models.AutoField('id',primary_key=True)
 	maqNombre=models.CharField('Nombre de la maquina',max_length=50,null=False,blank=False)
-	maqEstado=models.CharField('Estado de la maquina',max_length=50,null=False,blank=False)
+	maqEstado=models.CharField('Estado de la maquina',max_length=50,null=False,blank=False, choices=EstadoMaquinaria)
 
 	#llave foranea	
 	pt=models.ForeignKey(PuestoDeTrabajo,verbose_name="PT")
@@ -342,7 +435,7 @@ class Maquinaria(models.Model):
 class Notificacion(models.Model):
 	id=models.AutoField('id',primary_key=True)
 	notifDescripcion=models.CharField('Descripción de la notificación',max_length=200,null=False,blank=False)
-	notifFecha=models.DateField('Fecha de notificación')
+	notifFecha=models.DateField('Fecha de notificación',auto_now=True)
 	notifCantidad=models.IntegerField('Cantidad de material que se entrega en la notificación',null=False,blank=False)
 
 	# llaves foraneas
@@ -369,7 +462,7 @@ class Consumo(models.Model):
 ## AUDITORIA
 class Auditoria(models.Model):
 	id= models.AutoField('id',primary_key=True)
-	auditoriaFechaModificacion= models.DateField('Fecha de Modificacion') 
+	auditoriaFechaModificacion= models.DateField('Fecha de Modificacion',auto_now=True) 
 	auditoriaTablaModificada= models.CharField('Tabla Modificada', max_length=50, null=False, blank=False)
 	auditoriaDatosAntes= models.CharField('Datos Antes', max_length=128, null=False, blank=False)
 	auditoriaDatosDespues= models.CharField('Datos Despues', max_length=128, null=False, blank=False)

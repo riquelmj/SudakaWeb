@@ -703,7 +703,12 @@ class wejemplo(TemplateView):
 	def wejemplo(self,request):
 		return render(request, 'Sudakaweb/wejemplo.html',{})
 
-### NUEVAS CLASES
+
+
+
+##################################################################################################################
+##################################################################################################################
+############### NUEVAS CLASES
 
 class administradorInicio(TemplateView):
 	def __init__(self,valor):
@@ -711,12 +716,15 @@ class administradorInicio(TemplateView):
 	def mostrarAdministradorInicio(self,request):
 		return render(request, 'Sudakaweb/AdministradorInicio.html',{})
 
+
 #Menu Material
 class administradorVerMateriales(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorMateriales(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerMateriales.html',{})
+		material = Material.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'materiales':material} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerMateriales.html',ctx)
 
 class administradorIngresarMaterial(TemplateView):
 	def __init__(self,valor):
@@ -724,17 +732,64 @@ class administradorIngresarMaterial(TemplateView):
 	def ingresarAdministradorMaterial(self,request):
 		return render(request, 'Sudakaweb/AdministradorIngresarMaterial.html',{})
 
+class administradorEditarMaquinaria(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def editarAdministradorMaquinaria(self,request,id):
+		maquinaria = Maquinaria.objects.get(pk=id)
+		messages.success(request,"editar")
+		if request.method == 'POST':
+			form = MaquinariaForm(request.POST, instance=maquinaria)
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha modificado correctamente la nueva Maquinaria.')
+				return HttpResponseRedirect("/AdministradorVerMaquinarias")
+			else:
+				ctx={'MaquinariaForm':form,'id':id}
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+				return render(request, 'Sudakaweb/AdministradorEditarMaquinaria.html',ctx)
+		else:
+			form = MaquinariaForm(instance=maquinaria)
+			ctx={'MaquinariaForm':form,'id':id}
+			return render(request, 'Sudakaweb/AdministradorEditarMaquinaria.html',ctx)
+
 class administradorEditarMaterial(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
-	def editarAdministradorMaterial(self,request):
-		return render(request, 'Sudakaweb/AdministradorEditarMaterial.html',{})
+	def editarAdministradorMaterial(self,request,id):
+		material = Material.objects.get(pk=id)
+		messages.success(request,"editar")
+		if request.method == 'POST':
+			form = MaterialForm(request.POST, instance=material)
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha modificado correctamente la nueva Maquinaria.')
+				return HttpResponseRedirect("/AdministradorVerMateriales")
+			else:
+				ctx={'MaterialForm':form,'id':id}
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+				return render(request, 'Sudakaweb/AdministradorEditarMaterial.html',ctx)
+		else:
+			form = MaterialForm(instance=material)
+			ctx={'MaterialForm':form,'id':id}
+			return render(request, 'Sudakaweb/AdministradorEditarMaterial.html',ctx)
 
+#INGRESAR NUEVO MATERIAL administrador 
 class administradorNuevoMaterial(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def nuevoAdministradorMaterial(self,request):
-		return render(request, 'Sudakaweb/AdministradorNuevoMaterial.html',{})
+		form= MaterialForm(request.POST or None)
+		if request.method=='POST':
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha ingresado correctamente el material.')
+				return HttpResponseRedirect("/AdministradorVerMateriales")
+			else:
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+		ctx= {'MaterialForm':form}
+		return render(request, 'Sudakaweb/AdministradorNuevoMaterial.html',ctx)
+
 
 #Menu Producto
 class administradorVerProductos(TemplateView):
@@ -760,7 +815,9 @@ class administradorVerClientes(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorClientes(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerClientes.html',{})
+		cliente = Usuario.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'clientes':cliente} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerClientes.html',ctx)
 
 class administradorEditarCliente(TemplateView):
 	def __init__(self,valor):
@@ -772,14 +829,25 @@ class administradorNuevoCliente(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def nuevoAdministradorCliente(self,request):
-		return render(request, 'Sudakaweb/AdministradorNuevoCliente.html',{})
+		form = UsuarioForm(request.POST or None)
+		if request.method=='POST':
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha ingresado correctamente el nuevo cliente.')
+				return HttpResponseRedirect("/AdministradorVerClientes")
+			else:
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+		ctx = {'UsuarioForm':form}
+		return render(request, 'Sudakaweb/AdministradorNuevoCliente.html',ctx)
 
 #Menu Operario
 class administradorVerOperarios(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorOperarios(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerOperarios.html',{})
+		operario = Usuario.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'operarios':operario} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerOperarios.html',ctx)
 
 class administradorEditarOperario(TemplateView):
 	def __init__(self,valor):
@@ -792,6 +860,21 @@ class administradorNuevoOperario(TemplateView):
 		self.valor = valor
 	def nuevoAdministradorOperario(self,request):
 		return render(request, 'Sudakaweb/AdministradorNuevoOperario.html',{})
+
+class administradorNuevoOperario(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def nuevoAdministradorOperario(self,request):
+		form = UsuarioForm(request.POST or None)
+		if request.method=='POST':
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha ingresado correctamente el nuevo cliente.')
+				return HttpResponseRedirect("/AdministradorVerClientes")
+			else:
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+		ctx = {'UsuarioForm':form}
+		return render(request, 'Sudakaweb/AdministradorNuevoOperario.html',ctx)
 
 #Menu PT (Puestos de trabajo)
 class administradorVerPT(TemplateView):
@@ -806,6 +889,28 @@ class administradorEditarPT(TemplateView):
 	def editarAdministradorPT(self,request):
 		return render(request, 'Sudakaweb/AdministradorEditarPT.html',{})
 
+class editarAdministradorPT(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def editarAdministradorMaterial(self,request):
+		pt = PuestoDeTrabajo.objects.all()[0]
+		messages.success(request,"editar")
+		if request.method == 'POST':
+			form = PTForm(request.POST, instance=pt)
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha modificado correctamente el puesto de trabajo.')
+				return HttpResponseRedirect("/AdministradorVerPT")
+			else:
+				ctx={'PTForm':form}
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+				return render(request, 'Sudakaweb/AdministradorEditarPT.html',ctx)
+		else:
+			form = PTForm(instance=material)
+			ctx={'PTForm':form}
+			return render(request, 'Sudakaweb/AdministradorEditarPT.html',ctx)
+
+
 class administradorNuevoPT(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
@@ -817,19 +922,45 @@ class administradorVerMaquinarias(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorMaquinarias(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerMaquinarias.html',{})
+		maquinarias = Maquinaria.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'m':maquinarias} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerMaquinarias.html',ctx)
 
 class administradorEditarMaquinaria(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
-	def editarAdministradorMaquinaria(self,request):
-		return render(request, 'Sudakaweb/AdministradorEditarMaquinaria.html',{})
+	def editarAdministradorMaquinaria(self,request,id):
+		maquinaria = Maquinaria.objects.get(pk=id)
+		messages.success(request,"editar")
+		if request.method == 'POST':
+			form = MaquinariaForm(request.POST, instance=maquinaria)
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha modificado correctamente la nueva Maquinaria.')
+				return HttpResponseRedirect("/AdministradorVerMaquinarias")
+			else:
+				ctx={'MaquinariaForm':form,'id':id}
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+				return render(request, 'Sudakaweb/AdministradorEditarMaquinaria.html',ctx)
+		else:
+			form = MaquinariaForm(instance=maquinaria)
+			ctx={'MaquinariaForm':form,'id':id}
+			return render(request, 'Sudakaweb/AdministradorEditarMaquinaria.html',ctx)
 
 class administradorNuevaMaquinaria(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def nuevaAdministradorMaquinaria(self,request):
-		return render(request, 'Sudakaweb/AdministradorNuevaMaquinaria.html',{})
+		form = MaquinariaForm(request.POST or None)
+		if request.method=='POST':
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha ingresado correctamente la nueva Maquinaria.')
+				return HttpResponseRedirect("/AdministradorVerMaquinarias")
+			else:
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+		ctx = {'MaquinariaForm':form}
+		return render(request, 'Sudakaweb/AdministradorNuevaMaquinaria.html',ctx)
 
 
 #Menu SC (Solicitud de Compra)
@@ -837,7 +968,9 @@ class administradorVerSC(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorSC(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerSC.html',{})
+		sc = SolicitudDeCompra.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'scs':sc} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerSC.html',ctx)
 
 class administradorEditarSC(TemplateView):
 	def __init__(self,valor):
@@ -857,7 +990,9 @@ class administradorVerOF(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorOF(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerOF.html',{})
+		of = OrdenDeFabricacion.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'ofs':of} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerOF.html',ctx)
 
 class administradorEditarOF(TemplateView):
 	def __init__(self,valor):
@@ -896,7 +1031,9 @@ class administradorVerOD(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorOD(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerOD.html',{})
+		od = Despacho.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'ods':od} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerOD.html',ctx)
 
 class administradorEditarOD(TemplateView):
 	def __init__(self,valor):
@@ -909,7 +1046,9 @@ class administradorVerOC(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorOC(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerOC.html',{})
+		oc = OrdenDeCompra.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'ocs':oc} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerOC.html',ctx)
 
 class administradorEditarOC(TemplateView):
 	def __init__(self,valor):
@@ -928,17 +1067,117 @@ class administradorVerProveedores(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorProveedores(self,request):
-		return render(request, 'Sudakaweb/AdministradorVerProveedores.html',{})
+		proveedor = Proveedor.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'proveedores':proveedor} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerProveedores.html',ctx)
 
 class administradorEditarProveedor(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
-	def editarAdministradorProveedor(self,request):
-		return render(request, 'Sudakaweb/AdministradorEditarProveedor.html',{})
+	def editarAdministradorProveedor(self,request,id):
+		proveedor = Proveedor.objects.get(pk=id)
+		messages.success(request,"editar")
+		if request.method == 'POST':
+			form = ProveedorForm(request.POST, instance=proveedor)
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha modificado correctamente la nueva Proveedor.')
+				return HttpResponseRedirect("/AdministradorVerProveedores")
+			else:
+				ctx={'ProveedorForm':form,'id':id}
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+				return render(request, 'Sudakaweb/AdministradorEditarProveedor.html',ctx)
+		else:
+			form = ProveedorForm(instance=proveedor)
+			ctx={'ProveedorForm':form,'id':id}
+			return render(request, 'Sudakaweb/AdministradorEditarProveedor.html',ctx)
 
+#INGRESAR NUEVO PROVEEDOR administrador
 class administradorNuevoProveedor(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def nuevoAdministradorProveedor(self,request):
-		return render(request, 'Sudakaweb/AdministradorNuevoProveedor.html',{})
+		form= ProveedorForm(request.POST or None)
+		if request.method=='POST':
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha ingresado correctamente los datos del proveedor.')
+				return HttpResponseRedirect("/AdministradorVerProveedores")
+			else:
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+		ctx= {'ProveedorForm':form}
+		return render(request, 'Sudakaweb/AdministradorNuevoProveedor.html',ctx)
+
+
+###########################################################CLIENTE
+'''class ClienteVerSC(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def mostrarClienteSC(self,request):
+		return render(request, 'Sudakaweb/ClienteVerSC.html',{})
+
+'''
+
+
+###########################################################OPERARIO
+'''
+#Menu Material
+class operarioVerMateriales(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def mostrarOperarioMateriales(self,request):
+		material = Material.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'materiales':material} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/OperarioVerMateriales.html',ctx)
+
+class operarioIngresarMaterial(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def ingresarOperarioMaterial(self,request):
+		return render(request, 'Sudakaweb/OperarioIngresarMaterial.html',{})
+
+#Menu PT (Puestos de trabajo)
+class operarioVerPT(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def mostrarOperarioPT(self,request):
+		return render(request, 'Sudakaweb/OperarioVerPT.html',{})
+
+#Menu Maquinaria
+class operarioVerMaquinarias(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def mostrarOperarioMaquinarias(self,request):
+		maquinarias = Maquinaria.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'m':maquinarias} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/OperarioVerMaquinarias.html',ctx)
+
+#Menu OT (Orden de Trabajo)
+class operarioVerOT(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def mostrarOperarioOT(self,request):
+		return render(request, 'Sudakaweb/OperarioVerOT.html',{})
+
+class operarioEditarOT(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def editarOperarioOT(self,request):
+		return render(request, 'Sudakaweb/OperarioEditarOT.html',{})
+
+#Menu OD (Orden de Despacho)
+class operarioVerOD(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def mostrarOperarioOD(self,request):
+		od = Despacho.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'ods':od} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/OperarioVerOD.html',ctx)
+
+class operarioEditarOD(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def editarOperarioOD(self,request):
+		return render(request, 'Sudakaweb/OperarioEditarOD.html',{})
+'''
 

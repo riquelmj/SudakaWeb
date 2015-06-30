@@ -7,11 +7,10 @@
 {%block contenido%}
 	<div class="row" align="center">
     <a href="#.html" class="btn btn-primary" role="button">Ver Solicitudes de Compra</a>
-    <a href="{% url 'vista_administrador_editar_sc' %}" class="btn btn-primary" role="button">Editar Solicitud de Compra</a>
     <a href="{% url 'vista_administrador_nueva_sc' %}" class="btn btn-primary" role="button">Nueva Solicitud de Compra</a>
   </div>
 
-  <div class="thumbnail"  style="height:430px; margin:10px" align="center">
+  <div class="thumbnail"  style="height:544px; margin:10px" align="center">
     <div style="height:100%;overflow-y: scroll;">
       <h2>Ver Solicitudes de Compra</h2>
       <table class="table table-hover table-bordered " style="width:100%;" >           
@@ -19,7 +18,7 @@
           <tr>
             <th>N°</th>
             <th>Fecha Solicitud</th>
-            <th>Nombre</th>
+            <th>Nombre---> Deberia ir "Productos"</th>
             <th>Estado</th>
           </tr>
         </thead>
@@ -31,6 +30,7 @@
             <td>{{sc.usuario}}</td>
             <td>{{sc.estadoSolicitud}}</td>
             <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_sc' %}">Editar</a></td>
+            <td><a class="btn btn-default">Cancelar Solicitud</a></td>
           </tr>
           {% endfor %}
         </tbody>

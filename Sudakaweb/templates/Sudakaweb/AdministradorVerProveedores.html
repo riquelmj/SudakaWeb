@@ -7,7 +7,7 @@
 {%block contenido%}
 	<div class="row" align="center">
     <a href="#.html" class="btn btn-primary" role="button">Ver Proveedores</a>
-    <a href="{% url 'vista_administrador_editar_proveedor' %}" class="btn btn-primary" role="button">Editar Proveedor</a>
+    
     <a href="{% url 'vista_administrador_nuevo_proveedor' %}" class="btn btn-primary" role="button">Nuevo Proveedor</a>
   </div>
 
@@ -17,37 +17,26 @@
       <table class="table table-hover table-bordered " style="width:100%;" >           
         <thead>
           <tr>
+            <th>N°</th>
             <th>Rut</th>
             <th>Nombre</th>
             <th>Dirección</th>
-            <th>Comuna</th>
-            <th>Correo</th>
             <th>Teléfono</th>
+            <th>Correo</th>
           </tr>
         </thead>
         <tbody>
+          {% for proveedor in proveedores %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>2333-4</td>
-            <td>Proveedor1</td>
-            <td>Av. algo wrrw</td>
-            <td>Comuna1</td>
-            <td>skfkw@mail.com</td>
-            <td>222222</td>
-          </tr><tr>
-            <td>2365-7</td>
-            <td>Proveedor2</td>
-            <td>Av. algo wrrw 23</td>
-            <td>Comuna1</td>
-            <td>zzzz@mail.com</td>
-            <td>223322</td>
-          </tr><tr>
-            <td>1111-4</td>
-            <td>Proveedor3</td>
-            <td>Av. algo w232</td>
-            <td>Comuna3</td>
-            <td>mail@mail.com</td>
-            <td>224488</td>
+            <td>{{proveedor.id}}</td>
+            <td>{{proveedor.proveedorRut}}</td>
+            <td>{{proveedor.proveedorNombre}}</td>
+            <td>{{proveedor.proveedorDireccion}}</td>
+            <td>{{proveedor.proveedorTelefono}}</td>
+            <td>{{proveedor.proveedorCorreo}}</td>
+            <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_proveedor' proveedor.id %}">Editar</a></td>
           </tr>
+          {% endfor %}
         </tbody>
       </table>      
     </div>
