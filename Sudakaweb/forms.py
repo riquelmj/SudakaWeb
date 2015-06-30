@@ -8,17 +8,25 @@ from django.contrib.auth.models import User
 class UsuarioForm(forms.ModelForm):
 	class Meta:
 		model= Usuario #Tabla a referenciar
-		fields= ['usuarioNombre','usuarioApellido','usuarioFechaNacimiento','usuarioTelefono','usuarioCorreo','usuarioClave','usuarioHabilitador','usuarioRol'] #atributos a ingresar
+		fields= ['usuarioNombre','usuarioApellido','usuarioFechaNacimiento','usuarioTelefono','usuarioCorreo','usuarioHabilitador','usuarioRol'] #atributos a ingresar
+		exclude= ("user",)
 		widgets={
 				'usuarioNombre': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Nombre','style':'width:70%'}),
 				'usuarioApellido': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Apellido','style':'width:70%'}),
-				'usuarioFechaNacimiento': forms.DateInput(attrs={'class':'form-control col-sm-4','placeholder':'Fecha de Nacimiento','style':'width:70%'}),
+				'usuarioFechaNacimiento': forms.DateInput(attrs={'class':'form-control col-sm-4','type':'date','placeholder':'Fecha de Nacimiento','style':'width:70%'}),
 				'usuarioTelefono': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Telefono','style':'width:70%'}),
-				'usuarioCorreo': forms.TextInput(attrs={'class':'form-control','placeholder':'Correo','style':'width:70%'}),
-				'usuarioClave': forms.PasswordInput(attrs={'class':'form-control','placeholder':'Clave','style':'width:70%'}),
-				'usuarioHabilitador': forms.TextInput(attrs={'class':'form-control','placeholder':'Habilitador','style':'width:70%'}),
-				'usuarioRol': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Rol','style':'width:70%'}),
+				'usuarioCorreo': forms.TextInput(attrs={'class':'form-control', 'type':'email','placeholder':'Correo','style':'width:70%'}),
+				'usuarioHabilitador': forms.Select(attrs={'class':'form-control','placeholder':'Habilitador','style':'width:70%'}),
+				'usuarioRol': forms.Select(attrs={'class':'form-control col-sm-4','placeholder':'Rol','style':'width:70%'}),
 				}
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+        widgets = {
+            'username': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder': 'Username','style':'width:70%'}),  
+            'password': forms.PasswordInput(attrs={'class':'form-control col-sm-4','placeholder': 'Password','style':'width:70%'}),
+        }
 
 class MaterialForm(forms.ModelForm):
 	class Meta:

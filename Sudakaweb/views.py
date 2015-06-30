@@ -830,14 +830,26 @@ class administradorNuevoCliente(TemplateView):
 		self.valor = valor
 	def nuevoAdministradorCliente(self,request):
 		form = UsuarioForm(request.POST or None)
+		form2 = UserForm(request.POST or None)
 		if request.method=='POST':
-			if form.is_valid():
-				form.save()
-				messages.success(request,'Se ha ingresado correctamente el nuevo cliente.')
-				return HttpResponseRedirect("/AdministradorVerClientes")
+			if request.POST['password'] == request.POST["repite_contrasena"]:
+				if form.is_valid() and form2.is_valid():
+					usuario = form.save()
+					user = form2.save()
+					user.set_password(user.password)
+					user.save()
+					usuario.user = user
+					usuario.save()
+					messages.success(request,'Se ha ingresado correctamente el nuevo cliente.')
+					return HttpResponseRedirect("/AdministradorVerClientes")
+				else:					
+					if "usuarioCorreo" in form.errors:
+						messages.error(request, "Debe ingresar un correo válido")
+					if "usuarioTelefono" in form.errors:
+						messages.error(request, "Debe ingresar un teléfono válido")
 			else:
-				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
-		ctx = {'UsuarioForm':form}
+				messages.error(request,'Las contraseñas ingresadas no coinciden')
+		ctx = {'UsuarioForm':form, 'UserForm':form2}
 		return render(request, 'Sudakaweb/AdministradorNuevoCliente.html',ctx)
 
 #Menu Operario

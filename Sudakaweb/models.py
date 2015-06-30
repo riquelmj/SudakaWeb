@@ -115,30 +115,6 @@ UnidadDeMedida=(
 	('unidades','unidades'),
 	)
 
-
-MATERIAL=(
-		 ('agua','agua'),
-		 ('cebada','cebada'),
-		 ('lúpudo','lúpudo'),
-		 ('levadura','levadura'),
-		 ('malteros','malteros'),
-		 ('mostos','mostos'),
-		 ('malta','malta'),
-		 ('amilasa','amilasa'),
-		 ('grits','grits'),
-		 ('trigo','trigo'),
-		 ('avena','avena'),
-		 ('maíz','maíz'),
-		 ('azúcar','azúcar'),
-		 ('botella','botella'),
-		 ('tapa','tapa'),
-		 ('caja','caja'),
-		 ('logo','logo'),
-		 ('cerveza lager','cerveza lager'),
-		 ('cerveza ale','cerveza ale'),
-		 ('cerveza negra','cerveza negra'),
-		 )
-
 PUESTO_DE_TRABAJO=(
 				  ('Coccion','Obtención de mosto'),
 				  ('Fermentación','Fermentación'),
@@ -158,6 +134,15 @@ ORDEN_DE_TRABAJO=(
 				 ('Orden de trabajo cerveza black','Orden de trabajo cerveza black'),
 				 ('Orden de trabajo cerveza rubia','Orden de trabajo cerveza rubia'),
 				 )
+Habilitador=(
+				 (1,'Habilitado'),
+				 (0,'Inhabilitado'),
+				 )
+ORDEN_DE_TRABAJO=(
+				 ('Orden de trabajo cerveza lager','Orden de trabajo cerveza lager'),
+				 ('Orden de trabajo cerveza black','Orden de trabajo cerveza black'),
+				 ('Orden de trabajo cerveza rubia','Orden de trabajo cerveza rubia'),
+				 )
 
 
 ## ENTIDAD USUARIO
@@ -166,14 +151,13 @@ class Usuario(models.Model):
 	usuarioNombre = models.CharField('Nombre del usuario',max_length=50,null = False, blank=False)
 	usuarioApellido = models.CharField('Apellido del usuario',max_length=50,null = False, blank=False)	
 	usuarioFechaNacimiento=models.DateField('Fecha de nacimiento del Usuario')
-	usuarioTelefono=models.IntegerField('Numero telefonico del Usuario',null=False,blank=False)
+	usuarioTelefono=models.IntegerField('Numero telefonico del Usuario')
 	usuarioCorreo=models.EmailField('Correo electronico del usuario')
-	usuarioClave=models.CharField('Clave de ingreso del usuario',max_length=50,null=False,blank=False)
-	usuarioHabilitador=models.NullBooleanField('Habilitador del usuario')
+	usuarioHabilitador=models.NullBooleanField('Habilitador del usuario', choices=Habilitador, null=False, blank=False)
 	usuarioRol=models.CharField('Rol del usuario',max_length=50,null=False,blank=False, choices=Rol)
 
 		#llave foranea Relación uno a unocon la tabla usuario del sistema
-	user = models.OneToOneField(User)
+	user = models.OneToOneField(User, null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s%s%s'% (self.usuarioNombre,self.usuarioApellido,self.usuarioRol)
@@ -261,7 +245,7 @@ class Material(models.Model):
 	prodTermPrecio=models.IntegerField('Precio del producto terminado',null=False,blank=False)
 
 	# llave foranea
-	#pt=models.ForeignKey(PuestoDeTrabajo,verbose_name="Puesto de Trabajo")
+	pt=models.ForeignKey('PuestoDeTrabajo',verbose_name="Puesto de Trabajo", blank=True, null=True)
 
 	def __unicode__(self):
 		return u'%s%s'%(self.materialNombre,self.materialStock)
@@ -297,8 +281,8 @@ class Composicion(models.Model):
 	composicionCantidad=models.IntegerField('Cantidad de composición que tiene cada material',null=False,blank=False)
 
 	# llaves foraneas
-	material1=models.ForeignKey(Material,verbose_name="Material 1")
-	#material2=models.ForeignKey(Material,verbose_name="Material 2")
+	material1=models.ForeignKey('Material',verbose_name="Material 1",related_name='material1')
+	material2=models.ForeignKey('Material',verbose_name="Material 2",related_name='material2')
 
 	def __unicode__(self):
 		return u'%s%s'% (self.material,self.composicionCantidad)
@@ -394,8 +378,10 @@ class Etapa(models.Model):
 	etapaNombre=models.CharField('Nombre de la etapa',max_length=50,null=False,blank=False)
 
 	#llaves foraneas	
-	material=models.ForeignKey(Material,verbose_name="Material")
-	pt1=models.ForeignKey(PuestoDeTrabajo,verbose_name="PT1")
+	#material = models.ForeignKey(Material,verbose_name="Material")
+	materiales = models.TextField('Lista de materiales',max_length=1000,null=True,blank=True)
+	pt1 = models.ForeignKey(PuestoDeTrabajo,verbose_name="PT1")
+	siguiente = models.ForeignKey('self',verbose_name='Siguiente', null=True, blank=True)
 	#pt2=models.ForeignKey(PuestoDeTrabajo,verbose_name="PT2")
 
 	def __unicode__(self):
