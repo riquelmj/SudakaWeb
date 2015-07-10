@@ -5,25 +5,38 @@
 {%endblock%}
 
 {%block contenido%}
-  <div class="row" align="center">
-    <a href="{% url 'vista_administrador_ver_pt' %}" class="btn btn-primary" role="button">Ver Puestos de Trabajo</a>
-    
-    <a href="{% url 'vista_administrador_nuevo_pt' %}" class="btn btn-primary" role="button">Nuevo Puesto de Trabajo</a>
-  </div>
+<div class="row" align="center">
+  <a href="{% url 'vista_administrador_ver_pt' %}" class="btn btn-primary" role="button">Ver Puestos de Trabajo</a>    
+  <a href="{% url 'vista_administrador_nuevo_pt' %}" class="btn btn-primary" role="button">Nuevo Puesto de Trabajo</a>
+</div>
 
-  <div class="thumbnail"  style="height:544px; margin:10px" >
-    <h2 align="center">Editar Puesto de Trabajo</h2>
-    <div style="margin:10px">
-      <select class="form-control">
-        <option>Puesto de Trabajo1</option>
-        <option>Puesto de Trabajo2</option>
-        <option>Puesto de Trabajo3</option>
-      </select>
+<div class="thumbnail"  style="height:544px; margin:10px" >
+  <h2 align="center">Editar Puesto de Trabajo</h2>
+  <form class="form-horizontal" role="form" style="margin:20px;" method="POST" action="{% url 'vista_administrador_editar_pt' id %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Nombre Puesto de Trabajo</label>
+      <div class="col-sm-8">
+        {{PTForm.ptNombre}}
+      </div>
     </div>
-    <div class="row" align="center">
-      <a href="#.html" class="btn btn-primary" role="button">Buscar</a>
+    <div class="form-group">
+      <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Usuario</label>
+      <div class="col-sm-8">
+        {{PTForm.usuario}}
+      </div>
     </div>
-  </div>
+    <div class="form-group">
+      <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Materiales (Saliente o entrante??)</label>
+      <div class="col-sm-8">
+        {{PTForm.materiales}}
+      </div>
+    </div>        
+    <p class="text-center">
+      <button type="submit" class="btn btn-default" class="col-sm-4 control-label">Guardar</button>
+    </p>
+  </form>
+</div>
 
 {%endblock%}
 

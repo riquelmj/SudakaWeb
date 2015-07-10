@@ -7,7 +7,6 @@ Sudakaweb
 {%block contenido%}
 <div class="row" align="center">
   <a href="{% url 'vista_administrador_ver_sc' %}" class="btn btn-primary" role="button">Ver Solicitudes de Compra</a>
-  <a href="{% url 'vista_administrador_editar_sc' %}" class="btn btn-primary" role="button">Editar Solicitud de Compra</a>
   <a href="#.html" class="btn btn-primary" role="button">Nueva Solicitud de Compra</a>
 </div>
 
@@ -15,59 +14,52 @@ Sudakaweb
   <div style="height:100%;overflow-y: scro_ll;">
     <h2 align="center">Nueva Solicitud de Compra</h2>
     <form role="form" style="margin:20px;">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="ejemplo_nombre_material">N° SC</label>
-            <input type="text" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Por default">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="ejemplo_nombre_material">Fecha</label>
-            <input type="date" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Fecha de emisión, por default">
-          </div>
-        </div>
-        <br><br><br><br>
-        <h3 align="center">Productos</h3>
+      <div class="col-md-6"> 
         <div class="form-group">
-          <div class="col-md-4">
-            <p>Producto</p>
-            <select multiple size="7" class="form-control">
-              <option>Producto1</option>
-              <option>Producto2</option>
-              <option>Producto3</option>
-              <option>Producto4</option>
-            </select>
-          </div>
-          <div class="col-md-4">
-            <br>
-            <br>
-            <input class="form-control" id="cantidad" type="number" min="0" value="Cantidad de Material" placeholder="Cantidad de Material" required="required">
-            <p class="text-center">
-              <br>
-              <button>></button>
-              <br>
-              <button><</button>
-            </p>
-          </div>
-          <div class="col-md-4">
-            <p>Producto</p>
-            <select name="listado" multiple size="7" class="form-control">
-            </select>
-          </div>
-
+          <label for="ejemplo_nombre_material">N° SC</label>
+          <input type="text" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Por default">
         </div>
       </div>
-
-    <br><br>
-    <div class="col-sm-12">
-      <p class="text-center">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="ejemplo_nombre_material">Fecha</label>
+          <input type="date" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Fecha de emisión, por default">
+        </div>
+      </div>
+      <br><br><br><br>
+      <h3 align="center">Productos</h3>
+      <div class="form-group">
+        <div class="col-md-4">
+          <p>Producto</p>
+          <select multiple size="7" class="form-control">
+            <option>Producto1</option>
+            <option>Producto2</option>
+            <option>Producto3</option>
+            <option>Producto4</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <br>
+          <br>
+          <input class="form-control" id="cantidad" type="number" min="0" value="Cantidad de Material" placeholder="Cantidad de Material" required="required">
+          <p class="text-center">
+            <br>
+            <button>></button>
+            <br>
+            <button><</button>
+          </p>
+        </div>
+        <div class="col-md-4">
+          <p>Producto</p>
+          <select name="listado" multiple size="7" class="form-control">
+          </select>
+        </div>
+      </div>
+      <br><br>
+      <div align="center">
         <button type="submit" class="btn btn-default">Guardar</button>
-      </p>
-    </div>
+      </div>
     </form>
-
   </div>
 </div>
 

@@ -7,32 +7,35 @@
 {%block contenido%}
 	<div class="row" align="center">
     <a href="{% url 'vista_administrador_ver_maquinarias' %}" class="btn btn-primary" role="button">Ver Maquinarias</a>
-    
     <a href="#.html" class="btn btn-primary" role="button">Nueva Maquinaria</a>
   </div>
 
   <div class="thumbnail"  style="height:544px; margin:10px" >
     <h2 align="center">Nueva Maquinaria</h2>
-
-    <form role="form" style="margin:20px;" method="POST" action="{% url 'vista_administrador_nueva_maquinaria' %}">
+    <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_nueva_maquinaria' %}">
     {% csrf_token %}
         <div class="form-group">
-          <label for="ejemplo_nombre_material">Nombre Maquinaria</label>
+          <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Nombre Maquinaria</label>
+          <div class="col-sm-8">
           {{MaquinariaForm.maqNombre}}
+          </div>
         </div>
         <div class="form-group">
-          <label for="ejemplo_tipo_material">Ubicación</label>
+          <label for="ejemplo_tipo_material" class="col-sm-4 control-label">Ubicación</label>
+          <div class="col-sm-8">
           {{MaquinariaForm.pt}}
+          </div>
         </div>
         <div class="form-group">
-          <label for="ejemplo_unidad-medida_material">Estado</label>
+          <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Estado</label>
+          <div class="col-sm-8">
           {{MaquinariaForm.maqEstado}}
+          </div>
         </div>
       <p class="text-center">
-        <button type="submit" class="btn btn-default">Guardar</button>
+        <button type="submit" class="btn btn-default" class="col-sm-4 control-label">Guardar</button>
       </p>
     </form>
-
   </div>
 
 {%endblock%}

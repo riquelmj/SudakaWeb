@@ -1,9 +1,7 @@
 <ul class="nav nav-pills nav-stacked">
-  <li role="presentation"><a href="/HomeJefe">Inicio Operario</a></li>
-  <li role="presentation"><a href="/jefetallerasigtareas">Materiales (stock)</a></li>
-  <li role="presentation"><a href="/jefetallerOF">Puestos de Trabajo (Ver PT)</a></li>
-  <li role="presentation"><a href="/jefetallerproductrab">Maquinarias (Ver estado)</a></li>
-  <li role="presentation"><a href="/ModificarPerfil">Órdenes de Trabajo (Ver y Editar)</a></li>
-  <li role="presentation"><a href="#">Órdenes de Despacho (ingresar y Editar)</a></li>
-  <li role="presentation"><a href="{% url 'vista_logout' %}">Cerrar Sesión</a></li>
-</ul>
+	<li><a href="{% url 'vista_operario_ver_materiales' %}">Materiales</a></li>
+	<li><a href="{% url 'vista_operario_ver_pt' %}">Puestos de Trabajo</a></li>
+	<li><a href="{% url 'vista_operario_ver_maquinarias' %}">Maquinarias</a></li>
+	<li><a href="{% url 'vista_operario_ver_ot' %}">Órdenes de Trabajo</a></li>
+	<li><a href="{% url 'vista_operario_ver_od' %}">Órdenes de Despacho</a></li>
+ </ul>

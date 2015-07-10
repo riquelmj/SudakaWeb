@@ -1,0 +1,49 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+    <a href="#.html" class="btn btn-primary" role="button">Ver Órdenes de Despacho</a>
+  </div>
+
+  <div class="thumbnail"  style="height:544px; margin:10px" align="center">
+    <div style="height:100%;overflow-y: scroll;">
+      <h2>Ver Órdenes de Despacho</h2>
+      <table class="table table-hover table-bordered " style="width:100%;" >           
+        <thead>
+          <tr>
+            <th>N° OD</th>
+            <th>N° SC</th>
+            <th>Fecha despacho</th>
+            <th>Direccion</th>
+            <th>Comuna</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for od in ods %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
+          <tr>
+            <td>{{od.id}}</td>
+            <td>{{od.solicitud}}</td>
+            <td>{{od.despachoFecha}}</td>
+            <td>{{od.despachoDireccion}}</td>
+            <td>{{od.comuna}}</td>
+            <td>
+              <a class="btn btn-warning" href="{% url 'vista_cliente_editar_od' od.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se cancelará esta orden de despacho.')" data-toggle="tooltip" data-placement="bottom" title="Cancelar OD" href="{% url 'vista_cliente_eliminar_od' od.id %}"><span class="glyphicon glyphicon-remove"></span></a>
+              </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>      
+    </div>
+  </div>
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

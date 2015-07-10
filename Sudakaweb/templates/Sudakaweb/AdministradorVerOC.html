@@ -7,7 +7,6 @@
 {%block contenido%}
 	<div class="row" align="center">
     <a href="#.html" class="btn btn-primary" role="button">Ver Órdenes de Compra</a>
-    <a href="{% url 'vista_administrador_editar_oc' %}" class="btn btn-primary" role="button">Editar Orden de Compra</a>
     <a href="{% url 'vista_administrador_nueva_oc' %}" class="btn btn-primary" role="button">Nueva Orden de Compra</a>
   </div>
 
@@ -28,7 +27,10 @@
             <td>{{oc.id}}</td>
             <td>{{oc.ordenCompraFechaEmision}}</td>
             <td>{{oc.proveedor}}</td>
-            <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_oc' %}">Editar</a></td>
+            <td>
+              <a class="btn btn-warning" href="{% url 'vista_administrador_editar_oc' oc.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará esta orden de compra.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar OC" href="{% url 'vista_administrador_eliminar_oc' oc.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

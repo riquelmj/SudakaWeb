@@ -5,39 +5,45 @@
 {%endblock%}
 
 {%block contenido%}
-	<div class="row" align="center">
-    <a href="{% url 'vista_administrador_ver_pt' %}" class="btn btn-primary" role="button">Ver Puestos de Trabajo</a>
-    
-    <a href="#.html" class="btn btn-primary" role="button">Nuevo Puesto de Trabajo</a>
-  </div>
+<div class="row" align="center">
+  <a href="{% url 'vista_administrador_ver_pt' %}" class="btn btn-primary" role="button">Ver Puestos de Trabajo</a>    
+  <a href="#.html" class="btn btn-primary" role="button">Nuevo Puesto de Trabajo</a>
+</div>
 
-  <div class="thumbnail"  style="height:544px; margin:10px" >
-    <div style="height:100%;overflow-y: scroll;">
-      <h2 align="center">Nuevo Puesto de Trabajo</h2>
-        <form role="form" style="margin:20px;">
-            <div class="form-group">
-              <label for="ejemplo_nombre_material">Nombre Puesto de Trabajo</label>
-              <input type="text" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Intorduce el nombre del puesto de trabajo">
-            </div>
-            <form role="form" style="margin:20px;"> 
-              <p>Maquinaria</p>
-              <select multiple class="form-control">
-                <option>Maquinaria1</option>
-                <option>Maquinaria2</option>
-                <option>Maquinaria3</option>
-                <option>Maquinaria4</option>
-              </select>
-              <br> 
-              <p class="text-center">
-                <button type="submit" class="btn btn-default">Asignar</button>
-              </p>
-            </form>
-          <p class="text-center">
-            <button type="submit" class="btn btn-default">Guardar</button>
-          </p>
-        </form>
+<div class="thumbnail"  style="height:544px; margin:10px" >
+  <h2 align="center">Nuevo Puesto de Trabajo</h2>
+  <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_nuevo_pt' %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Nombre Puesto de Trabajo</label>
+      <div class="col-sm-8">
+        {{PTForm.ptNombre}}
       </div>
     </div>
+    <div class="form-group">
+      <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Usuario</label>
+      <div class="col-sm-8">
+        {{PTForm.usuario}}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Materiales (Saliente o entrante)</label>
+      <div class="col-sm-8">
+        <select multiple class="form-control" name="materiales">
+          {% for m in materiales %}
+            <option value="{{ m.id }}">{{ m }}</option>
+          {% endfor %}
+
+
+
+        </select>
+      </div>
+    </div>        
+    <p class="text-center">
+      <button type="submit" class="btn btn-default" class="col-sm-4 control-label">Guardar</button>
+    </p>
+  </form>
+</div>
 
 {%endblock%}
 

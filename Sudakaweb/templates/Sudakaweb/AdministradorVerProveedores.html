@@ -7,7 +7,6 @@
 {%block contenido%}
 	<div class="row" align="center">
     <a href="#.html" class="btn btn-primary" role="button">Ver Proveedores</a>
-    
     <a href="{% url 'vista_administrador_nuevo_proveedor' %}" class="btn btn-primary" role="button">Nuevo Proveedor</a>
   </div>
 
@@ -34,7 +33,10 @@
             <td>{{proveedor.proveedorDireccion}}</td>
             <td>{{proveedor.proveedorTelefono}}</td>
             <td>{{proveedor.proveedorCorreo}}</td>
-            <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_proveedor' proveedor.id %}">Editar</a></td>
+            <td>
+              <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar proveedor" href="{% url 'vista_administrador_editar_proveedor' proveedor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará este proveedor.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar proveedor" href="{% url 'vista_administrador_eliminar_proveedor' proveedor.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

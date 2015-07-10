@@ -12,12 +12,12 @@
             <a href="{% url 'vista_administrador_nuevo_material' %}" class="btn btn-primary" role="button">Nuevo Material</a>
           </div>
 
-          <div class="thumbnail"  style="height:430px; margin:10px" align="center">
-            <h2>Ingreso Material</h2>
+          <div class="thumbnail"  style="height:430px; margin:10px" >
+            <h2 align="center">Ingreso Material</h2>
             <form role="form" style="margin:20px;">
             <div class="col-md-4">
               <p>Tipo de Material</p>
-              <select multiple class="form-control">
+              <select multiple class="form-control" style="height:280px;">
                 <option>Tipo1</option>
                 <option>Tipo2</option>
                 <option>Tipo3</option>
@@ -27,7 +27,7 @@
             </div>
             <div class="col-md-4" >
               <p>Nombre de Material</p>
-              <select multiple class="form-control">
+              <select multiple class="form-control" style="height:280px;">
                 <option>Nombre1</option>
                 <option>Nombre2</option>
                 <option>Nombre3</option>
@@ -39,6 +39,7 @@
             <div class="col-md-4">
               <label for="ejemplo_cantidad_material">Cantidad</label>
               <input class="form-control" id="cantidad" type="number" min="0" value="Cantidad de Material" placeholder="Cantidad de Material" required="required">
+              <br>
               <label for="ejemplo_unidad-medida_material">Unidad de Medida</label>
               <select class="form-control">
                 <option>Unidad1</option>
@@ -47,10 +48,11 @@
                 <option>Unidad4</option>
                 <option>Unidad5</option>
               </select>
-            </div>  
-            <p class="text-center">
-              <button type="submit" class="btn btn-default">Ingresar</button>
-            </p>
+              <br>
+              <div align="center">
+                <button type="submit" class="btn btn-default">Ingresar</button>
+              </div>
+            </div>
             </form>                   
           </div>
 

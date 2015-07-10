@@ -7,7 +7,6 @@
 {%block contenido%}
 	<div class="row" align="center">
     <a href="#" class="btn btn-primary" role="button">Ver Maquinarias</a>
- 
     <a href="{% url 'vista_administrador_nueva_maquinaria' %}" class="btn btn-primary" role="button">Nueva Maquinaria</a>
   </div>
 
@@ -31,7 +30,10 @@
             <td>{{maquinaria.maqNombre}}</td>
             <td>{{maquinaria.pt}}</td>
             <td>{{maquinaria.maqEstado}}</td>
-            <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_maquinaria' maquinaria.id %}">Editar</a></td>
+            <td>
+              <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar maquinaria" href="{% url 'vista_administrador_editar_maquinaria' maquinaria.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará esta maquinaria')" data-toggle="tooltip" data-placement="bottom" title="Eliminar maquinaria" href="{% url 'vista_administrador_eliminar_maquinaria' maquinaria.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

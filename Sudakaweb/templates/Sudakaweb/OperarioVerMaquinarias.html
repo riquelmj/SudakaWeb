@@ -19,7 +19,6 @@
             <th>Nombre</th>
             <th>Ubicación</th>
             <th>Estado</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +28,6 @@
             <td>{{maquinaria.maqNombre}}</td>
             <td>{{maquinaria.pt}}</td>
             <td>{{maquinaria.maqEstado}}</td>
-            <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_maquinaria' maquinaria.id %}">Editar</a></td>
           </tr>
           {% endfor %}
         </tbody>

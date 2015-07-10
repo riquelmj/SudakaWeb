@@ -7,7 +7,6 @@
 {%block contenido%}
 	<div class="row" align="center">
     <a href="#.html" class="btn btn-primary" role="button">Ver Órdenes de Trabajo</a>
-    <a href="{% url 'vista_administrador_editar_ot' %}" class="btn btn-primary" role="button">Editar Orden de Trabajo</a>
     <a href="{% url 'vista_administrador_nueva_ot' %}" class="btn btn-primary" role="button">Nueva Orden de Trabajo</a>
   </div>
 
@@ -19,37 +18,27 @@
           <tr>
             <th>N° OT</th>
             <th>N° OF</th>
-            <th>Producto</th>
-            <th>Puesto de trabajo</th>
-            <th>Fecha inicio</th>
+            <th>Puesto de Trabajo</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Término</th>
             <th>Estado</th>
           </tr>
         </thead>
         <tbody>
+          {% for ot in ots %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>01</td>
-            <td>01</td>
-            <td>Producto2</td>
-            <td>Puesto1</td>
-            <td>11/11/1111</td>
-            <td>Precesado</td>
+            <td>{{ot.id}}</td>
+            <td>{{ot.of}}</td>
+            <td>{{ot.pt}}</td>
+            <td>{{ot.otFechaInicio}}</td>
+            <td>{{ot.otFechaTermino}}</td>
+            <td>{{ot.get_otFinalizacion_display}}</td>
+            <td>
+            <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar OT" href="{% url 'vista_administrador_editar_ot' ot.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará esta orden de trabajo.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar OT" href="{% url 'vista_administrador_eliminar_ot' ot.id %}"><span class="glyphicon glyphicon-trash"></span></a> 
+            </td>
           </tr>
-          <tr>
-            <td>02</td>
-            <td>01</td>
-            <td>Producto2</td>
-            <td>Puesto2</td>
-            <td>11/11/1111</td>
-            <td>En Proceso</td>
-          </tr>
-          <tr>
-            <td>03</td>
-            <td>01</td>
-            <td>Producto2</td>
-            <td>Puesto4</td>
-            <td>11/11/1111</td>
-            <td>Por procesar</td>
-          </tr>
+          {% endfor %}
         </tbody>
       </table>      
     </div>

@@ -10,13 +10,15 @@ Rol=(
 		)
 
 TipoMaterial=(
-	('Basico','Basico'),
+	('Basico','Básico'),
 	('Elaborado','Elaborado'),
 	)
 
 SubTipoMaterial=(
 	('Insumo','Insumo'),
 	('Materia Prima','Materia Prima'),
+	('Mezcla','Mezcla'),
+	('Producto Terminado','Producto Terminado'),
 	)
 
 EstadoSolicitud=(
@@ -138,6 +140,12 @@ Habilitador=(
 				 (1,'Habilitado'),
 				 (0,'Inhabilitado'),
 				 )
+
+Finalizacion=(
+				 (1,'Finalizada'),
+				 (0,'No finalizada'),
+				 )
+
 ORDEN_DE_TRABAJO=(
 				 ('Orden de trabajo cerveza lager','Orden de trabajo cerveza lager'),
 				 ('Orden de trabajo cerveza black','Orden de trabajo cerveza black'),
@@ -160,7 +168,7 @@ class Usuario(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True)
 
 	def __unicode__(self):
-		return u'%s%s%s'% (self.usuarioNombre,self.usuarioApellido,self.usuarioRol)
+		return u'%s %s, Rol: %s'% (self.usuarioNombre,self.usuarioApellido,self.usuarioRol)
 
 
 ## ENTIDAD ESTADO SOLICITUD DE COMPRA
@@ -216,7 +224,7 @@ class SolicitudDeCompra(models.Model):
 	estadoSolicitud=models.ForeignKey(EstadoSolicitud,verbose_name="Estado Solicitud")
 
 	def __unicode__(self):
-		return u'%s%s'%(self.solicitudFecha,self.usuario)
+		return u'%s - Solicitado por: %s'%(self.id,self.usuario)
 
 
 # ENTIDAD DESPACHO
@@ -230,7 +238,7 @@ class Despacho(models.Model):
 	comuna=models.ForeignKey(Comuna,verbose_name="Comuna")
 
 	def __unicode__(self):
-		return u'%s%s%s'%(self.despachoDireccion,self.despachoFecha,self.solicitud)
+		return u'%s %s, n° SC: %s'%(self.despachoDireccion,self.despachoFecha,self.solicitud)
 
 
 ## ENTIDAD MATERIAL
@@ -248,7 +256,7 @@ class Material(models.Model):
 	pt=models.ForeignKey('PuestoDeTrabajo',verbose_name="Puesto de Trabajo", blank=True, null=True)
 
 	def __unicode__(self):
-		return u'%s%s'%(self.materialNombre,self.materialStock)
+		return u'%s, Stock:  %s'%(self.materialNombre,self.materialStock)
 
 
 ## ENTIDAD PUESTO DE TRABAJO
@@ -261,7 +269,7 @@ class PuestoDeTrabajo(models.Model):
 	materiales = models.ManyToManyField(Material)
 
 	def __unicode__(self):
-		return u'%s%s'%(self.ptNombre,self.usuario)
+		return u'%s'%(self.ptNombre)
 
 
 ## ENTIDAD DETALLE SOLICITUD DE COMPRA
@@ -273,7 +281,7 @@ class DetalleSolicitudDeCompra(models.Model):
 	material=models.ForeignKey(Material,verbose_name="Material")
 
 	def __unicode__(self):
-		return u'%s%s'%(self.material,self.detSolComCantidadProducto)
+		return u'%s, Cantidad: %s'%(self.material,self.detSolComCantidadProducto)
 
 
 ## ENTIDAD COMPOSICIÓN
@@ -285,7 +293,7 @@ class Composicion(models.Model):
 	material2=models.ForeignKey('Material',verbose_name="Material 2",related_name='material2')
 
 	def __unicode__(self):
-		return u'%s%s'% (self.material,self.composicionCantidad)
+		return u'%s, Cantidad: %s'% (self.material,self.composicionCantidad)
 
 
 ## ENTIDAD LOTE
@@ -299,7 +307,7 @@ class Lote(models.Model):
 	material=models.ForeignKey(Material,verbose_name="Material")
 
 	def __unicode__(self):
-		return u'%s%s%s%s' % (self.material,self.loteFechaElaboracion,self.loteStock,self.loteFechaVencimiento)
+		return u'%s, Stock: %s, Elab: %s,  Venc: %s' % (self.material,self.loteStock,self.loteFechaElaboracion,self.loteFechaVencimiento)
 
 	class Meta:
 		ordering=['loteFechaVencimiento','material']
@@ -327,7 +335,7 @@ class OrdenDeCompra(models.Model):
 	proveedor=models.ForeignKey(Proveedor,verbose_name="Proveedor")
 
 	def __unicode__(self):
-		return u'%s%s'%(self.id,self.ordenCompraFechaEmision)
+		return u'%s, Emision: %s'%(self.id,self.ordenCompraFechaEmision)
 
 
 ## ENTIDAD DETALLE ORDEN DE COMPRA
@@ -340,7 +348,7 @@ class DetalleOrdenDeCompra(models.Model):
 	ordenDeCompra=models.ForeignKey(OrdenDeCompra,verbose_name="Orden de Compra")
 
 	def __unicode__(self):
-		return u'%s%s%s'%(self.lote,self.detOCCantidadMaterialSol,self.detOCUnidadMedidaMaterialSol)
+		return u'%s, Cant: %s %s'%(self.lote,self.detOCCantidadMaterialSol,self.detOCUnidadMedidaMaterialSol)
 
 
 ## ENTIDAD ESTADO ORDEN DE FABRICACIÓN
@@ -349,15 +357,15 @@ class EstadoOF(models.Model):
 	estadoOFNombre=models.CharField('Nombre del estado de la orden de fabricación',max_length=50,null=False,blank=False)
 
 	def __unicode__(self):
-		return u'%s%s' %(self.id,self.estadoOFNombre)
+		return u'%s' %(self.estadoOFNombre)
 
 ## ENTIDAD ORDEN DE FABRICACIÓN
 class OrdenDeFabricacion(models.Model):
 	id=models.AutoField('id',primary_key=True)
-	ofCant=models.IntegerField('Cantidad de a Fabricar en la orden de fabricación',null=False,blank=False)
-	ofFechaIngreso=models.DateField('Fecha de ingreso de la orden de fabricación')
-	ofFechaInicio=models.DateField('Fecha de inicio de la orden de fabricación')	
-	ofFechaTermino=models.DateField('Fecha de termino de la orden de fabricación')
+	ofCant=models.IntegerField('Cantidad a fabricar',null=False,blank=False)
+	ofFechaIngreso=models.DateField('Fecha de ingreso de la OF')
+	ofFechaInicio=models.DateField('Fecha de inicio de la OF')	
+	ofFechaTermino=models.DateField('Fecha de termino de la OF')
 
 
 	#llaves foraneas	
@@ -366,7 +374,7 @@ class OrdenDeFabricacion(models.Model):
 	estadoOF=models.ForeignKey(EstadoOF,verbose_name="Estado OF")
 
 	def __unicode__(self):
-		return u'%s%s%s%s'%(self.id,self.material,self.ofCant,self.ofFechaIngreso)
+		return u'n° OF:%s, Producto:%s,'%(self.id,self.material)
 	
 	class Meta:
 		ordering=['ofFechaIngreso']
@@ -391,9 +399,9 @@ class Etapa(models.Model):
 ## ENTIDAD ORDEN DE TRABAJO
 class OrdenDeTrabajo(models.Model):
 	id=models.AutoField('id',primary_key=True)
-	otFinalizacion=models.NullBooleanField('Estado orden de trabajo finalizado o no')
-	otFechaInicio=models.DateField('Fecha de inicio de la orden de trabajo')
-	otFechaTermino=models.DateField('Fecha de termino de la orden de trabajo')
+	otFinalizacion=models.NullBooleanField('Estado OT, finalizado o no', choices=Finalizacion, null=False, blank=False)
+	otFechaInicio=models.DateField('Fecha de inicio de la OT')
+	otFechaTermino=models.DateField('Fecha de termino de la OT')
 
 	#llaves foraneas
 	of=models.ForeignKey(OrdenDeFabricacion,verbose_name="OF")
@@ -401,7 +409,7 @@ class OrdenDeTrabajo(models.Model):
 	pt=models.ForeignKey(PuestoDeTrabajo,verbose_name="PT")
 
 	def __unicode__(self):
-		return u'%s%s%s'%(self.id,self.otFinalizacion,self.of)
+		return u'n° OT: %s, Estado: %s, %s'%(self.id,self.otFinalizacion,self.of)
 
 
 ## ENTIDAD MAQUINARIA
@@ -414,7 +422,7 @@ class Maquinaria(models.Model):
 	pt=models.ForeignKey(PuestoDeTrabajo,verbose_name="PT")
 
 	def __unicode__(self):
-		return u'%s%s'%(self.maqNombre,self.maqEstado)
+		return u'%s - %s'%(self.maqNombre,self.maqEstado)
 
 
 ## ENTIDAD NOTIFICACIÓN
@@ -429,7 +437,7 @@ class Notificacion(models.Model):
 	ot=models.ForeignKey(OrdenDeTrabajo,verbose_name="OT")
 
 	def __unicode__(self):
-		return u'%s%s%s'%(self.id,self.notifDescripcion,self.notifCantidad)
+		return u'%s, Cant: %s'%(self.notifDescripcion,self.notifCantidad)
 	
 
 ## ENTIDAD CONSUMO

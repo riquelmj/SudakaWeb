@@ -1,0 +1,51 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+	<div class="row" align="center">
+      <a href="#.html" class="btn btn-primary" role="button">Ver Usuarios</a>
+      <a href="{% url 'vista_administrador_nuevo_cliente' %}" class="btn btn-primary" role="button">Nuevo Usuario</a>
+    </div>
+
+    <div class="thumbnail"  style="height:544px; margin:10px" align="center">
+      <div style="height:100%;overflow-y: scroll;">
+        <h2>Ver Usuarios</h2>
+        <table class="table table-hover table-bordered " style="width:100%;" >           
+          <thead>
+            <tr>
+              <th>Rut</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Telefono</th>
+              <th>Correo</th>
+            </tr>
+          </thead>
+        <tbody>
+          {% for cliente in clientes %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
+          <tr>
+            <td>{{cliente.id}}</td>
+            <td>{{cliente.usuarioNombre}}</td>
+            <td>{{cliente.usuarioApellido}}</td>
+            <td>{{cliente.usuarioTelefono}}</td>
+            <td>{{cliente.usuarioCorreo}}</td>
+            <td>
+              <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar usuario" href="{% url 'vista_administrador_editar_cliente' cliente.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará este usuario')" data-toggle="tooltip" data-placement="bottom" title="Eliminar usuario" href="{% url 'vista_administrador_eliminar_cliente' cliente.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>      
+      </div>
+    </div>
+
+
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

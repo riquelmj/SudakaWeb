@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device width, initial -scale=1">
+	<link href="/static/css/jquery.ambiance.css" rel="stylesheet" type="text/css" media="screen"/>
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	{%block importar%}{%endblock%}
+	
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>{%block titulo%}{%endblock%}</title>
+	<!---->
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row" style="background:rgba(255, 255, 255, 0.8); padding:5px; border-radius: 0 0 7px 7px; margin-top:-8px">
+			<div class="col-md-1"> <!-- Barra de navegación -->
+				<img src="/static/img/logo.png" class="img-responsive">
+			</div>
+			<div class="col-md-7"> <!-- Barra de navegación -->
+				<ul class="nav nav-pills">
+					<li><a href="{% url 'vista_inicio' %}">Inicio</a></li>
+					<li><a href="{% url 'vista_nosotros' %}">Nosotros</a></li>
+					<li><a href="{% url 'vista_catalogo' %}">Catálogo</a></li>
+					<li><a href="{% url 'vista_contacto' %}">Contacto</a></li>
+				
+			{% if NOMBRE_USUARIO != null %}
+			<!-- sesion iniciada -->
+				{% if ROL_USUARIO == "Administrador"  %}
+					<li><a href="{% url 'vista_administrador_inicio' %}">Menú Interno</a></li>
+				{% endif %}
+				{% if ROL_USUARIO == "Cliente"  %}
+					<li><a href="{% url 'vista_cliente_inicio' %}">Menú Interno</a></li>
+				{% endif %}
+				{% if ROL_USUARIO == "Operario"  %}
+					<li><a href="{% url 'vista_operario_inicio' %}">Menú Interno</a></li>
+				{% endif %}
+				</ul>
+			</div>
+			<div class="col-md-4">
+				<p class="navbar-text pull-right">
+					Bienvenido <a href="#" class="navbar-link">{{NOMBRE_USUARIO}}</a> /
+					<a href="{% url 'vista_logout' %}" class="navbar-link">Cerrar Sesión</a>
+				</p>
+			</div>
+			{% else %}
+				</ul>
+			</div>
+			<div class="col-md-2 col-md-offset-2">
+				<a class="navbar-link " data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Iniciar Sesión</a>
+
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form action="{% url 'vista_login' %}" method="POST">
+								{% csrf_token %}
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="exampleModalLabel">Iniciar Sesión</h4>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label for="ejemplo_usuario_1">Usuario</label>
+										<input name="username" type="text" class="form-control" id="ejemplo_usuario_1" placeholder="Introduce tu usuario.">
+									</div>
+									<div class="form-group">
+										<label for="ejemplo_password_1">Contraseña</label>
+										<input name="password" type="password" class="form-control" id="ejemplo_password_1" placeholder="Introduce una contraseña">
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+									<button type="submit" class="btn btn-primary">Iniciar sesión</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<p class="navbar-link pull-right">
+					 /
+					<a href="{% url 'vista_registro' %}" class="navbar-link">Registrarme</a>
+				</p>
+			</div>
+			{% endif %}
+		</div>
+		<div class="row" style="margin:10px">
+			<div class="col-md-12">
+				<div class="row" style="min-height:520px;background:rgba(255, 255, 255, 0.8); padding:10px; border-radius: 7px; margin:20px">
+					<div >
+						{%block contenido%}{%endblock%}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<footer>
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.ambiance.js"></script>
+	{%block JS%}
+	{%endblock%}
+	<script type="text/javascript">
+		{% if messages %}
+		$(document).ready(function(){
+			{% for message in messages %}
+			$.ambiance({message: "{{message}}", 
+				{% ifequal message.tags "info" %}title:"Informacion",{% endifequal %}
+				{% ifequal message.tags "warning" %}title:"Advertencia",{% endifequal %}
+				{% ifequal message.tags "error" %}title:"Error",{% endifequal %}
+				{% ifequal message.tags "success" %}title:"Aviso",{% endifequal %}
+
+				type: "{{message.tags}}",
+				timeout:6,
+				width:400,
+			});
+			{% endfor %}
+		});
+		{% endif %}
+	</script>
+</footer>
+</html>

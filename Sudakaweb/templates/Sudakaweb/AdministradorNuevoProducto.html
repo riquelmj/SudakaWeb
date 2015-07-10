@@ -7,135 +7,88 @@ Sudakaweb
 {%block contenido%}
 <div class="row" align="center">
   <a href="{% url 'vista_administrador_ver_productos' %}" class="btn btn-primary" role="button">Ver Stock</a>
-  <a href="{% url 'vista_administrador_editar_producto' %}" class="btn btn-primary" role="button">Editar Producto</a>
   <a href="#.html" class="btn btn-primary" role="button">Nuevo Producto</a>
 </div>
 
-<div class="thumbnail"  style="height:544px; margin:10px" >
-  <div style="height:100%;overflow-y: scroll;">
+<div class="thumbnail"  style="height:544px; margin:10px">
+  <div style="height:100%;overflow-y: scroll; overflow-x: hidden">
     <h2 align="center">Nuevo Producto</h2>
-    <form role="form" style="margin:20px;">
+    <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_nuevo_producto' %}">
+      {% csrf_token %}
       <div class="form-group">
-        <label for="ejemplo_nombre_material">Nombre Producto</label>
-        <input type="text" class="form-control" id="ejemplo_nombre_material" required="required" placeholder="Intorduce el nombre del material">
+        <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Nombre Producto</label>
+        <div class="col-sm-8">
+          {{ProductoForm.materialNombre}}
+        </div>
       </div>
       <div class="form-group">
-        <label for="ejemplo_cantidad_material">Stock (botellas)</label>
-        <input class="form-control" id="cantidad" type="number" min="0" required="required" value="Cantidad de Material" placeholder="Cantidad de Producto">
+        <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Stock (botellas)</label>
+        <div class="col-sm-8">
+          {{ProductoForm.materialStock}} 
+        </div>
       </div>
       <div class="form-group">
-        <label for="ejemplo_cantidad_material">Stock minimo</label>
-        <input class="form-control" id="cantidad" type="number" min="0" required="required" value="Cantidad de Material" placeholder="Cantidad de Producto">
+        <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Stock minimo</label>
+        <div class="col-sm-8">
+          {{ProductoForm.materialStockMinimo}}      
+        </div>
       </div>
-      <h3 align="center">Composición</h3>
-      <table class="table">
-        <thead>
-        <tr>
-          <th>Etapa</th>
-          <th>Puesto de Trabajo</th>
-          <th>Material de salida</th>
-          <th>Materiales de entrada</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Etapa 1</td>
-            <td>Puesto de trabajo 1</td>
-            <td>Elaborado 1</td>
-            <td>Agua 2Lt<br>Mezcla 2 500gr</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>Etapa 2</td>
-            <td>Puesto de trabajo 1</td>
-            <td>Elaborado 1</td>
-            <td>Agua 2Lt<br>Mezcla 2 500gr</td>
-            <td></td>
-          </tr>
-
-        </tbody>
-
-      </table>
+      <div class="form-group">
+        <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Precio Material</label>    
+        <div class="col-sm-8">
+          {{ProductoForm.prodTermPrecio}}      
+        </div>
+      </div> 
+     <div style="margin:20px" id="mostrar">
+           <h3 align="center">Composición</h3>
+           <div class="col-md-4">
+             <p>Tipo de Material</p>
+             <select multiple id="tipo-material" class="form-control">
+               <option>Todos</option>
+               <option value="Basico">Básico</option>
+               <option value="Elaborado">Elaborado</option>
+             </select>
+           </div>
+           <div class="col-md-4" >
+             <p>Material</p>
+             <select multiple id="material" class="form-control">
+               {% for m in materiales %}
+               {% if m.materialTipo == "Basico" or m.materialSubTipo == "Mezcla" %}
+                 <option data-tipo="{{m.get_materialTipo_display}}" data-unidad="{{m.materialUnidadMedida}}" value="{{m.id}}">
+                   {{m.materialNombre}} [{{m.materialUnidadMedida}}]
+                 </option>
+               {% endif %}
+               {% endfor %}         
+             </select>
+           </div>  
+           <div class="col-md-4">
+             <label for="ejemplo_cantidad_material">Cantidad</label>
+             <input class="form-control" id="cantidad" type="number" min="0" value="Cantidad de Material" placeholder="Cantidad de Material">
+             <br>
+             <a href="#" id="agregar-mat" class="btn btn-default">Agregar Material</a>
+           </div> 
+           <br>
+           <input type="hidden" name="str_materiales" id="str_materiales">
+           <div class="row" align="center" style="">
+             <table class="table table-hover table-bordered " style="width:100%; margin-top:120px; "  >           
+               <thead>
+                 <tr>
+                   <th>Tipo de Material</th>
+                   <th>Material</th>
+                   <th>Cantidad</th>
+                   <th>Unidad de Medida</th>
+                 </tr>
+               </thead>
+               <tbody id="llenar-materiales">
+               </tbody>
+             </table>  
+           </div>
+         </div>
       <div class="text-center">
-      <button class="btn btn-default">Guardar Producto</button>
+        <button class="btn btn-default">Guardar Producto</button>
       </div>
     </form>
-      <hr>
-      <h4>Agregar Etapa: 1</h4>
-      <form role="form" style="margin:20px;">
-        <input class="form-control" id="cantidad" type="hidden" min="0" value="Etapa 1">
-        <div class="row" align="center">
-          <p>Material Resultante</p>
-          <div style="margin:10px">
-            <select class="form-control">
-              <option>Agua (Puesto 1)</option>
-              <option>Malta 2% concentracion (Puesto 2)</option>
-              <option></option>
-              <option>Puesto4 (Malta 1)</option>
-              <option>Puesto5</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <p>Tipo de Material</p>
-          <select multiple class="form-control">
-            <option>Tipo1</option>
-            <option>Tipo2</option>
-            <option>Tipo3</option>
-            <option>Tipo4</option>
-            <option>Tipo5</option>
-          </select>
-        </div>
-        <div class="col-md-4" >
-          <p>Material</p>
-          <select multiple class="form-control">
-            <option>Nombre1</option>
-            <option>Nombre2</option>
-            <option>Nombre3</option>
-            <option>Nombre4</option>
-            <option>Nombre5</option>
-            <option>6Nombre</option>          
-          </select>
-        </div>  
-        <div class="col-md-4">
-          <label for="ejemplo_cantidad_material">Cantidad</label>
-          <input class="form-control" id="cantidad" type="number" min="0" value="Cantidad de Material" placeholder="Cantidad de Material" required="required">
-          <br>
-          <a href="#" class="btn btn-default">Agregar Material</a>
-        </div> 
-        <br>
-        <div class="row" align="center" style="">
-          <table class="table table-hover table-bordered " style="width:100%; margin-top:120px; "  >           
-            <thead>
-              <tr>
-                <th>Tipo de Material</th>
-                <th>Material</th>
-                <th>Cantidad</th>
-                <th>Unidad de Medida</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Básico</td>
-                <td>Botella</td>
-                <td>1</td>
-                <td>unidad</td>
-              </tr>
-              <tr>
-                <td>Básico2</td>
-                <td>Botella2</td>
-                <td>12</td>
-                <td>unidad2</td>
-              </tr>
-            </tbody>
-          </table>  
-        </div>
-
-        <div class="row" align="center">
-          <button type="submit" class="btn btn-default">Agregar Etapa</button>
-        </div>
-      </form>
+      
     </div>
   </div>
 
@@ -144,5 +97,47 @@ Sudakaweb
 
 
   {%block JS%}
+
+<script type="text/javascript">
+  $("#agregar-mat").click(function(e){
+    e.preventDefault();
+    tipo = $("#tipo-material option:selected").first().html();
+    material = $("#material option:selected").first().html();
+    material_id = $("#material option:selected").first().val();
+    unidad = $("#material option:selected").first().attr("data-unidad");
+    tipo = $("#material option:selected").first().attr("data-tipo");
+    cantidad = $("#cantidad").val();
+    $("#cantidad").val("");
+    $("#material option:selected").prop("selected",false);
+    if (cantidad ==""){
+      alert("Ingrese una cantidad correcta")
+    }else{
+      if(material != undefined){
+        $("#llenar-materiales").append("<tr><td>"+tipo+"</td><td>"+material+"</td><td>"+cantidad+"</td><td>"+unidad+"</td></tr>");
+        $("#str_materiales").val($("#str_materiales").val()+material_id+","+cantidad+";")
+      }else{
+        alert("Seleccione material")
+      }
+    }
+
+  });
+</script>
+
+<script type="text/javascript">
+  $("#tipo-material").change(function(){
+    if( $(this).val() == "Basico" ){
+      $("#material option[data-tipo=Básico]").show();
+      $("#material option[data-tipo=Elaborado]").hide();
+    }else{
+      if( $(this).val() == "Elaborado" ){
+        $("#material option[data-tipo=Básico]").hide();
+        $("#material option[data-tipo=Elaborado]").show();
+      }else{
+        $("#material option[data-tipo=Básico]").show();
+        $("#material option[data-tipo=Elaborado]").show();
+      }
+    }
+  })
+</script>
 
   {%endblock%}

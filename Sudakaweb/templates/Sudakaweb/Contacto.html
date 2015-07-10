@@ -1,0 +1,73 @@
+{%extends "Sudakaweb/base_2.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+
+	<div class="row" style="background:rgba(255, 255, 255, 0.8); padding:5px; border-radius: 7px; margin:20px">
+		<div>
+			<div class="row" style="margin:10px; margin-top:30px">
+			  <div class="col-sm-6 col-md-6">
+			    <div class="thumbnail"  style="height:500px;padding:10px">
+			        
+					<form role="form">
+
+					  <div class="form-group">
+					    <label for="ejemplo_nombre_1">Nombre</label>
+					    <input type="password" class="form-control" id="ejemplo_nombre_1" 
+					           placeholder="Intorduce tu nombre">
+					  </div>
+
+					  	<div class="form-group">
+						    <label for="ejemplo_email_1">Email</label>
+						    <input type="email" class="form-control" id="ejemplo_email_1"
+						           placeholder="Introduce tu email">
+						</div>
+
+						<label>Mensaje</label>
+						<textarea class="form-control" rows="11"></textarea>
+						<br>
+						<p class="text-center">
+							<button type="submit" class="btn btn-default">Enviar</button>
+						</p>
+
+					</form>
+			      </div>
+			    </div>
+
+			    <div class="container-fluid" >
+			  <div class="col-sm-6 col-md-6">
+			    <div class="thumbnail"  style="height:500px; padding:10px"> <!-- esto me crea el contenedor de fondo blanco-->
+			    	<h3>Nuestra ubicación:</h3>
+			    	<iframe src="https://www.google.com/maps/d/u/0/embed?mid=zUBKmVdr5whw.kPobzJ4nH2mw" width="100%" height="90%"></iframe>
+			    </div>
+
+			        
+					
+
+			      </div>
+			    </div>
+
+			  </div>
+
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+{%endblock%}
+
+
+{%block JS%}  
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script>
+	$('.dropdown-toggle').dropdown();
+</script>
+
+{%endblock%}

@@ -7,20 +7,66 @@
 {%block contenido%}
   <div class="row" align="center">
     <a href="{% url 'vista_administrador_ver_of' %}" class="btn btn-primary" role="button">Ver Órdenes de Fabricación</a>
-    <a href="#.html" class="btn btn-primary" role="button">Editar Orden de Fabricación</a>
     <a href="{% url 'vista_administrador_nueva_of' %}" class="btn btn-primary" role="button">Nueva Orden de Fabricación</a>
   </div>
 
-  <div class="thumbnail"  style="height:430px; margin:10px" >
-    <h2 align="center">Editar Orden de Fabricación</h2>
-    <div style="margin:10px">
-      <select class="form-control">
-        <option>OF1</option>
-        <option>OF2</option>
-      </select>
-    </div>
-    <div class="row" align="center">
-      <a href="#.html" class="btn btn-primary" role="button">Buscar</a>
+  <div class="thumbnail"  style="height:430px; margin:10px">
+    <div style="height:100%;overflow-y: scroll; overflow-x: hidden">
+      <h2 align="center">Editar Orden de Fabricación</h2>
+       <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_editar_of' id %}">
+      {% csrf_token %}
+          <div class="form-group">
+            <label for="ejemplo_nombre_material" class="col-sm-4 control-label">N° OF (Hacer por defecto)</label>
+            <div class="col-sm-8">
+
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ejemplo_tipo_material" class="col-sm-4 control-label">Fecha (Hacer por defecto)</label>
+            <div class="col-sm-8">
+            {{OFForm.ofFechaIngreso}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Producto</label>
+            <div class="col-sm-8">
+            {{OFForm.material}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Cantidad</label>
+            <div class="col-sm-8">
+            {{OFForm.ofCant}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Fecha Inicio</label>
+            <div class="col-sm-8">
+            {{OFForm.ofFechaInicio}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Fecha término</label>
+            <div class="col-sm-8">
+            {{OFForm.ofFechaTermino}}
+            </div>
+          </div> 
+          <div class="form-group">
+            <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Usuario</label>
+            <div class="col-sm-8">
+            {{OFForm.usuario}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Estado OF</label>
+            <div class="col-sm-8">
+            {{OFForm.estadoOF}}
+            </div>
+          </div>                       
+        <p class="text-center">
+          <button type="submit" class="btn btn-default" class="col-sm-4 control-label">Guardar</button>
+        </p>
+      </form>
     </div>
   </div>
 

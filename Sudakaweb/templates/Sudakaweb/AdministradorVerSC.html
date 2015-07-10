@@ -7,7 +7,6 @@
 {%block contenido%}
 	<div class="row" align="center">
     <a href="#.html" class="btn btn-primary" role="button">Ver Solicitudes de Compra</a>
-    <a href="{% url 'vista_administrador_editar_sc' %}" class="btn btn-primary" role="button">Editar Solicitud de Compra</a>
     <a href="{% url 'vista_administrador_nueva_sc' %}" class="btn btn-primary" role="button">Nueva Solicitud de Compra</a>
   </div>
 
@@ -30,7 +29,10 @@
             <td>{{sc.solicitudFecha}}</td>
             <td>{{sc.usuario}}</td>
             <td>{{sc.estadoSolicitud}}</td>
-            <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_sc' %}">Editar</a></td>
+            <td>
+              <a class="btn btn-warning" href="{% url 'vista_administrador_editar_sc' sc.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará esta solicitud de compra.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar SC" href="{% url 'vista_administrador_eliminar_sc' sc.id %}"><span class="glyphicon glyphicon-trash"></span>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

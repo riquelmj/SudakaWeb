@@ -8,8 +8,7 @@
 	<div class="row" align="center">
 
     <a href="#.html" class="btn btn-primary" role="button">Ver Stock</a>
-    <a href="{% url 'vista_administrador_ingresar_material' %}" class="btn btn-primary" role="button">Ingresar Material</a>
-    
+    <a href="{% url 'vista_administrador_ingresar_material' %}" class="btn btn-primary" role="button">Ingresar Material</a>    
     <a href="{% url 'vista_administrador_nuevo_material' %}" class="btn btn-primary" role="button">Nuevo Material</a>
   </div>
 
@@ -19,10 +18,13 @@
      <table class="table table-hover table-bordered " style="width:100%;" >           
         <thead>
           <tr>
+            <th>N°</th>
             <th>Tipo de Material</th>
             <th>Nombre</th>
             <th>Stock</th>
+            <th>Stock <br>Mínimo</th>
             <th>Unidad de Medida</th>
+            <th>Composición</th>
           </tr>
         </thead>
         <tbody>
@@ -32,8 +34,16 @@
             <td>{{material.materialTipo}}</td>
             <td>{{material.materialNombre}}</td>
             <td>{{material.materialStock}}</td>
+            <td>{{material.materialStockMinimo}}</td>
             <td>{{material.materialUnidadMedida}}</td>
-            <td><a class="btn btn-default" href="{% url 'vista_administrador_editar_material' material.id %}">Editar</a></td>
+            <td>{% for x in material.composicion_set.all %}
+                sd<br>
+                {% endfor %}
+            </td>
+            <td>
+            <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar material" href="{% url 'vista_administrador_editar_material' material.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <a class="btn btn-danger" onclick="return confirm('Se eliminará este material')" data-toggle="tooltip" data-placement="bottom" title="Eliminar material" href="{% url 'vista_administrador_eliminar_material' material.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>

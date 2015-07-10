@@ -5,59 +5,50 @@
 {%endblock%}
 
 {%block contenido%}
-	<div class="row" align="center">
-    <a href="{% url 'vista_administrador_ver_proveedores' %}" class="btn btn-primary" role="button">Ver Proveedores</a>
-    
-    <a href="#.html" class="btn btn-primary" role="button">Nuevo Proveedor</a>
-  </div>
+<div class="row" align="center">
+  <a href="{% url 'vista_administrador_ver_proveedores' %}" class="btn btn-primary" role="button">Ver Proveedores</a>  
+  <a href="#.html" class="btn btn-primary" role="button">Nuevo Proveedor</a>
+</div>
 
-  <div class="thumbnail"  style="height:544px; margin:10px" >
-    <h2 align="center">Nuevo Proveedor</h2>
-
-    <!--<button id="btn2" onclick="fn1('btn2');">boton2</button>-->
-    <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_nuevo_proveedor' %}">
+<div class="thumbnail"  style="height:544px; margin:10px" >
+  <h2 align="center">Nuevo Proveedor</h2>
+  <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_nuevo_proveedor' %}">
     {% csrf_token %}
-
-      <div class="form-group">
-        <label for="nombre" class="col-sm-4 control-label">Rut Proveedor</label>    
-        <div class="col-sm-8">
-          {{ProveedorForm.proveedorRut}}      
-        </div>
+    <div class="form-group">
+      <label for="nombre" class="col-sm-4 control-label">Rut Proveedor</label>    
+      <div class="col-sm-8">
+        {{ProveedorForm.proveedorRut}}      
       </div>
-
-      <div class="form-group">
-        <label for="nombre" class="col-sm-4 control-label">Nombre Proovedor</label>
-        <div class="col-sm-8">
-          {{ProveedorForm.proveedorNombre}}      
-        </div>
+    </div>
+    <div class="form-group">
+      <label for="nombre" class="col-sm-4 control-label">Nombre Proovedor</label>
+      <div class="col-sm-8">
+        {{ProveedorForm.proveedorNombre}}      
       </div>
-
-      <div class="form-group">
-        <label for="nombre" class="col-sm-4 control-label">Direccion Proveedor</label>
-        <div class="col-sm-8">
-          {{ProveedorForm.proveedorDireccion}}      
-        </div>
-      </div>  
-
-      <div class="form-group">
-        <label for="nombre" class="col-sm-4 control-label" id="UnidadMedida">Teléfono Proveedor</label>
-        <div class="col-sm-8">
-          {{ProveedorForm.proveedorTelefono}}
-        </div> 
+    </div>
+    <div class="form-group">
+      <label for="nombre" class="col-sm-4 control-label">Direccion Proveedor</label>
+      <div class="col-sm-8">
+        {{ProveedorForm.proveedorDireccion}}      
       </div>
-
-      <div class="form-group">
-        <label for="nombre" class="col-sm-4 control-label" id="TipoMaterial">Correo Proveedor</label>
-        <div class="col-sm-8">
-          {{ProveedorForm.proveedorCorreo}}
-        </div> 
-      </div>
-        
-      <div class="col-sm-offset-3 col-sm-9">
-        <button id="btn4" class="btn btn-default" type='submit'>Ingresar</button>
-      </div>
+    </div>
+    <div class="form-group">
+      <label for="nombre" class="col-sm-4 control-label" id="UnidadMedida">Teléfono Proveedor</label>
+      <div class="col-sm-8">
+        {{ProveedorForm.proveedorTelefono}}
+      </div> 
+    </div>
+    <div class="form-group">
+      <label for="nombre" class="col-sm-4 control-label" id="TipoMaterial">Correo Proveedor</label>
+      <div class="col-sm-8">
+        {{ProveedorForm.proveedorCorreo}}
+      </div> 
+    </div>        
+    <div align="center">
+      <button id="btn4" class="btn btn-default" type='submit'>Ingresar</button>
+    </div>
   </form>
-  </div>
+</div>
 
 {%endblock%}
 

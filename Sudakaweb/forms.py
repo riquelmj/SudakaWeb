@@ -36,20 +36,31 @@ class MaterialForm(forms.ModelForm):
 				'materialNombre': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Nombre Material','style':'width:70%'}),
 				'materialStock': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Stock Material','style':'width:70%'}),
 				'materialStockMinimo': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Stock Minimo Material','style':'width:70%'}),
-				'materialUnidadMedida': forms.Select(attrs={'class':'form-control','placeholder':'Unidad de medida Material','style':'width:70%'}),
-				'materialTipo': forms.Select(attrs={'class':'form-control','placeholder':'Tipo Material','style':'width:70%'}),
-				'materialSubTipo': forms.Select(attrs={'class':'form-control','placeholder':'Subtipo Material','style':'width:70%'}),
+				'materialUnidadMedida': forms.Select(attrs={'class':'form-control col-sm-4','placeholder':'Unidad de medida Material','style':'width:70%'}),
+				'materialTipo': forms.Select(attrs={'class':'form-control col-sm-4','placeholder':'Tipo Material','style':'width:70%'}),
+				'materialSubTipo': forms.Select(attrs={'class':'form-control col-sm-4','placeholder':'Subtipo Material','style':'width:70%'}),
+				'prodTermPrecio': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Precio Material','style':'width:70%'}),
+				}
+
+class ProductoForm(forms.ModelForm):
+	class Meta:
+		model= Material #Tabla a referenciar
+		fields= ['materialNombre','materialStock','materialStockMinimo','prodTermPrecio'] #atributos a ingresar
+		widgets={
+				'materialNombre': forms.TextInput(attrs={"required":"required",'class':'form-control col-sm-4','placeholder':'Nombre Material','style':'width:70%'}),
+				'materialStock': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Stock Material','style':'width:70%'}),
+				'materialStockMinimo': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Stock Minimo Material','style':'width:70%'}),
 				'prodTermPrecio': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Precio Material','style':'width:70%'}),
 				}
 
 class PTForm(forms.ModelForm):
 	class Meta:
 		model= PuestoDeTrabajo #Tabla a referenciar
-		fields= ['ptNombre','usuario','materiales'] #atributos a ingresar
+		fields= ['ptNombre','usuario'] #atributos a ingresar
 		widgets={
-				'ptNombre': forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre PT','style':'width:70%'}),
-				'usuario': forms.TextInput(attrs={'class':'form-control','placeholder':'Usuario','style':'width:70%'}),
-				'materiales': forms.TextInput(attrs={'class':'form-control','placeholder':'materiales','style':'width:70%'})
+				'ptNombre': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Nombre del puesto de trabajo','style':'width:70%'}),
+				'usuario': forms.Select(attrs={'class':'form-control col-sm-4','placeholder':'Usuario','style':'width:70%'}),
+				#'materiales': forms.Select(attrs={'multiple':'multiple','class':'form-control col-sm-4','placeholder':'Materiales','style':'width:70%'})
 				}
 
 class MaquinariaForm(forms.ModelForm):
@@ -72,19 +83,42 @@ class SCForm(forms.ModelForm):
 				'estadoSolicitud': forms.Select(attrs={'class':'form-control','placeholder':'Nombre Proveedor','style':'width:70%'})
 				}
 
+class DetalleSCForm(forms.ModelForm):
+	class Meta:
+		model= DetalleSolicitudDeCompra #Tabla a referenciar
+		fields= ['detSolComCantidadProducto','solicitud','material'] #atributos a ingresar
+		widgets={
+				'detSolComCantidadProducto': forms.TextInput(attrs={'class':'form-control','placeholder':'Cantidad','style':'width:70%'}),
+				'solicitud': forms.Select(attrs={'class':'form-control','placeholder':'N Solicitud de compra','style':'width:70%'}),
+				'material': forms.Select(attrs={'class':'form-control','placeholder':'Producto solicitado','style':'width:70%'})
+				}			
+
 class OFForm(forms.ModelForm):
 	class Meta:
 		model= OrdenDeFabricacion #Tabla a referenciar
 		fields= ['ofCant','ofFechaIngreso','ofFechaInicio','ofFechaTermino','material','usuario','estadoOF'] #atributos a ingresar
 		widgets={
 				'ofCant': forms.TextInput(attrs={'class':'form-control','placeholder':'Cantidad','style':'width:70%'}),
-				'ofFechaIngreso': forms.TextInput(attrs={'class':'form-control','placeholder':'Fecha Ingreso OF','style':'width:70%'}),
-				'ofFechaInicio': forms.TextInput(attrs={'class':'form-control','placeholder':'Fecha Inicio','style':'width:70%'}),
-				'ofFechaTermino': forms.TextInput(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'}),
-				'material': forms.TextInput(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'}),
-				'usuario': forms.TextInput(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'}),
-				'estadoOF': forms.TextInput(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'})
+				'ofFechaIngreso': forms.DateInput(attrs={'class':'form-control','type':'date','placeholder':'Fecha Ingreso OF','style':'width:70%'}),
+				'ofFechaInicio': forms.DateInput(attrs={'class':'form-control','type':'date','placeholder':'Fecha Inicio','style':'width:70%'}),
+				'ofFechaTermino': forms.DateInput(attrs={'class':'form-control','type':'date','placeholder':'Fecha Termino','style':'width:70%'}),
+				'material': forms.Select(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'}),
+				'usuario': forms.Select(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'}),
+				'estadoOF': forms.Select(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'})
 				}
+
+class OTForm(forms.ModelForm):
+	class Meta:
+		model= OrdenDeTrabajo #Tabla a referenciar
+		fields= ['otFinalizacion','otFechaInicio','otFechaTermino','of','etapa','pt'] #atributos a ingresar
+		widgets={
+				'otFinalizacion': forms.Select(attrs={'class':'form-control','placeholder':'Estado OT','style':'width:70%'}),
+				'otFechaInicio': forms.DateInput(attrs={'class':'form-control','type':'date','placeholder':'Fecha Inicio','style':'width:70%'}),
+				'otFechaTermino': forms.DateInput(attrs={'class':'form-control','type':'date','placeholder':'Fecha Termino','style':'width:70%'}),
+				'of': forms.Select(attrs={'class':'form-control','placeholder':'N OF','style':'width:70%'}),
+				'etapa': forms.Select(attrs={'class':'form-control','placeholder':'Etapa','style':'width:70%'}),
+				'pt': forms.Select(attrs={'class':'form-control','placeholder':'Puesto de Trabajo','style':'width:70%'})
+				}				
 
 class OCForm(forms.ModelForm):
 	class Meta:
@@ -93,6 +127,17 @@ class OCForm(forms.ModelForm):
 		widgets={
 				'ordenCompraFechaEmision': forms.TextInput(attrs={'class':'form-control','placeholder':'Fecha','style':'width:70%'}),
 				'proveedor': forms.Select(attrs={'class':'form-control','placeholder':'Nombre Proveedor','style':'width:70%'})
+				}
+
+class DetalleOCForm(forms.ModelForm):
+	class Meta:
+		model= DetalleOrdenDeCompra #Tabla a referenciar
+		fields= ['detOCCantidadMaterialSol','detOCUnidadMedidaMaterialSol','lote','ordenDeCompra'] #atributos a ingresar
+		widgets={
+				'detOCCantidadMaterialSol': forms.TextInput(attrs={'class':'form-control','placeholder':'Cantidad','style':'width:70%'}),
+				'detOCUnidadMedidaMaterialSol': forms.Select(attrs={'class':'form-control','placeholder':'N Solicitud de compra','style':'width:70%'}),
+				'lote': forms.TextInput(attrs={'class':'form-control','placeholder':'Producto solicitado','style':'width:70%'}),
+				'ordenDeCompra': forms.Select(attrs={'class':'form-control','placeholder':'Producto solicitado','style':'width:70%'})
 				}
 
 class ODForm(forms.ModelForm):
@@ -117,7 +162,9 @@ class ProveedorForm(forms.ModelForm):
 				'proveedorTelefono': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Telefono Proveedor','style':'width:70%'}),
 				'proveedorCorreo': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Correo Proveedor','style':'width:70%'})
 				}
-	
+
+
+
 
 '''
 ####Ingresar Usuario
