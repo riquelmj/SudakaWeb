@@ -363,14 +363,14 @@ class EstadoOF(models.Model):
 class OrdenDeFabricacion(models.Model):
 	id=models.AutoField('id',primary_key=True)
 	ofCant=models.IntegerField('Cantidad a fabricar',null=False,blank=False)
-	ofFechaIngreso=models.DateField('Fecha de ingreso de la OF')
+	ofFechaIngreso=models.DateField('Fecha de ingreso de la OF', null=True, blank=True)
 	ofFechaInicio=models.DateField('Fecha de inicio de la OF')	
 	ofFechaTermino=models.DateField('Fecha de termino de la OF')
 
 
 	#llaves foraneas	
 	material=models.ForeignKey(Material,verbose_name="Material")
-	usuario=models.ForeignKey(Usuario,verbose_name="Usuario")
+	usuario=models.ForeignKey(Usuario,verbose_name="Usuario", null=True, blank=True)
 	estadoOF=models.ForeignKey(EstadoOF,verbose_name="Estado OF")
 
 	def __unicode__(self):

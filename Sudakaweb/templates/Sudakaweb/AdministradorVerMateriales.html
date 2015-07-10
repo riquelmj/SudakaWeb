@@ -19,20 +19,21 @@
         <thead>
           <tr>
             <th>N°</th>
-            <th>Tipo de Material</th>
             <th>Nombre</th>
+            <th>Tipo de Material</th>
             <th>Stock</th>
             <th>Stock <br>Mínimo</th>
             <th>Unidad de Medida</th>
             <th>Composición</th>
+            <th>Puesto de Trabajo</th>
           </tr>
         </thead>
         <tbody>
           {% for material in materiales %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
             <td>{{material.id}}</td>
-            <td>{{material.materialTipo}}</td>
             <td>{{material.materialNombre}}</td>
+            <td>{{material.materialTipo}}</td>
             <td>{{material.materialStock}}</td>
             <td>{{material.materialStockMinimo}}</td>
             <td>{{material.materialUnidadMedida}}</td>
@@ -41,6 +42,11 @@
                 {% endfor %}
             </td>
             <td>
+              {% if material.pt != None %}
+                {{material.pt}}
+              {% endif %}
+            </td>
+            <td class="col-sm-2">
             <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar material" href="{% url 'vista_administrador_editar_material' material.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
             <a class="btn btn-danger" onclick="return confirm('Se eliminará este material')" data-toggle="tooltip" data-placement="bottom" title="Eliminar material" href="{% url 'vista_administrador_eliminar_material' material.id %}"><span class="glyphicon glyphicon-trash"></span></a>
             </td>

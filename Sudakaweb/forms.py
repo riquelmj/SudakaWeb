@@ -31,7 +31,7 @@ class UserForm(forms.ModelForm):
 class MaterialForm(forms.ModelForm):
 	class Meta:
 		model= Material #Tabla a referenciar
-		fields= ['materialNombre','materialStock','materialStockMinimo','materialUnidadMedida','materialTipo','materialSubTipo','prodTermPrecio'] #atributos a ingresar
+		fields= ['materialNombre','materialStock','materialStockMinimo','materialUnidadMedida','materialTipo','materialSubTipo','prodTermPrecio','pt'] #atributos a ingresar
 		widgets={
 				'materialNombre': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Nombre Material','style':'width:70%'}),
 				'materialStock': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Stock Material','style':'width:70%'}),
@@ -40,6 +40,7 @@ class MaterialForm(forms.ModelForm):
 				'materialTipo': forms.Select(attrs={'class':'form-control col-sm-4','placeholder':'Tipo Material','style':'width:70%'}),
 				'materialSubTipo': forms.Select(attrs={'class':'form-control col-sm-4','placeholder':'Subtipo Material','style':'width:70%'}),
 				'prodTermPrecio': forms.TextInput(attrs={'class':'form-control col-sm-4','placeholder':'Precio Material','style':'width:70%'}),
+				'pt': forms.Select(attrs={'class':'form-control col-sm-4','placeholder':'Precio Material','style':'width:70%'})
 				}
 
 class ProductoForm(forms.ModelForm):
@@ -96,14 +97,12 @@ class DetalleSCForm(forms.ModelForm):
 class OFForm(forms.ModelForm):
 	class Meta:
 		model= OrdenDeFabricacion #Tabla a referenciar
-		fields= ['ofCant','ofFechaIngreso','ofFechaInicio','ofFechaTermino','material','usuario','estadoOF'] #atributos a ingresar
+		fields= ['ofCant','ofFechaInicio','ofFechaTermino','material','estadoOF'] #atributos a ingresar
 		widgets={
 				'ofCant': forms.TextInput(attrs={'class':'form-control','placeholder':'Cantidad','style':'width:70%'}),
-				'ofFechaIngreso': forms.DateInput(attrs={'class':'form-control','type':'date','placeholder':'Fecha Ingreso OF','style':'width:70%'}),
 				'ofFechaInicio': forms.DateInput(attrs={'class':'form-control','type':'date','placeholder':'Fecha Inicio','style':'width:70%'}),
 				'ofFechaTermino': forms.DateInput(attrs={'class':'form-control','type':'date','placeholder':'Fecha Termino','style':'width:70%'}),
 				'material': forms.Select(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'}),
-				'usuario': forms.Select(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'}),
 				'estadoOF': forms.Select(attrs={'class':'form-control','placeholder':'Fecha Termino','style':'width:70%'})
 				}
 

@@ -14,17 +14,11 @@
     <div style="height:100%;overflow-y: scroll; overflow-x: hidden">
       <h2 align="center">Nueva Orden de Fabricación</h2>
       <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_nueva_of' %}">
-    {% csrf_token %}
+        {% csrf_token %}
         <div class="form-group">
           <label for="ejemplo_nombre_material" class="col-sm-4 control-label">N° OF (Hacer por defecto)</label>
           <div class="col-sm-8">
-
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="ejemplo_tipo_material" class="col-sm-4 control-label">Fecha (Hacer por defecto)</label>
-          <div class="col-sm-8">
-          {{OFForm.ofFechaIngreso}}
+          {{numeroOF}}
           </div>
         </div>
         <div class="form-group">
@@ -51,12 +45,6 @@
           {{OFForm.ofFechaTermino}}
           </div>
         </div> 
-        <div class="form-group">
-          <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Usuario</label>
-          <div class="col-sm-8">
-          {{OFForm.usuario}}
-          </div>
-        </div>
         <div class="form-group">
           <label for="ejemplo_unidad-medida_material" class="col-sm-4 control-label">Estado OF</label>
           <div class="col-sm-8">

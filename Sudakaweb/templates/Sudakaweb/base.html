@@ -109,8 +109,12 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
+	{% if messages %}
+			{% for message in messages %}
+			{{message}}
+			{% endfor %}
+		{% endif %}
 </body>
 <footer>
 	<script src="/static/js/jquery.min.js"></script>
@@ -122,6 +126,7 @@
 		{% if messages %}
 		$(document).ready(function(){
 			{% for message in messages %}
+
 			$.ambiance({message: "{{message}}", 
 				{% ifequal message.tags "info" %}title:"Informacion",{% endifequal %}
 				{% ifequal message.tags "warning" %}title:"Advertencia",{% endifequal %}

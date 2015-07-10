@@ -34,7 +34,7 @@
             </td>
             <td>
               <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar PT" href="{% url 'vista_administrador_editar_pt' pt.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
-              <a class="btn btn-danger" onclick="return confirm('Se elimininará el puesto de trabajo y las maquinarias asociadas a este.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar PT" href="{% url 'vista_administrador_eliminar_pt' pt.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará el puesto de trabajo.)" data-toggle="tooltip" data-placement="bottom" title="Eliminar PT" href="{% url 'vista_administrador_eliminar_pt' pt.id %}"><span class="glyphicon glyphicon-trash"></span></a>
             </td>
           </tr>
           {% endfor %}

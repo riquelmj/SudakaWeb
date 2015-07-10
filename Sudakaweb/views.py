@@ -126,7 +126,6 @@ class administradorEditarMaterial(TemplateView):
 		self.valor = valor
 	def editarAdministradorMaterial(self,request,id):
 		material = Material.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = MaterialForm(request.POST, instance=material)
 			if form.is_valid():
@@ -163,14 +162,18 @@ class administradorNuevoMaterial(TemplateView):
 		form= MaterialForm(request.POST or None)
 		if request.method=='POST':
 			if form.is_valid():
-				material1= form.save()
-				for x in request.POST['str_materiales'][:-1].split(';'):
-					data=x.split(',')
-					material2= Material.objects.get(pk=int(data[0]))
-					comp= Composicion(material1= material1,material2= material2, composicionCantidad= int(data[1]))
-					comp.save()
-				messages.success(request,'Se ha ingresado correctamente el material.')
-				return HttpResponseRedirect("/AdministradorVerMateriales")
+				if request.POST['str_materiales'] != '' or request.POST['materialTipo'] != 'Elaborado':
+					material1= form.save()
+					if material1.materialTipo == 'Elaborado':
+						for x in request.POST['str_materiales'][:-1].split(';'):
+							data=x.split(',')
+							material2= Material.objects.get(pk=int(data[0]))
+							comp= Composicion(material1= material1,material2= material2, composicionCantidad= int(data[1]))
+							comp.save()
+					messages.success(request,'Se ha ingresado correctamente el material.')
+					return HttpResponseRedirect("/AdministradorVerMateriales")
+				else:
+					messages.error(request,'Debe llenar correctamente todos los campos disponibles.')	
 			else:
 				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
 		ctx= {'MaterialForm':form, "materiales": Material.objects.all() }
@@ -230,7 +233,6 @@ class administradorEditarCliente(TemplateView):
 		self.valor = valor
 	def editarAdministradorCliente(self,request,id):
 		cliente = Usuario.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = UsuarioForm(request.POST, instance=cliente)
 			form2 = UserForm(request.POST, instance= cliente.user)
@@ -352,7 +354,6 @@ class administradorEditarPT(TemplateView):
 		self.valor = valor
 	def editarAdministradorPT(self,request,id):
 		pt = PuestoDeTrabajo.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = PTForm(request.POST, instance=pt)
 			if form.is_valid():
@@ -373,9 +374,16 @@ class administradorEliminarPT(TemplateView):
 		self.valor = valor
 	def eliminarAdministradorPT(self,request,id):
 		pt = PuestoDeTrabajo.objects.get(pk=id)
-		pt.delete()
-		messages.success(request, "Se ha eliminado el puesto de trabajo correctamente.")
+		if len(pt.material_set.all()) ==0:
+			if len(pt.maquinaria_set.all()) == 0:
+				pt.delete()
+				messages.success(request, "Se ha eliminado el puesto de trabajo correctamente.")
+			else:
+				messages.warning(request, "No se puede eliminar porque posee una maquinaria asociada.")	
+		else:
+			messages.warning(request, "No se puede eliminar porque posee material asociado.")	
 		return HttpResponseRedirect("/AdministradorVerPT")
+
 
 class administradorNuevoPT(TemplateView):
 	def __init__(self,valor):
@@ -414,7 +422,6 @@ class administradorEditarMaquinaria(TemplateView):
 		self.valor = valor
 	def editarAdministradorMaquinaria(self,request,id):
 		maquinaria = Maquinaria.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = MaquinariaForm(request.POST, instance=maquinaria)
 			if form.is_valid():
@@ -468,7 +475,6 @@ class administradorEditarSC(TemplateView):
 		self.valor = valor
 	def editarAdministradorSC(self,request,id):
 		sc = SolicitudDeCompra.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = SCForm(request.POST, instance=sc)
 			if form.is_valid():
@@ -509,26 +515,38 @@ class administradorVerOF(TemplateView):
 		ctx = {'ofs':of} # pasar a ctx la variable anterior
 		return render(request, 'Sudakaweb/AdministradorVerOF.html',ctx)
 
+def generarOT(material):
+	#crear una OT para material
+	composiciones = material.composicion_set.all()
+	for comp in composiciones:
+		if comp.material2.materialTipo == "Elaborado":
+			a=1
+			#crear una OT para comp.material
+
+
 class administradorEditarOF(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def editarAdministradorOF(self,request,id):
 		of = OrdenDeFabricacion.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = OFForm(request.POST, instance=of)
+			form.fields["material"].queryset = Material.objects.filter(materialSubTipo = "Producto Terminado")
 			if form.is_valid():
 				form.save()
 				messages.success(request,'Se ha modificado correctamente la orden de fabricación.')
 				return HttpResponseRedirect("/AdministradorVerOF")
 			else:
-				ctx={'OFForm':form,'id':id}
+				ctx={'OFForm':form,'id':id, 'numeroOF':of.id}
 				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
 				return render(request, 'Sudakaweb/AdministradorEditarOF.html',ctx)
 		else:
 			form = OFForm(instance=of)
-			ctx={'OFForm':form,'id':id}
+			form.fields["material"].queryset = Material.objects.filter(materialSubTipo = "Producto Terminado")
+			ctx={'OFForm':form,'id':id, 'numeroOF':of.id}
 			return render(request, 'Sudakaweb/AdministradorEditarOF.html',ctx)	
+
+
 
 class administradorEliminarOF(TemplateView):
 	def __init__(self,valor):
@@ -544,14 +562,21 @@ class administradorNuevaOF(TemplateView):
 		self.valor = valor
 	def nuevaAdministradorOF(self,request):
 		form = OFForm(request.POST or None)
+		form.fields["material"].queryset = Material.objects.filter(materialSubTipo = "Producto Terminado")
 		if request.method=='POST':
 			if form.is_valid():
-				form.save()
+				of=form.save()
+				of.usuario= Usuario.objects.filter(user = request.user)[0]
+				of.ofFechaIngreso = datetime.today()
+				of.save()
+				generarOT(of.material,of.ofCant)
 				messages.success(request,'Se ha ingresado correctamente la nueva orden de fabricación.')
 				return HttpResponseRedirect("/AdministradorVerOF")
 			else:
 				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
-		ctx = {'OFForm':form}
+		sig = OrdenDeFabricacion.objects.all()
+		sig = sig[len(sig)-1].id +1
+		ctx = {'OFForm':form, 'productos':Material.objects.all(), 'numeroOF':sig}
 		return render(request, 'Sudakaweb/AdministradorNuevaOF.html',ctx)		
 
 #Menu OT (Orden de Trabajo)
@@ -568,7 +593,6 @@ class administradorEditarOT(TemplateView):
 		self.valor = valor
 	def editarAdministradorOT(self,request,id):
 		ot = OrdenDeTrabajo.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = OTForm(request.POST, instance=ot)
 			if form.is_valid():
@@ -638,7 +662,6 @@ class administradorEditarOC(TemplateView):
 		self.valor = valor
 	def editarAdministradorOC(self,request,id):
 		oc = OrdenDeCompra.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = OFForm(request.POST, instance=oc)
 			if form.is_valid():
@@ -683,7 +706,6 @@ class administradorEditarProveedor(TemplateView):
 		self.valor = valor
 	def editarAdministradorProveedor(self,request,id):
 		proveedor = Proveedor.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = ProveedorForm(request.POST, instance=proveedor)
 			if form.is_valid():
@@ -790,7 +812,6 @@ class operarioEditarOT(TemplateView):
 		self.valor = valor
 	def editarOperarioOT(self,request,id):
 		ot = OrdenDeTrabajo.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = OTForm(request.POST, instance=ot)
 			if form.is_valid():
@@ -846,7 +867,6 @@ class clienteEditarSC(TemplateView):
 		self.valor = valor
 	def editarClienteSC(self,request,id):
 		sc = SolicitudDeCompra.objects.get(pk=id)
-		messages.success(request,"editar")
 		if request.method == 'POST':
 			form = SCForm(request.POST, instance=sc)
 			if form.is_valid():
