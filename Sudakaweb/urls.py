@@ -26,6 +26,10 @@ urlpatterns = [
 	url(r'^AdministradorEditarMaterial/(?P<id>([0-9]{0,50}))/$',administradorEditarMaterial("a").editarAdministradorMaterial, name="vista_administrador_editar_material"),
 	url(r'^AdministradorEliminarMaterial/(?P<id>([0-9]{0,50}))/$',administradorEliminarMaterial("a").eliminarAdministradorMaterial, name="vista_administrador_eliminar_material"),
 	url(r'^AdministradorNuevoMaterial$',administradorNuevoMaterial("a").nuevoAdministradorMaterial, name="vista_administrador_nuevo_material"),
+	url(r'^AdministradorVerLotes$',administradorVerLotes("a").mostrarAdministradorLotes, name="vista_administrador_ver_lotes"),
+	url(r'^AdministradorEditarLote/(?P<id>([0-9]{0,50}))/$',administradorEditarLote("a").editarAdministradorLote, name="vista_administrador_editar_lote"),
+	url(r'^AdministradorEliminarLote/(?P<id>([0-9]{0,50}))/$',administradorEliminarLote("a").eliminarAdministradorLote, name="vista_administrador_eliminar_lote"),
+	url(r'^AdministradorNuevoLote$',administradorNuevoLote("a").nuevoAdministradorLote, name="vista_administrador_nuevo_lote"),
 	url(r'^AdministradorVerProductos$',administradorVerProductos("a").mostrarAdministradorProductos, name="vista_administrador_ver_productos"),
 	url(r'^AdministradorEditarProducto$',administradorEditarProducto("a").editarAdministradorProducto, name="vista_administrador_editar_producto"),
 	url(r'^AdministradorNuevoProducto$',administradorNuevoProducto("a").nuevoAdministradorProducto, name="vista_administrador_nuevo_producto"),
@@ -52,6 +56,7 @@ urlpatterns = [
 	url(r'^AdministradorEditarOF/(?P<id>([0-9]{0,50}))/$',administradorEditarOF("a").editarAdministradorOF, name="vista_administrador_editar_of"),
 	url(r'^AdministradorEliminarOF/(?P<id>([0-9]{0,50}))/$',administradorEliminarOF("a").eliminarAdministradorOF, name="vista_administrador_eliminar_of"),
 	url(r'^AdministradorNuevaOF$',administradorNuevaOF("a").nuevaAdministradorOF, name="vista_administrador_nueva_of"),
+	url(r'^AdministradorGenerarOT/(?P<id>([0-9]{0,50}))/$',administradorGenerarOT("a").generarAdministradorOT, name="vista_administrador_generar_ot"),
 	url(r'^AdministradorVerOT$',administradorVerOT("a").mostrarAdministradorOT, name="vista_administrador_ver_ot"),
 	url(r'^AdministradorEditarOT/(?P<id>([0-9]{0,50}))/$',administradorEditarOT("a").editarAdministradorOT, name="vista_administrador_editar_ot"),
 	url(r'^AdministradorEliminarOT/(?P<id>([0-9]{0,50}))/$',administradorEliminarOT("a").eliminarAdministradorOT, name="vista_administrador_eliminar_ot"),
@@ -67,6 +72,9 @@ urlpatterns = [
 	url(r'^AdministradorEditarProveedor/(?P<id>([0-9]{0,50}))/$',administradorEditarProveedor("a").editarAdministradorProveedor, name="vista_administrador_editar_proveedor"),
 	url(r'^AdministradorEliminarProveedor/(?P<id>([0-9]{0,50}))/$',administradorEliminarProveedor("a").eliminarAdministradorProveedor, name="vista_administrador_eliminar_proveedor"),
 	url(r'^AdministradorNuevoProveedor$',administradorNuevoProveedor("a").nuevoAdministradorProveedor, name="vista_administrador_nuevo_proveedor"),
+	url(r'^AdministradorAgregarCantidad/(?P<id>([0-9]{0,50}))/$',administradorAgregarCantidad, name="vista_administrador_agregar_cantidad"),
+	url(r'^AdministradorNotificaciones/(?P<id>([0-9]{0,50}))/$',administradorNotificaciones, name="vista_administrador_notificaciones"),
+
 
 	#Vistas Operario
 	url(r'^OperarioInicio$',operarioInicio("a").mostrarOperarioInicio, name="vista_operario_inicio"),

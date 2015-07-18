@@ -20,16 +20,17 @@
             <th>Fecha Solicitud</th>
             <th>Nombre</th>
             <th>Estado</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for sc in scs %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>{{sc.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{sc.solicitudFecha}}</td>
             <td>{{sc.usuario}}</td>
             <td>{{sc.estadoSolicitud}}</td>
-            <td>
+            <td class="col-sm-2">
               <a class="btn btn-warning" href="{% url 'vista_administrador_editar_sc' sc.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-danger" onclick="return confirm('Se elimininará esta solicitud de compra.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar SC" href="{% url 'vista_administrador_eliminar_sc' sc.id %}"><span class="glyphicon glyphicon-trash"></span>
             </td>

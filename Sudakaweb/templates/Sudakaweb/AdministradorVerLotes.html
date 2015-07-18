@@ -1,0 +1,50 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+<div class="row" align="center">
+    <a href="#.html" class="btn btn-primary" role="button">Ver Stock</a>  
+    <a href="{% url 'vista_administrador_nuevo_lote' %}" class="btn btn-primary" role="button">Nuevo Lote</a>
+</div>
+
+<div class="thumbnail"  style="height:544px; margin:10px">
+    <div style="height:100%;overflow-y: scroll;">
+        <h2 align="center">Ver Stock</h2>
+        <table class="table table-hover table-bordered " style="width:100%;" >           
+            <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Fecha Elaboración</th>
+                  <th>Fecha Vencimiento</th>
+                  <th>Stock</th>
+                  <th>Material</th>
+                  <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for lote in lotes %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
+                <tr>
+                    <td>{{ forloop.counter }}{# starting index 1 #}</td>
+                    <td>{{lote.loteFechaElaboracion}}</td>
+                    <td>{{lote.loteFechaVencimiento}}</td>
+                    <td>{{lote.loteStockReal}}/{{lote.loteStock}}</td>
+                    <td>{{lote.material}}</td>
+                    <td class="col-sm-2">
+                    <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar lote" href="{% url 'vista_administrador_editar_lote' lote.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a class="btn btn-danger" onclick="return confirm('Se eliminará este lote')" data-toggle="tooltip" data-placement="bottom" title="Eliminar lote" href="{% url 'vista_administrador_eliminar_lote' lote.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

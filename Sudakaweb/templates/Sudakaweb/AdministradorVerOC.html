@@ -19,15 +19,16 @@
             <th>N° OC</th>
             <th>Fecha emisión</th>            
             <th>Proveedor</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for oc in ocs %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>{{oc.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{oc.ordenCompraFechaEmision}}</td>
             <td>{{oc.proveedor}}</td>
-            <td>
+            <td class="col-sm-2">
               <a class="btn btn-warning" href="{% url 'vista_administrador_editar_oc' oc.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-danger" onclick="return confirm('Se elimininará esta orden de compra.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar OC" href="{% url 'vista_administrador_eliminar_oc' oc.id %}"><span class="glyphicon glyphicon-trash"></span></a>
             </td>

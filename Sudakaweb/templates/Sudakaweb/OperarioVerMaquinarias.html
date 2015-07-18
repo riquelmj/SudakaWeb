@@ -5,35 +5,31 @@
 {%endblock%}
 
 {%block contenido%}
-	<div class="row" align="center">
-    <a href="#" class="btn btn-primary" role="button">Ver Maquinarias</a>
-  </div>
-
-  <div class="thumbnail"  style="height:544px; margin:10px" align="center">
-    <div style="height:100%;overflow-y: scroll;">
-      <h2>Ver Maquinaria</h2>
-      <table class="table table-hover table-bordered " style="width:100%;" >           
-        <thead>
-          <tr>
-            <th>N°</th>
-            <th>Nombre</th>
-            <th>Ubicación</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for maquinaria in m %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
-          <tr>
-            <td>{{maquinaria.id}}</td>
-            <td>{{maquinaria.maqNombre}}</td>
-            <td>{{maquinaria.pt}}</td>
-            <td>{{maquinaria.maqEstado}}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>      
-    </div>
-  </div>
+<div class="thumbnail"  style="height:544px; margin:10px" align="center">
+	<div style="height:100%;overflow-y: scroll;">
+		<h2>Ver Maquinaria</h2>
+		<table class="table table-hover table-bordered " style="width:100%;" >           
+			<thead>
+				<tr>
+					<th>N°</th>
+					<th>Nombre</th>
+					<th>Ubicación</th>
+					<th>Estado</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for maquinaria in m %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
+				<tr>
+					<td>{{ forloop.counter }}{# starting index 1 #}</td>
+					<td>{{maquinaria.maqNombre}}</td>
+					<td>{{maquinaria.pt}}</td>
+					<td>{{maquinaria.maqEstado}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>      
+	</div>
+</div>
 
 {%endblock%}
 

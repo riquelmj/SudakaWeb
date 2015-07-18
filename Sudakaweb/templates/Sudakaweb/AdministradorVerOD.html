@@ -20,17 +20,18 @@
             <th>Fecha despacho</th>
             <th>Direccion</th>
             <th>Comuna</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for od in ods %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>{{od.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{od.solicitud}}</td>
             <td>{{od.despachoFecha}}</td>
             <td>{{od.despachoDireccion}}</td>
             <td>{{od.comuna}}</td>
-            <td>
+            <td class="col-sm-2">
               <a class="btn btn-warning" href="{% url 'vista_administrador_editar_od' od.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-danger" onclick="return confirm('Se elimininará esta orden de despacho.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar OD" href="{% url 'vista_administrador_eliminar_od' od.id %}"><span class="glyphicon glyphicon-trash"></span></a>
               </td>

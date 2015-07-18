@@ -11,6 +11,7 @@ from Sudakaweb.forms import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from datetime import *
+import calendar
 
 
 class Home(TemplateView):
@@ -44,28 +45,64 @@ class contacto(TemplateView):
 	def mostrarContacto(self,request):
 		return render(request, 'Sudakaweb/Contacto.html',{})				
 
+def calculate_age(born):
+    today = date.today()
+    try: 
+        birthday = born.replace(year=today.year)
+    except ValueError: # raised when birth date is February 29 and the current year is not a leap year
+        birthday = born.replace(year=today.year, month=born.month+1, day=1)
+    if birthday > today:
+        return today.year - born.year - 1
+    else:
+        return today.year - born.year
+
 class registro(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarRegistro(self,request):
-		form = UsuarioForm(request.POST or None)
+		form = ClienteForm(request.POST or None)
 		form2 = UserForm(request.POST or None)
 		if request.method=='POST':
 			if request.POST['password'] == request.POST["repite_contrasena"]:
 				if form.is_valid() and form2.is_valid():
-					usuario = form.save()
-					user = form2.save()
-					user.set_password(user.password)
-					user.save()
-					usuario.user = user
-					usuario.save()
-					messages.success(request,'Se ha registrado exitosamente.')
-					return HttpResponseRedirect("/index")
-				else:					
-					if "usuarioCorreo" in form.errors:
+					if calculate_age(form.cleaned_data["usuarioFechaNacimiento"]) < 18:
+						messages.error(request, "Te faltan "+ str(18-calculate_age(form.cleaned_data["usuarioFechaNacimiento"])) +" años para poder registrarte. Te esperamos!")
+						return HttpResponseRedirect("/")
+					else:
+						usuario = form.save()
+						user = form2.save()
+						user.set_password(user.password)
+						user.save()
+						usuario.user = user
+						usuario.usuarioRol = "Cliente"
+						usuario.usuarioHabilitador = "1"
+						usuario.save()
+
+						username = request.POST['username']
+						password = request.POST['password']
+						user = authenticate(username=username, password=password)
+						login(request, user)
+						usuario= Usuario.objects.filter(user=user)
+						if len(usuario)==1:
+							messages.success(request,'Bienvenido ' + usuario[0].usuarioNombre)
+						return HttpResponseRedirect("/")
+				else:
+
+					if "usuarioNombre" in form.errors:
 						messages.error(request, "Debe ingresar un correo válido")
-					if "usuarioTelefono" in form.errors:
+					elif "usuarioApellido" in form.errors:
+						messages.error(request, "Debe ingresar un correo válido")
+					elif "usuarioFechaNacimiento" in form.errors:
+						messages.error(request, "Debe ingresar un correo válido")					
+					elif "usuarioCorreo" in form.errors:
+						messages.error(request, "Debe ingresar un correo válido")
+					elif "usuarioTelefono" in form.errors:
 						messages.error(request, "Debe ingresar un teléfono válido")
+					elif "username" in form2.errors:
+						if form2.errors["username"][0] == "User with this Username already exists.":
+							messages.error(request, "Error en el nombre de usuario: El usuario ya existe." )
+						else:
+							messages.error(request, "Error en el nombre de usuario: Solo pueden ir letras y numeros.")
 			else:
 				messages.error(request,'Las contraseñas ingresadas no coinciden')
 		ctx = {'UsuarioForm':form, 'UserForm':form2}
@@ -103,16 +140,79 @@ def login_view(request):
 				else:
 					messages.success(request,'Bienvenido Administrador')
 				return HttpResponseRedirect('/')
-		messages.error(request,'Usuario o contrasena incorrectos')
+		messages.error(request,'Usuario o contraseña incorrectos')
 		return render(request, 'Sudakaweb/login.html',{})
+
+#Menu Lote
+class administradorVerLotes(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def mostrarAdministradorLotes(self,request):
+		lote = Lote.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		ctx = {'lotes':lote} # pasar a ctx la variable anterior
+		return render(request, 'Sudakaweb/AdministradorVerLotes.html',ctx)
+
+'''class administradorIngresarLote(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def ingresarAdministradorLote(self,request):
+		return render(request, 'Sudakaweb/AdministradorIngresarLote.html',{}) '''
+
+class administradorEditarLote(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def editarAdministradorLote(self,request,id):
+		lote = Lote.objects.get(pk=id)
+		if request.method == 'POST':
+			form = LoteForm(request.POST, instance= lote)
+			if form.is_valid() and form.cleaned_data["loteStock"]>=form.cleaned_data["loteStockReal"]:
+				form.save()
+				revisar_pendientes(request)
+				messages.success(request,'Se ha modificado correctamente el lote.')
+				return HttpResponseRedirect("/AdministradorVerLotes")
+			else:
+				ctx={'LoteForm':form,'id':id}
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+				return render(request, 'Sudakaweb/AdministradorEditarLote.html',ctx)
+		else:
+			form = LoteForm(instance= lote)
+			ctx={'LoteForm':form,'id':id}
+			return render(request, 'Sudakaweb/AdministradorEditarLote.html',ctx)
+
+class administradorEliminarLote(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def eliminarAdministradorLote(self,request,id):
+		lote = Lote.objects.get(pk=id)
+		lote.delete()
+		messages.success(request, "Se ha eliminado el lote.")
+		return HttpResponseRedirect("/AdministradorVerLotes")	
+
+class administradorNuevoLote(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def nuevoAdministradorLote(self,request):
+		form = LoteForm(request.POST or None)
+		if request.method=='POST':
+			if form.is_valid() and form.cleaned_data["loteStock"]>=form.cleaned_data["loteStockReal"]:
+				form.save()
+				revisar_pendientes(request)
+				messages.success(request,'Se ha ingresado correctamente el Lote.')
+				return HttpResponseRedirect("/AdministradorVerLotes")
+			else:
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+		ctx = {'LoteForm':form}
+		return render(request, 'Sudakaweb/AdministradorNuevoLote.html',ctx)
 
 #Menu Material
 class administradorVerMateriales(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorMateriales(self,request):
-		material = Material.objects.exclude(materialSubTipo= 'Producto Terminado') # guardar en variable de cualquier nombre la lista de todos los objetos
-		ctx = {'materiales':material} # pasar a ctx la variable anterior
+		materiales = Material.objects.exclude(materialSubTipo= 'Producto Terminado') # guardar en variable de cualquier nombre la lista de todos los objetos
+		for material in materiales:
+			material.composiciones = Composicion.objects.filter(material1=material)
+		ctx = {'materiales':materiales} # pasar a ctx la variable anterior
 		return render(request, 'Sudakaweb/AdministradorVerMateriales.html',ctx)
 
 class administradorIngresarMaterial(TemplateView):
@@ -147,12 +247,17 @@ class administradorEliminarMaterial(TemplateView):
 	def eliminarAdministradorMaterial(self,request,id):
 		material = Material.objects.get(pk=id)
 		tipo = material.materialSubTipo
-		material.delete()
+		if len(material.ordendefabricacion_set.all()) ==0:
+			material.delete()
+			if tipo == 'Producto Terminado':
+				messages.success(request, "Se ha eliminado el producto.")
+			else:
+				messages.success(request, "Se ha eliminado el material.")
+		else:
+			messages.warning(request, "No se puede eliminar ya que esta asociado a una OF.")
 		if tipo == 'Producto Terminado':
-			messages.success(request, "Se ha eliminado el producto.")
 			return HttpResponseRedirect("/AdministradorVerProductos")
 		else:
-			messages.success(request, "Se ha eliminado el material.")
 			return HttpResponseRedirect("/AdministradorVerMateriales")	
 
 class administradorNuevoMaterial(TemplateView):
@@ -168,7 +273,7 @@ class administradorNuevoMaterial(TemplateView):
 						for x in request.POST['str_materiales'][:-1].split(';'):
 							data=x.split(',')
 							material2= Material.objects.get(pk=int(data[0]))
-							comp= Composicion(material1= material1,material2= material2, composicionCantidad= int(data[1]))
+							comp= Composicion(material1= material1,material2= material2, composicionCantidad= float(data[1]))
 							comp.save()
 					messages.success(request,'Se ha ingresado correctamente el material.')
 					return HttpResponseRedirect("/AdministradorVerMateriales")
@@ -292,11 +397,26 @@ class administradorNuevoCliente(TemplateView):
 					usuario.save()
 					messages.success(request,'Se ha ingresado correctamente el nuevo cliente.')
 					return HttpResponseRedirect("/AdministradorVerUsuarios")
-				else:					
-					if "usuarioCorreo" in form.errors:
+				else:
+
+					if "usuarioNombre" in form.errors:
 						messages.error(request, "Debe ingresar un correo válido")
-					if "usuarioTelefono" in form.errors:
+					elif "usuarioApellido" in form.errors:
+						messages.error(request, "Debe ingresar un correo válido")
+					elif "usuarioFechaNacimiento" in form.errors:
+						messages.error(request, "Debe ingresar un correo válido")					
+					elif "usuarioCorreo" in form.errors:
+						messages.error(request, "Debe ingresar un correo válido")
+					elif "usuarioTelefono" in form.errors:
 						messages.error(request, "Debe ingresar un teléfono válido")
+					elif "username" in form2.errors:
+						if form2.errors["username"][0] == "User with this Username already exists.":
+							messages.error(request, "Error en el nombre de usuario: El usuario ya existe." )
+						else:
+							messages.error(request, "Error en el nombre de usuario: Solo pueden ir letras y numeros.")
+					
+
+
 			else:
 				messages.error(request,'Las contraseñas ingresadas no coinciden')
 		ctx = {'UsuarioForm':form, 'UserForm':form2}
@@ -346,6 +466,7 @@ class administradorVerPT(TemplateView):
 		pts = PuestoDeTrabajo.objects.all()
 		for pt in pts:
 			pt.maquinarias = pt.maquinaria_set.all()
+			pt.notificaciones = len(Notificacion.objects.filter(ot__in=OrdenDeTrabajo.objects.filter(pt=pt)))
 		ctx = {'pts':pts}
 		return render(request, 'Sudakaweb/AdministradorVerPT.html',ctx)
 
@@ -391,7 +512,6 @@ class administradorNuevoPT(TemplateView):
 	def nuevoAdministradorPT(self,request):
 		form = PTForm(request.POST or None)
 		if request.method=='POST':
-			messages.success(request,"editar1")
 			if form.is_valid():
 				form.save()
 				messages.success(request,'Se ha ingresado correctamente el nuevo puesto de trabajo.')
@@ -426,7 +546,7 @@ class administradorEditarMaquinaria(TemplateView):
 			form = MaquinariaForm(request.POST, instance=maquinaria)
 			if form.is_valid():
 				form.save()
-				messages.success(request,'Se ha modificado correctamente la nueva Maquinaria.')
+				messages.success(request,'Se ha modificado correctamente la maquinaria.')
 				return HttpResponseRedirect("/AdministradorVerMaquinarias")
 			else:
 				ctx={'MaquinariaForm':form,'id':id}
@@ -515,15 +635,6 @@ class administradorVerOF(TemplateView):
 		ctx = {'ofs':of} # pasar a ctx la variable anterior
 		return render(request, 'Sudakaweb/AdministradorVerOF.html',ctx)
 
-def generarOT(material):
-	#crear una OT para material
-	composiciones = material.composicion_set.all()
-	for comp in composiciones:
-		if comp.material2.materialTipo == "Elaborado":
-			a=1
-			#crear una OT para comp.material
-
-
 class administradorEditarOF(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
@@ -568,8 +679,8 @@ class administradorNuevaOF(TemplateView):
 				of=form.save()
 				of.usuario= Usuario.objects.filter(user = request.user)[0]
 				of.ofFechaIngreso = datetime.today()
+				of.estadoOF = "Pendiente"
 				of.save()
-				generarOT(of.material,of.ofCant)
 				messages.success(request,'Se ha ingresado correctamente la nueva orden de fabricación.')
 				return HttpResponseRedirect("/AdministradorVerOF")
 			else:
@@ -577,15 +688,38 @@ class administradorNuevaOF(TemplateView):
 		sig = OrdenDeFabricacion.objects.all()
 		sig = sig[len(sig)-1].id +1
 		ctx = {'OFForm':form, 'productos':Material.objects.all(), 'numeroOF':sig}
-		return render(request, 'Sudakaweb/AdministradorNuevaOF.html',ctx)		
+		return render(request, 'Sudakaweb/AdministradorNuevaOF.html',ctx)	
+
+def generarOT(material,of,cantidad):
+	#crear una OT para material
+	ot = OrdenDeTrabajo(otFinalizacion='Pendiente' ,of=of ,pt=material.pt ,material=material, otCantidad=cantidad, otCantidadAcum=0)
+	ot.save()
+	composiciones = Composicion.objects.filter(material1 = material)
+	for comp in composiciones:
+		if comp.material2.materialTipo == "Elaborado":
+			generarOT(comp.material2,of,cantidad*comp.composicionCantidad/material.materialStock)
+			#crear una OT para comp.material
+
+class administradorGenerarOT(TemplateView):
+	def __init__(self,valor):
+		self.valor = valor
+	def generarAdministradorOT(self,request,id):
+		of = OrdenDeFabricacion.objects.get(pk=id)
+		of.estadoOF = 'En Proceso'
+		of.save()
+		generarOT(of.material,of,of.ofCant)
+		messages.success(request, "Se han generado las órdenes de trabajo.")
+		return HttpResponseRedirect("/AdministradorVerOF")		
 
 #Menu OT (Orden de Trabajo)
 class administradorVerOT(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarAdministradorOT(self,request):
-		ot = OrdenDeTrabajo.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
-		ctx = {'ots':ot} # pasar a ctx la variable anterior
+		ots = OrdenDeTrabajo.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		for ot in ots:
+			ot.composiciones = Composicion.objects.filter(material1=ot.material)
+		ctx = {'ots':ots, "pts": PuestoDeTrabajo.objects.all()} # pasar a ctx la variable anterior
 		return render(request, 'Sudakaweb/AdministradorVerOT.html',ctx)		
 
 class administradorEditarOT(TemplateView):
@@ -596,9 +730,19 @@ class administradorEditarOT(TemplateView):
 		if request.method == 'POST':
 			form = OTForm(request.POST, instance=ot)
 			if form.is_valid():
-				form.save()
-				messages.success(request,'Se ha modificado correctamente la orden de trabajo.')
-				return HttpResponseRedirect("/AdministradorVerOT")
+				if form.cleaned_data["otCantidadAcum"] > ot.otCantidad:
+					ctx={'OTForm':form,'id':id}
+					messages.error(request,'La cantidad ingresada excede la solicitada.')
+					return render(request, 'Sudakaweb/AdministradorEditarOT.html',ctx)
+				else:
+					if (form.cleaned_data["otFechaTermino"] == None and form.cleaned_data["otFechaInicio"] != None ) or (form.cleaned_data["otFechaTermino"] == None and form.cleaned_data["otFechaInicio"] == None ) or ((form.cleaned_data["otFechaTermino"] != None and form.cleaned_data["otFechaInicio"] != None ) and form.cleaned_data["otFechaInicio"]<=form.cleaned_data["otFechaTermino"]):
+						form.save()
+						messages.success(request,'Se ha actualizado correctamente la orden de trabajo.')
+						return HttpResponseRedirect("/AdministradorVerOT")
+					else:
+						messages.warning(request, "La fecha de inicio no puede ser posterior a la fecha de término")
+						ctx={'OTForm':form,'id':id}
+						return render(request, 'Sudakaweb/AdministradorEditarOT.html',ctx)
 			else:
 				ctx={'OTForm':form,'id':id}
 				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
@@ -607,6 +751,97 @@ class administradorEditarOT(TemplateView):
 			form = OTForm(instance=ot)
 			ctx={'OTForm':form,'id':id}
 			return render(request, 'Sudakaweb/AdministradorEditarOT.html',ctx)	
+
+def add_months(sourcedate,months):
+	month = sourcedate.month - 1 + months
+	year = sourcedate.year + month / 12
+	month = month % 12 + 1
+	day = min(sourcedate.day,calendar.monthrange(year,month)[1])
+	return date(year,month,day)
+
+def descontar(material,cantidad):
+	lotes = Lote.objects.filter(material=material).filter(loteStockReal__gt=0)
+	if len(lotes) >0:
+		lote= lotes[0]
+		if lote.loteStockReal >= cantidad:
+			lote.loteStockReal = lote.loteStockReal - int(cantidad)
+			lote.save()
+		else:
+			nueva_cantidad = int(cantidad) - lote.loteStockReal
+			lote.loteStockReal = 0
+			lote.save()
+			descontar(material, nueva_cantidad)
+
+
+
+def revisar_pendientes(request):
+	pendientes = OrdenDeTrabajo.objects.filter(otFinalizacion="Pendiente")
+	for ot in pendientes:
+		mat_necesarios = Composicion.objects.filter(material1= ot.material)
+		alcanza = True
+		cantidad=0
+		for comp in mat_necesarios:
+			cantidad = comp.composicionCantidad
+			if ot.otCantidad - ot.otCantidadAcum < ot.material.materialStock:
+				cantidad = (ot.otCantidad - ot.otCantidadAcum)*ot.material.materialStock/comp.composicionCantidad
+			lotes = Lote.objects.filter(material= comp.material2)
+			c = 0
+			for l in lotes:
+				c+= l.loteStockReal
+			if c < int(cantidad):
+				alcanza = False
+		if alcanza:
+			ot.otFinalizacion = "Por iniciar"
+			ot.save()
+			n = Notificacion(notifDescripcion="Han llegado los insumos necesarios por lo que esta OT se marcó como 'Por Iniciar'", notifFecha=datetime.now(), notifCantidad=0, ot=ot)
+			n.save()
+			for comp in mat_necesarios:
+				cantidad = comp.composicionCantidad
+				if ot.otCantidad - ot.otCantidadAcum < ot.material.materialStock:
+					cantidad = (ot.otCantidad - ot.otCantidadAcum)*ot.material.materialStock/comp.composicionCantidad
+				messages.info(request, str(comp.material2)+" "+str(cantidad))
+				descontar(comp.material2,cantidad)
+
+def administradorNotificaciones(request, id):
+	pt = PuestoDeTrabajo.objects.get(pk=id) # guardar en variable de cualquier nombre la lista de todos los objetos
+	notificaciones = Notificacion.objects.filter(ot__in=OrdenDeTrabajo.objects.filter(pt=pt))
+	ctx = {'notificaciones':notificaciones}
+	return render(request, 'Sudakaweb/AdministradorVerNotificaciones.html',ctx)
+
+def agregar_lote(fecha, cantidad, material,request):
+	lotes = Lote.objects.filter(material=material).filter(loteFechaElaboracion=fecha)
+	if len(lotes) > 0:
+		lotes[0].loteStock = lotes[0].loteStock +cantidad
+		lotes[0].loteStockReal = lotes[0].loteStockReal +cantidad
+		lotes[0].save()
+	else:
+		l = Lote(loteFechaElaboracion=fecha, loteFechaVencimiento=add_months(fecha,material.materialTiempoCaducidad), loteStock=cantidad,loteStockReal=cantidad, material=material )
+		l.save()
+	revisar_pendientes(request)
+
+def administradorAgregarCantidad(request, id):
+	if "cantidad" in request.POST and request.POST["cantidad"]!="":
+		cantidad = int(request.POST["cantidad"])
+		ot = OrdenDeTrabajo.objects.get(pk=id)
+		if cantidad > ot.otCantidad-ot.otCantidadAcum:
+			messages.warning(request, "La cantidad faltante para esta OT es de "+str(ot.otCantidad-ot.otCantidadAcum))
+		elif cantidad <= 0:
+			messages.warning(request, "Ingrese una cantidad mayor a cero.")
+		else:
+			messages.success(request,"se han agregado " +str(request.POST["cantidad"])+" " +ot.material.materialUnidadMedida+" a la Orden de Trabajo ")
+			ot.otCantidadAcum = ot.otCantidadAcum + cantidad
+			agregar_lote(datetime.now(), cantidad, ot.material,request)
+			if ot.otCantidad == ot.otCantidadAcum:
+				ot.otFinalizacion = "Finalizada"
+				ot.otFechaTermino = datetime.now()
+			else:
+				if ot.otCantidadAcum!=0 and ot.otFinalizacion == "Por iniciar":
+					ot.otFinalizacion = "Iniciada"
+					ot.otFechaInicio = datetime.now()
+			ot.save()
+	else:
+		messages.warning(request, "Ingrese una cantidad.")
+	return HttpResponseRedirect("/AdministradorVerOT")
 
 class administradorEliminarOT(TemplateView):
 	def __init__(self,valor):
@@ -621,7 +856,16 @@ class administradorNuevaOT(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def nuevaAdministradorOT(self,request):
-		return render(request, 'Sudakaweb/AdministradorNuevaOT.html',{})
+		form = OTForm(request.POST or None)
+		if request.method=='POST':
+			if form.is_valid():
+				form.save()
+				messages.success(request,'Se ha ingresado correctamente la nueva OT.')
+				return HttpResponseRedirect("/AdministradorVerOT")
+			else:
+				messages.error(request,'Debe llenar correctamente todos los campos disponibles.')
+		ctx = {'OTForm':form}
+		return render(request, 'Sudakaweb/AdministradorNuevaOT.html',ctx)
 
 
 #Menu OD (Orden de Despacho)
@@ -762,7 +1006,7 @@ class operarioVerMateriales(TemplateView):
 	def __init__(self,valor):
 		self.valor = valor
 	def mostrarOperarioMateriales(self,request):
-		material = Material.objects.all() # guardar en variable de cualquier nombre la lista de todos los objetos
+		material = Material.objects.exclude(materialSubTipo= 'Producto Terminado') # guardar en variable de cualquier nombre la lista de todos los objetos
 		ctx = {'materiales':material} # pasar a ctx la variable anterior
 		return render(request, 'Sudakaweb/OperarioVerMateriales.html',ctx)
 

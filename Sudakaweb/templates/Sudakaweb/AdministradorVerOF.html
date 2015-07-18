@@ -17,30 +17,32 @@
         <thead>
           <tr>
             <th>N° OF</th>
-            <th>Cantidad<br>(botellas)</th>
             <th>Material</th>
+            <th>Cantidad<br>(botellas)</th>
             <th>Fecha emisión</th>
             <th>Fecha inicio</th>
             <th>Fecha término</th>
-            <th>usuario</th>
             <th>Estado OF</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           {% for of in ofs %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
+
           <tr>
-            <td>{{of.id}}</td>
-            <td>{{of.ofCant}}</td>
-            <td>{{of.material}}</td>            
+            <td>{{ of.id }}</td>
+            <td>{{of.material}}</td> 
+            <td>{{of.ofCant}}</td>           
             <td>{{of.ofFechaIngreso}}</td>
             <td>{{of.ofFechaInicio}}</td>
             <td>{{of.ofFechaTermino}}</td>
-            <td>{{of.usuario}}</td>
             <td>{{of.estadoOF}}</td>
-            <td class="col-sm-2">
+            <td class="col-sm-3">
               <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar OF" href="{% url 'vista_administrador_editar_of' of.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-danger" onclick="return confirm('Se elimininará esta OF')" data-toggle="tooltip" data-placement="bottom" title="Eliminar OF" href="{% url 'vista_administrador_eliminar_of' of.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+              {% if of.estadoOF == 'Pendiente' %}
+              <a class="btn btn-xs btn-info" onclick="return confirm('Se generarán las OTs')" data-toggle="tooltip" data-placement="bottom" title="Generar OT" href="{% url 'vista_administrador_generar_ot' of.id %}">Generar<br>OT</a>
+              {% endif %}
             </td>
           </tr>
           {% endfor %}

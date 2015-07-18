@@ -25,16 +25,17 @@
         <tbody>
           {% for pt in pts %}
           <tr>
-            <td>{{pt.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{pt.ptNombre}}</td>
             <td>
               {% for m in pt.maquinarias %}
                 {{m.maqNombre}}<br>
               {% endfor %}
             </td>
-            <td>
+            <td class="col-sm-4">
               <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar PT" href="{% url 'vista_administrador_editar_pt' pt.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
-              <a class="btn btn-danger" onclick="return confirm('Se elimininará el puesto de trabajo.)" data-toggle="tooltip" data-placement="bottom" title="Eliminar PT" href="{% url 'vista_administrador_eliminar_pt' pt.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará el puesto de trabajo.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar PT" href="{% url 'vista_administrador_eliminar_pt' pt.id %}"><span class="glyphicon glyphicon-trash"></span></a>
+              <a class="btn btn-info" href="{% url 'vista_administrador_notificaciones' pt.id %}">Notificaciones <span class="badge">{{pt.notificaciones}}</span></a>
             </td>
           </tr>
           {% endfor %}

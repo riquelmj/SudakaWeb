@@ -27,7 +27,7 @@
         <tbody>
           {% for material in materiales %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>{{material.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{material.materialTipo}}</td>
             <td>{{material.materialNombre}}</td>
             <td>{{material.materialStock}}</td>

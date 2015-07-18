@@ -30,7 +30,6 @@ EstadoSolicitud=(
 
 EstadoMaquinaria=(
 	('Activa','Activa'),
-	('En Reparacion','En Reparacion'),
 	('En Mantencion','En Mantencion'),
 	('Desactivada','Desactivada'),
 	)
@@ -125,31 +124,23 @@ PUESTO_DE_TRABAJO=(
 				  )
 
 ESTADO_OF=(
-	      ('en proceso','en proceso'),
-	      ('eliminado','eliminado'),
-	      ('en espera','en espera'),
-	      ('culminada','culminada'),
+	      ('Pendiente','Pendiente'),
+	      ('En Proceso','En Proceso'),
+	      ('Finalizada','Finalizada'),
+	      ('Cancelada','Cancelada'),
 	      )
 
-ORDEN_DE_TRABAJO=(
-				 ('Orden de trabajo cerveza lager','Orden de trabajo cerveza lager'),
-				 ('Orden de trabajo cerveza black','Orden de trabajo cerveza black'),
-				 ('Orden de trabajo cerveza rubia','Orden de trabajo cerveza rubia'),
-				 )
+
 Habilitador=(
-				 (1,'Habilitado'),
-				 (0,'Inhabilitado'),
+				 ("1",'Habilitado'),
+				 ("0",'Inhabilitado'),
 				 )
 
 Finalizacion=(
-				 (1,'Finalizada'),
-				 (0,'No finalizada'),
-				 )
-
-ORDEN_DE_TRABAJO=(
-				 ('Orden de trabajo cerveza lager','Orden de trabajo cerveza lager'),
-				 ('Orden de trabajo cerveza black','Orden de trabajo cerveza black'),
-				 ('Orden de trabajo cerveza rubia','Orden de trabajo cerveza rubia'),
+				 ('Pendiente','Pendiente'),
+				 ('Por iniciar','Por iniciar'),
+				 ('Iniciada','Iniciada'),
+				 ('Finalizada','Finalizada'),
 				 )
 
 
@@ -217,7 +208,7 @@ class Comuna(models.Model):
 ## ENTIDAD SOLICITUD DE COMPRA
 class SolicitudDeCompra(models.Model):
 	id=models.AutoField('id',primary_key=True)
-	solicitudFecha=models.DateField('Fecha cuando se emitio la solicitud')
+	solicitudFecha=models.DateField('Fecha cuando se emitio la solicitud', db_index=True)
 
 	#llave foraneas
 	usuario=models.ForeignKey(Usuario,verbose_name="Usuario")
@@ -245,18 +236,19 @@ class Despacho(models.Model):
 class Material(models.Model):
 	id=models.AutoField('id',primary_key=True)
 	materialNombre=models.CharField('Nombre del material',max_length=50,null=False,blank=False)
-	materialStock=models.IntegerField('Stock del material',null=False,blank=False)
-	materialStockMinimo=models.IntegerField('Stock minimo de los materiales',null=False,blank=False)
+	materialStock=models.FloatField('Cantidad a elaborar',null=True,blank=True)
+	materialStockMinimo=models.FloatField('Stock minimo de los materiales',null=False,blank=False)
 	materialUnidadMedida=models.CharField('Unidades de medidas de los materiales',max_length=50,null=False,blank=False, choices=UnidadDeMedida)
 	materialTipo=models.CharField('Tipo de Material(Basico o Compuesto)',max_length=50,null=False,blank=False, choices=TipoMaterial)
 	materialSubTipo=models.CharField('Sub tipo de Material Compuesto (SemiElaborado o Producto Terminado)',max_length=50,null=False,blank=False, choices=SubTipoMaterial)
-	prodTermPrecio=models.IntegerField('Precio del producto terminado',null=False,blank=False)
+	prodTermPrecio=models.IntegerField('Precio del producto terminado',null=True,blank=True)
+	materialTiempoCaducidad = models.IntegerField('Meses de caducidad', null=False, blank=False)
 
 	# llave foranea
 	pt=models.ForeignKey('PuestoDeTrabajo',verbose_name="Puesto de Trabajo", blank=True, null=True)
 
 	def __unicode__(self):
-		return u'%s, Stock:  %s'%(self.materialNombre,self.materialStock)
+		return u'%s'%(self.materialNombre)
 
 
 ## ENTIDAD PUESTO DE TRABAJO
@@ -265,7 +257,6 @@ class PuestoDeTrabajo(models.Model):
 	ptNombre=models.CharField('Nombre del puesto de trabajo',max_length=50,null=False,blank=False)
 
 	# llave foranea	
-	usuario=models.ForeignKey(Usuario,verbose_name="Usuario")
 	materiales = models.ManyToManyField(Material)
 
 	def __unicode__(self):
@@ -286,25 +277,26 @@ class DetalleSolicitudDeCompra(models.Model):
 
 ## ENTIDAD COMPOSICIÓN
 class Composicion(models.Model):
-	composicionCantidad=models.IntegerField('Cantidad de composición que tiene cada material',null=False,blank=False)
+	composicionCantidad=models.FloatField('Cantidad de composición que tiene cada material',null=False,blank=False)
 
 	# llaves foraneas
 	material1=models.ForeignKey('Material',verbose_name="Material 1",related_name='material1')
 	material2=models.ForeignKey('Material',verbose_name="Material 2",related_name='material2')
 
 	def __unicode__(self):
-		return u'%s, Cantidad: %s'% (self.material,self.composicionCantidad)
+		return u'%s, Cantidad: %s'% (self.material1,self.composicionCantidad)
 
 
 ## ENTIDAD LOTE
 class Lote(models.Model):
 	id=models.AutoField('id',primary_key=True)
 	loteFechaElaboracion=models.DateField('Fecha de elaboración del lote de material')
-	loteFechaVencimiento=models.DateField('Fecha de Vencimiento de los lotes de material')
-	loteStock=models.IntegerField('Stock del lote de materiales',null=False,blank=False)
+	loteFechaVencimiento=models.DateField('Fecha de Vencimiento de los lotes de material', db_index=True, null=True, blank=True)
+	loteStock=models.IntegerField('Cantidad total de materiales',null=False,blank=False)
+	loteStockReal=models.IntegerField('Stock actual del lote',null=False,blank=False)
 
 	# llave foranea
-	material=models.ForeignKey(Material,verbose_name="Material")
+	material=models.ForeignKey(Material,verbose_name="Material", db_index=True)
 
 	def __unicode__(self):
 		return u'%s, Stock: %s, Elab: %s,  Venc: %s' % (self.material,self.loteStock,self.loteFechaElaboracion,self.loteFechaVencimiento)
@@ -363,18 +355,18 @@ class EstadoOF(models.Model):
 class OrdenDeFabricacion(models.Model):
 	id=models.AutoField('id',primary_key=True)
 	ofCant=models.IntegerField('Cantidad a fabricar',null=False,blank=False)
-	ofFechaIngreso=models.DateField('Fecha de ingreso de la OF', null=True, blank=True)
+	ofFechaIngreso=models.DateField('Fecha de ingreso de la OF', db_index=True, null=True, blank=True)
 	ofFechaInicio=models.DateField('Fecha de inicio de la OF')	
 	ofFechaTermino=models.DateField('Fecha de termino de la OF')
 
 
 	#llaves foraneas	
-	material=models.ForeignKey(Material,verbose_name="Material")
+	material=models.ForeignKey(Material, db_index=True, verbose_name="Material")
 	usuario=models.ForeignKey(Usuario,verbose_name="Usuario", null=True, blank=True)
-	estadoOF=models.ForeignKey(EstadoOF,verbose_name="Estado OF")
+	estadoOF=models.CharField("Estado OF", max_length=20,choices=ESTADO_OF, null=True, blank=True)
 
 	def __unicode__(self):
-		return u'n° OF:%s, Producto:%s,'%(self.id,self.material)
+		return u'n° OF: %s'%(self.id)
 	
 	class Meta:
 		ordering=['ofFechaIngreso']
@@ -399,14 +391,16 @@ class Etapa(models.Model):
 ## ENTIDAD ORDEN DE TRABAJO
 class OrdenDeTrabajo(models.Model):
 	id=models.AutoField('id',primary_key=True)
-	otFinalizacion=models.NullBooleanField('Estado OT, finalizado o no', choices=Finalizacion, null=False, blank=False)
-	otFechaInicio=models.DateField('Fecha de inicio de la OT')
-	otFechaTermino=models.DateField('Fecha de termino de la OT')
+	otFinalizacion=models.CharField('Estado OT',max_length=50, choices=Finalizacion, null=False, blank=False)
+	otFechaInicio=models.DateField('Fecha de inicio de la OT', null=True, blank=True)
+	otFechaTermino=models.DateField('Fecha de termino de la OT', null=True, blank=True)
+	otCantidad=models.IntegerField('Cantidad total a fabricar', null=False, blank=False)
+	otCantidadAcum=models.IntegerField('Cantidad acumulada', null=False, blank=False)
 
 	#llaves foraneas
-	of=models.ForeignKey(OrdenDeFabricacion,verbose_name="OF")
-	etapa=models.ForeignKey(Etapa,verbose_name="Etapa")
-	pt=models.ForeignKey(PuestoDeTrabajo,verbose_name="PT")
+	of=models.ForeignKey(OrdenDeFabricacion,verbose_name="OF", db_index=True)
+	pt=models.ForeignKey(PuestoDeTrabajo,verbose_name="PT", db_index=True)
+	material=models.ForeignKey(Material,verbose_name="Material", db_index=True)
 
 	def __unicode__(self):
 		return u'n° OT: %s, Estado: %s, %s'%(self.id,self.otFinalizacion,self.of)
@@ -429,11 +423,11 @@ class Maquinaria(models.Model):
 class Notificacion(models.Model):
 	id=models.AutoField('id',primary_key=True)
 	notifDescripcion=models.CharField('Descripción de la notificación',max_length=200,null=False,blank=False)
-	notifFecha=models.DateField('Fecha de notificación',auto_now=True)
+	notifFecha=models.DateField('Fecha de notificación')
 	notifCantidad=models.IntegerField('Cantidad de material que se entrega en la notificación',null=False,blank=False)
 
 	# llaves foraneas
-	usuario=models.ForeignKey(Usuario,verbose_name="Usuario")
+	usuario=models.ForeignKey(Usuario,verbose_name="Usuario",null=True)
 	ot=models.ForeignKey(OrdenDeTrabajo,verbose_name="OT")
 
 	def __unicode__(self):

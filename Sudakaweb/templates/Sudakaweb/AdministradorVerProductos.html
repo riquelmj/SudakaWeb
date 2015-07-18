@@ -18,20 +18,21 @@
           <tr>
             <th>N°</th>
             <th>Nombre</th>
-            <th>Stock</th>
+            <th>Cantidad<br>por ciclo</th>
             <th>Stock Mínimo</th>
             <th>Unidad de Medida</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for material in materiales %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>{{material.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{material.materialNombre}}</td>
             <td>{{material.materialStock}}</td>
             <td>{{material.materialStockMinimo}}</td>
             <td>{{material.materialUnidadMedida}}</td>
-            <td>
+            <td class="col-sm-2">
               <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar producto" href="{% url 'vista_administrador_editar_material' material.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-danger" onclick="return confirm('Se elimininará esta producto')" data-toggle="tooltip" data-placement="bottom" title="Eliminar producto" href="{% url 'vista_administrador_eliminar_material' material.id %}"><span class="glyphicon glyphicon-trash"></span></a>
             </td>

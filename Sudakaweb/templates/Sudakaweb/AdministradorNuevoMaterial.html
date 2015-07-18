@@ -22,23 +22,18 @@ Sudakaweb
 					{{MaterialForm.materialNombre}}      
 				</div>
 			</div>
+			
 			<div class="form-group">
-				<label for="nombre" class="col-sm-4 control-label">Stock</label>
+				<label for="nombre" class="col-sm-4 control-label" id="UnidadMedida">Unidad de Medida</label>
 				<div class="col-sm-8">
-					{{MaterialForm.materialStock}}      
-				</div>
+					{{MaterialForm.materialUnidadMedida}}
+				</div> 
 			</div>
 			<div class="form-group">
 				<label for="nombre" class="col-sm-4 control-label">Stock Minimo</label>
 				<div class="col-sm-8">
 					{{MaterialForm.materialStockMinimo}}      
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="nombre" class="col-sm-4 control-label" id="UnidadMedida">Unidad de Medida</label>
-				<div class="col-sm-8">
-					{{MaterialForm.materialUnidadMedida}}
-				</div> 
 			</div>
 			<div class="form-group">
 				<label for="nombre" class="col-sm-4 control-label" id="TipoMaterial">Tipo de Material</label>
@@ -52,20 +47,20 @@ Sudakaweb
 					{{MaterialForm.materialSubTipo}}      
 				</div>
 			</div>
-			<div class="form-group">
-				<label for="nombre" class="col-sm-4 control-label">Precio Material</label>    
-				<div class="col-sm-8">
-					{{MaterialForm.prodTermPrecio}}      
-				</div>
-			</div> 
 			<div style="display:none" id="mostrar">
-				<div class="form-group">
-					<label for="nombre" class="col-sm-4 control-label">Puesto de Trabajo</label>    
-					<div class="col-sm-8">
+				<h3 align="center">Composición</h3>
+				<div class="form-group text-left">
+					<label for="nombre" class="col-sm-2 control-label">Cantidad</label>
+					<div class="col-sm-4">
+						{{MaterialForm.materialStock}}      
+					</div>
+				
+					<label for="nombre" class="col-sm-2 control-label">Puesto de Trabajo</label>    
+					<div class="col-sm-4">
 						{{MaterialForm.pt}}      
 					</div>               
 				</div>
-				<h3 align="center">Composición</h3>
+				
 				<div class="col-md-4">
 					<p>Tipo de Material</p>
 					<select multiple id="tipo-material" class="form-control">
@@ -88,7 +83,7 @@ Sudakaweb
 				</div>  
 				<div class="col-md-4">
 					<label for="ejemplo_cantidad_material">Cantidad</label>
-					<input class="form-control" id="cantidad" type="number" min="0" value="Cantidad de Material" placeholder="Cantidad de Material">
+					<input class="form-control" id="cantidad" type="number" step="any" min="0" value="Cantidad de Material" placeholder="Cantidad de Material">
 					<br>
 					<a href="#" id="agregar-mat" class="btn btn-default">Agregar Material</a>
 				</div> 

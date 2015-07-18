@@ -22,18 +22,19 @@
             <th>Dirección</th>
             <th>Teléfono</th>
             <th>Correo</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for proveedor in proveedores %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>{{proveedor.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{proveedor.proveedorRut}}</td>
             <td>{{proveedor.proveedorNombre}}</td>
             <td>{{proveedor.proveedorDireccion}}</td>
             <td>{{proveedor.proveedorTelefono}}</td>
             <td>{{proveedor.proveedorCorreo}}</td>
-            <td>
+            <td class="col-sm-2">
               <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar proveedor" href="{% url 'vista_administrador_editar_proveedor' proveedor.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-danger" onclick="return confirm('Se elimininará este proveedor.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar proveedor" href="{% url 'vista_administrador_eliminar_proveedor' proveedor.id %}"><span class="glyphicon glyphicon-trash"></span></a>
             </td>

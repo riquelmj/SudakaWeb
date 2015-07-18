@@ -7,7 +7,7 @@
 {%block contenido%}
 	<div class="row" align="center">
 
-    <a href="#.html" class="btn btn-primary" role="button">Ver Stock</a>
+    <a href="#.html" class="btn btn-primary" role="button">Ver Materiales</a>
     <a href="{% url 'vista_administrador_ingresar_material' %}" class="btn btn-primary" role="button">Ingresar Material</a>    
     <a href="{% url 'vista_administrador_nuevo_material' %}" class="btn btn-primary" role="button">Nuevo Material</a>
   </div>
@@ -21,24 +21,23 @@
             <th>N°</th>
             <th>Nombre</th>
             <th>Tipo de Material</th>
-            <th>Stock</th>
-            <th>Stock <br>Mínimo</th>
+            <th>Cant. Ciclo <br>Producción</th>
             <th>Unidad de Medida</th>
             <th>Composición</th>
             <th>Puesto de Trabajo</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for material in materiales %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>{{material.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{material.materialNombre}}</td>
             <td>{{material.materialTipo}}</td>
             <td>{{material.materialStock}}</td>
-            <td>{{material.materialStockMinimo}}</td>
             <td>{{material.materialUnidadMedida}}</td>
-            <td>{% for x in material.composicion_set.all %}
-                sd<br>
+            <td>{% for x in material.composiciones %}
+                {{x.material2}}[{{x.composicionCantidad}} {{x.material2.materialUnidadMedida}}]<br>
                 {% endfor %}
             </td>
             <td>

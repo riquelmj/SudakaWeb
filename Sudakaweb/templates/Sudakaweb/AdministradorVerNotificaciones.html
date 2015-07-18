@@ -7,24 +7,24 @@
 {%block contenido%}
   <div class="thumbnail"  style="height:544px; margin:10px" align="center">
     <div style="height:100%;overflow-y: scroll;">
-      <h2>Ver Puestos de Trabajo</h2>
+      <h2>Notificaciones</h2>
       <table class="table table-hover table-bordered " style="width:100%;" >           
         <thead>
           <tr>
             <th>N°</th>
-            <th>Nombre</th>
-            <th>Maquinas</th>
+            <th>Descripcion</th>
+            <th>Orden de compra</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {% for pt in pts %}
+          {% for n in notificaciones %}
           <tr>
             <td>{{ forloop.counter }}{# starting index 1 #}</td>
-            <td>{{pt.ptNombre}}</td>
-            <td>
-              {% for m in pt.maquinarias %}
-                {{m.maqNombre}}<br>
-              {% endfor %}
+            <td>{{n}}</td>
+            <td>{{n}}</td>
+            <td class="col-sm-4">
+              <a class="btn btn-danger" onclick="return confirm('Se elimininará el puesto de trabajo.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar PT" href="{% url 'vista_administrador_eliminar_pt' n.id %}"><span class="glyphicon glyphicon-trash"></span></a>
             </td>
           </tr>
           {% endfor %}

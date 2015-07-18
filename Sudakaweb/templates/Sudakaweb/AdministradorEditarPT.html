@@ -19,22 +19,11 @@
       <div class="col-sm-8">
         {{PTForm.ptNombre}}
       </div>
-    </div>
-    <div class="form-group">
-      <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Usuario</label>
-      <div class="col-sm-8">
-        {{PTForm.usuario}}
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="ejemplo_nombre_material" class="col-sm-4 control-label">Materiales (Saliente o entrante??)</label>
-      <div class="col-sm-8">
-        {{PTForm.materiales}}
-      </div>
-    </div>        
-    <p class="text-center">
+    </div>     
+    <div align="center">
       <button type="submit" class="btn btn-default" class="col-sm-4 control-label">Guardar</button>
-    </p>
+      <a href="{% url 'vista_administrador_ver_pt' %}" class="btn btn-default">Cancelar</a>
+    </div>
   </form>
 </div>
 

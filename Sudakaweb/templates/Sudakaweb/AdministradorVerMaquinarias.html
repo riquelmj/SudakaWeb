@@ -26,11 +26,11 @@
         <tbody>
           {% for maquinaria in m %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
           <tr>
-            <td>{{maquinaria.id}}</td>
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
             <td>{{maquinaria.maqNombre}}</td>
             <td>{{maquinaria.pt}}</td>
             <td>{{maquinaria.maqEstado}}</td>
-            <td>
+            <td class="col-sm-2">
               <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar maquinaria" href="{% url 'vista_administrador_editar_maquinaria' maquinaria.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-danger" onclick="return confirm('Se elimininará esta maquinaria')" data-toggle="tooltip" data-placement="bottom" title="Eliminar maquinaria" href="{% url 'vista_administrador_eliminar_maquinaria' maquinaria.id %}"><span class="glyphicon glyphicon-trash"></span></a>
             </td>

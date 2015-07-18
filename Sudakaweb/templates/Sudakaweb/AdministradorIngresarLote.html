@@ -1,0 +1,61 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+  Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+<div class="row" align="center">
+    <a href="{% url 'vista_administrador_ver_lotes' %}" class="btn btn-primary" role="button">Ver Stock</a>
+    <a href="{% url 'vista_administrador_nuevo_lote' %}" class="btn btn-primary" role="button">Nuevo Lote</a>
+</div>
+
+<div class="thumbnail"  style="height:430px; margin:10px" >
+    <h2 align="center">Ingreso Lote Material</h2>
+    <form role="form" style="margin:20px;">
+        <div class="col-md-4">
+            <p>Tipo de Material</p>
+            <select multiple class="form-control" style="height:280px;">
+                <option>Tipo1</option>
+                <option>Tipo2</option>
+                <option>Tipo3</option>
+                <option>Tipo4</option>
+                <option>Tipo5</option>
+            </select>
+        </div>
+        <div class="col-md-4" >
+            <p>Nombre de Material</p>
+            <select multiple class="form-control" style="height:280px;">
+                <option>Nombre1</option>
+                <option>Nombre2</option>
+                <option>Nombre3</option>
+                <option>Nombre4</option>
+                <option>Nombre5</option>
+                <option>6Nombre</option>          
+            </select>
+        </div>  
+        <div class="col-md-4">
+            <label for="ejemplo_cantidad_material">Cantidad</label>
+            <input class="form-control" id="cantidad" type="number" min="0" value="Cantidad de Material" placeholder="Cantidad de Material" required="required">
+            <br>  
+            <label for="ejemplo_unidad-medida_material">Unidad de Medida</label>
+            <select class="form-control">
+                <option>Unidad1</option>
+                <option>Unidad2</option>
+                <option>Unidad3</option>
+                <option>Unidad4</option>
+                <option>Unidad5</option>
+            </select>
+            <br>
+            <div align="center">
+                <button type="submit" class="btn btn-default">Ingresar</button>
+            </div>
+        </div>
+    </form>                   
+</div>
+{%endblock%}
+
+
+{%block JS%}
+  
+{%endblock%}

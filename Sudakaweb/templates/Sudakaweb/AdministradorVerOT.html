@@ -13,28 +13,58 @@
   <div class="thumbnail"  style="height:544px; margin:10px" align="center">
     <div style="height:100%;overflow-y: scroll;">
       <h2>Ver Órdenes de Trabajo</h2>
+      <div class="form-group">
+        <label>Puesto de trabajo</label>
+        <select class="form-control" id="select-pt">
+          <option value="">Todos</option>
+          {% for pt in pts %}
+            <option value="{{pt.id}}">{{pt}}</option>
+          {% endfor %}
+        </select>
+      </div>
       <table class="table table-hover table-bordered " style="width:100%;" >           
         <thead>
           <tr>
             <th>N° OT</th>
             <th>N° OF</th>
+            <th>Material</th>
+            <th>Cantidad<br>Producida</th>
             <th>Puesto de Trabajo</th>
             <th>Fecha Inicio</th>
             <th>Fecha Término</th>
             <th>Estado</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for ot in ots %} <!-- maquinaria es le nombre del iterador, m el de la variable definida en amarillo en el views -->
-          <tr>
-            <td>{{ot.id}}</td>
-            <td>{{ot.of}}</td>
+          <tr class="fila" data-puesto="{{ot.pt.id}}">
+            <td>{{ forloop.counter }}{# starting index 1 #}</td>
+            <td>{{ot.of.id}}</td>
+            <td>
+            <span class="popoverData" data-content="{% for c in ot.composiciones %}{{c.material2}} [{{c.composicionCantidad}} {{c.material2.materialUnidadMedida}}]<br/>{% endfor %}" rel="popover" data-placement="bottom" data-original-title="Composición" data-trigger="hover">
+            {{ot.material}}
+              
+            </span>
+            </td>
+            <td>{{ot.otCantidadAcum}}/{{ot.otCantidad}} [{{ot.material.materialUnidadMedida}}]</td>
             <td>{{ot.pt}}</td>
             <td>{{ot.otFechaInicio}}</td>
             <td>{{ot.otFechaTermino}}</td>
             <td>{{ot.get_otFinalizacion_display}}</td>
-            <td>
-            <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Editar OT" href="{% url 'vista_administrador_editar_ot' ot.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <td class="col-sm-2">
+              <form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_agregar_cantidad' ot.id %}">
+              {% csrf_token %}
+                <div style="width:110px;">
+                  <input style="width:70px; margin-right:5px; float:left" {% if ot.otFinalizacion == "Finalizada" %}disabled{% endif %} {% if ot.otFinalizacion == "Pendiente" %}disabled{% endif %} type="number" class="form-control col-sm-8" name="cantidad" min="0" id="inputusuario" placeholder="Cantidad">
+               
+                  <button style="float:left" {% if ot.otFinalizacion == "Finalizada" %}disabled{% endif %} {% if ot.otFinalizacion == "Pendiente" %}disabled{% endif %} class="btn btn-sm btn-info col-_sm-3" data-toggle="tooltip" data-placement="bottom" title="Actualizar OT" href="#"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+              </form>
+            </td>
+            <td style="width:110px;">
+            <a class="btn btn-warning" data-toggle="tooltip" data-placement="bottom" title="Actualizar OT" href="{% url 'vista_administrador_editar_ot' ot.id %}"><span class="glyphicon glyphicon-pencil"></span></a>
               <a class="btn btn-danger" onclick="return confirm('Se elimininará esta orden de trabajo.')" data-toggle="tooltip" data-placement="bottom" title="Eliminar OT" href="{% url 'vista_administrador_eliminar_ot' ot.id %}"><span class="glyphicon glyphicon-trash"></span></a> 
             </td>
           </tr>
@@ -49,5 +79,22 @@
 
 
 {%block JS%}
-  
+  <script type="text/javascript">
+  $(".popoverData").popover({html:true});
+  </script>
+  <script type="text/javascript">
+  $("#select-pt").change(function(){
+    $(".fila").each(function(data){
+      if($("#select-pt").val()==""){
+        $(this).show();
+      }else{
+        if ($(this).attr("data-puesto")!= $("#select-pt").val()){
+          $(this).hide();
+        }else{
+          $(this).show()
+        }
+      }
+    })
+  })
+  </script>
 {%endblock%}

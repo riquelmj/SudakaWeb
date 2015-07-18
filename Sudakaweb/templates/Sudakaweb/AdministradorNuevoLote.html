@@ -1,0 +1,58 @@
+{%extends "Sudakaweb/base.html"%}
+
+{%block titulo%}
+Sudakaweb
+{%endblock%}
+
+{%block contenido%}
+<div class="row" align="center">
+	<a href="{% url 'vista_administrador_ver_lotes' %}" class="btn btn-primary" role="button">Ver Stock</a>   
+	<a href="#.html" class="btn btn-primary" role="button">Nuevo Lote</a>
+</div>
+
+<div class="thumbnail"  style="height:544px; margin:10px">
+	<div style="height:100%;overflow-y: scroll; overflow-x: hidden">
+		<h2 align="center">Nuevo Lote</h2>
+		<form class="form-horizontal" role="form" method="POST" action="{% url 'vista_administrador_nuevo_lote' %}">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Fecha de Elaboración</label>    
+				<div class="col-sm-8">
+					{{LoteForm.loteFechaElaboracion}}      
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label">Fecha de Vencimiento</label>
+				<div class="col-sm-8">
+					{{LoteForm.loteFechaVencimiento}}      
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label" id="UnidadMedida">Stock</label>
+				<div class="col-sm-8">
+					{{LoteForm.loteStock}}
+				</div> 
+			</div>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label" id="UnidadMedida">Stock Actual</label>
+				<div class="col-sm-8">
+					{{LoteForm.loteStockReal}}
+				</div> 
+			</div>
+			<div class="form-group">
+				<label for="nombre" class="col-sm-4 control-label" id="TipoMaterial">Material</label>
+				<div class="col-sm-8">
+					{{LoteForm.material}}
+				</div> 
+			</div>
+			<div class="text-center">
+				<a class="btn btn-default" onclick="$('form').submit()" type="submit">Guardar</a>
+			</div>
+		</form>
+	</div>
+</div>
+{%endblock%}
+
+{%block JS%}
+
+{%endblock%}
